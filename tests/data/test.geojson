@@ -1,0 +1,33 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id" : "test_geojson_1",
+      "type": "Feature",
+      "properties": {
+        
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.187271595001221,
+          40.95480471183075
+        ]
+      }
+    },
+    {
+      "id" : "test_geojson_2",
+      "type": "Feature",
+      "properties": {
+        
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.186810255050659,
+          40.954148389459085
+        ]
+      }
+    }
+  ]
+}

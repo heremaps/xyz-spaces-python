@@ -1,0 +1,12 @@
+.idea
+.coverage
+__pycache__
+.mypy_cache/
+.DS_Store
+htmlcov/
+.pytest_cache/
+_build/
+.ipynb_checkpoints/
+.venv
+.vscode
+.debug.env

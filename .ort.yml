@@ -1,0 +1,9 @@
+---
+excludes:
+  paths:
+  - pattern: "requirements_dev.txt"
+    reason: "BUILD_TOOL_OF"
+    comment: "Optional dependencies only used for development / testing."
+  - pattern: "tests/**"
+    reason: "TEST_OF"
+    comment: "Directory only used for testing."
