@@ -28,5 +28,5 @@ rm -rf $DEST/_templates
 
 # Just creating conf.py, Makefile and make.bat once, hence commenting below.
 
-sphinx-apidoc --private --separate --module-first --full -o $DEST xyz
+sphinx-apidoc --private --separate --module-first --full -o $DEST xyzspaces
 sphinx-build -b html -D html_theme=sphinx_rtd_theme $DEST $DEST/_build/html
