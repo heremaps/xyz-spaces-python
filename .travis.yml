@@ -30,7 +30,7 @@ jobs:
         provider: pypi
         username: "__token__"
         password:
-          secure: T7vNc9c5yr7rDP/N/DXuFR2jhSmlUudt+S429puxZOVxF6c7Pw6NG51pg6vlygqnjtIH1KXindKI69Jv46r+jp3v7F+BcftKMDZsubOAvr0JbplPmRgfy58N2mVIo/TKJxP+HpU6x2USH1hTUCIsc2wWa5JuH/rDUjxmyU8Aooj3jo2MoqeZiUNTdDOGAWifa+8xJdunsB5omEyAZNMHxBGNjsepb77+SETql5C4rJPnXqNJ1cXqK9jDlLD+0je/Wz1tEj/ibku/wVbHOkDhJYnKBey8u21ENigq5c6oZ1FXEymBsgx1wd6xYH11ayXyf92WR/1/LTGPZxRZ4FULjidjd1pPyydXEr1XwgtiNMjeSxbkmPOHfyCQ2WO0tyTb1qo8aAxgR/xg3E33F1WigqNQsWFEvGFaNIT+abIedpshAbbXtnt0Emzguh+YT9CU45SX2Hd0C4nWkzpdx29zkbglYjqoQ6U3SaxYI1ESuMKpE9PA86ZXBJfoGuFPUG5qbXoaU3jl5lG/7CnlLbiTf+rp457LqonmVIqVTSfrZHqkk0q++NjxFgv4mYhQCE11DwWL1C2b8DzZgGecG5uH1ckvm5OFZm811Mh8lYd9XLoXBshtcfd5Wc2t0iyOd5VnmyVZz15SuT8LM7dpIKwLJNY1sCmCeuOL+vBLHq8xUw8=
+          secure: "T7vNc9c5yr7rDP/N/DXuFR2jhSmlUudt+S429puxZOVxF6c7Pw6NG51pg6vlygqnjtIH1KXindKI69Jv46r+jp3v7F+BcftKMDZsubOAvr0JbplPmRgfy58N2mVIo/TKJxP+HpU6x2USH1hTUCIsc2wWa5JuH/rDUjxmyU8Aooj3jo2MoqeZiUNTdDOGAWifa+8xJdunsB5omEyAZNMHxBGNjsepb77+SETql5C4rJPnXqNJ1cXqK9jDlLD+0je/Wz1tEj/ibku/wVbHOkDhJYnKBey8u21ENigq5c6oZ1FXEymBsgx1wd6xYH11ayXyf92WR/1/LTGPZxRZ4FULjidjd1pPyydXEr1XwgtiNMjeSxbkmPOHfyCQ2WO0tyTb1qo8aAxgR/xg3E33F1WigqNQsWFEvGFaNIT+abIedpshAbbXtnt0Emzguh+YT9CU45SX2Hd0C4nWkzpdx29zkbglYjqoQ6U3SaxYI1ESuMKpE9PA86ZXBJfoGuFPUG5qbXoaU3jl5lG/7CnlLbiTf+rp457LqonmVIqVTSfrZHqkk0q++NjxFgv4mYhQCE11DwWL1C2b8DzZgGecG5uH1ckvm5OFZm811Mh8lYd9XLoXBshtcfd5Wc2t0iyOd5VnmyVZz15SuT8LM7dpIKwLJNY1sCmCeuOL+vBLHq8xUw8="
       on:
         tags: true
         branch: master
