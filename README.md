@@ -1,6 +1,15 @@
 # XYZ Spaces for Python
+[![Build Status](https://travis-ci.com/heremaps/xyz-spaces-python.svg?branch=master)](https://travis-ci.com/github/heremaps/xyz-spaces-python)
+![PyPI](https://img.shields.io/pypi/v/xyzspaces)
+![PyPI - Status](https://img.shields.io/pypi/status/xyzspaces)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xyzspaces)
+[![Downloads](https://pepy.tech/badge/xyzspaces)](https://pepy.tech/project/xyzspaces)
+[![Documentation Status](https://readthedocs.org/projects/docs/badge/?version=latest)](https://xyz-spaces-python.readthedocs.io/en/latest/)
+![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)
+![GitHub contributors](https://img.shields.io/github/contributors/heremaps/xyz-spaces-python)
 
-This package allows you to use your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://www.here.com/products/platform/studio) from Python.
+
+This package allows you to use your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
 
 The image below is what you get when running the notebook in [docs/notebooks/demo.ipynb](./docs/notebooks/demo.ipynb),
 which demonstrates how to use some features of the XYZ Hub's RESTful API to:
@@ -76,7 +85,7 @@ The test suite provides test coverage of around 90% (but less if the tests canno
 
 ## Documentation
 
-For now, the documentation consists of a small number of example Jupyter notebooks in the [docs/notebooks](./docs/notebooks) directory plus an API reference, which is automatically generated from the docstrings in the code.
+For now, the documentation consists of a small number of example Jupyter notebooks in the [docs/notebooks](./docs/notebooks) directory plus an [API reference](https://xyz-spaces-python.readthedocs.io/en/latest/index.html), which is automatically generated from the docstrings in the code.
 
 ### Jupyter Notebooks
 
