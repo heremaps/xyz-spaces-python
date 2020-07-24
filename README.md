@@ -50,7 +50,7 @@ This package can be installed with `pip` from various sources:
     pip install -e git+https://github.com/heremaps/xyz-spaces-python#egg=xyzspaces
     ```
 
-- Install from the [Python Package Index](https://pypi.org/):
+- Install from the [Python Package Index](https://pypi.org/project/xyzspaces/):
 
     ```bash
     pip install xyzspaces
