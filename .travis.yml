@@ -18,19 +18,13 @@ env:
   - secure: "jjHEikFyl66DK16AbG6W6Wkku4M3H4AEccrXwkuxTPlzOOjlZbqZ/ZJnXF2A+3T16QvNab7kd+aa4dAgdcyKBwZs5/rR+L9jMDwkcOpYDXoXY1kiw3PE6wCb/lp1fay4KoxLUxwtcCg2KR/z8OR469W0ghRqCDJxECuuNarBAtOnvwPVCFeV6Q5b+1RqTyzEB7eJhdXMP3pwXW0Ix3JL6M1S7QzxvuI7N9huxoCZ0V1Jzuh70Eo1ORfnzu1Qt8eawkdb8/ph07FD2ETq+CNt7K3w/5RkrQsh//FXnEBiD3C8mzqMFGZSLmCAHot6/ni98CrZfVVwTOjMta+gMzuwoSfTXrBbZCkkOH9Bssg+R6GmDEfp1hVtMRUnVi0CHUAy3sS6bkqNFqAmbvFCoo6jI9k88d1iFoRR+uWg5IS0pNUBCS/OD9WD81nqFCeGrDi47LvTTGHLz6IpRapdA9gPMQuu3q+eIJqTJDr5hvuAKrgM8kkC3kqKl+hQpivF5bl468R+/Ej6P5MY09VHuT4MjOUA1M3IgbOTQ35XZ+XAhXR6W6wWYFRnk33LbESu7wnJteP48AFt8lKdWPluhiU6gbw+iHfxcd07404IywRuUuRM1PcOa874F756LyYp5rX/Qj7YR8gtBRiOHij4DwHuWNs7avM626q9lQ8CTomoSAY="
   - secure: "Btxn7PQjbm2suCcsAS1TUDA0w3duX27QJ0bnA7tI3jWUuG2kidqN/U7t8NFEjS7cB92MRelxiYn0RCdQQcTOHf6CwMgZMXTnCq6WVi+Sofh3Exj3zpiFCVr4fJMyPu1ko/IvuVqKPR62xOklBkDmKyjrRMP5bifPpS36hGRMXOavqwBO5vGMsUp+lItLZ1UXIbyd397GER3Dp1lxDwRDH6L/IM8xiRtcyooxGXhRtcnO5rB7Xe1nLiRrQWiy1/UJ+SuyGylrH9acMPp4xH6YbueXrHJasZujqb3c0xoS+HtDwUbMAfFc3FfDVnGqpaRrPLseTyqPNuIxN8dFkdH2tl7RlJXlLRqdMA94YuNF7MQ6174Jhc49xQVZN6F4E5033CY4zdUKaQ067palFRuTz9TYC31tLxBOhOr+uDfp4vJd0lo7GEeldLoRLj4OMJJE+ezQrz7E/9ewkL2+1+6tnF8I79kxGXsGARmeXi2yk7Qo/b3GGSeEmunjXK5VueHkwoJa8TKfN2phiev4ATc8HO8vAQCvTWieGCme9LUrHR1dYaqiEW0wDzOPKyfUDt/LO0nNDsp2y7dOcnGCagujHWdV8h0I5r4A2qUOrq0bDAjH0TnYbglN2/OD3JexzR4nu1i0AnLGaEh5xNvlHX9b3LiQwpvgQDVgUdfFHIskbN8="
   - secure: "vL7b5G8W4fBptwnXLn43Tm2F/jJ4x2ifl1ioIzFjLlxG8qQtcYl6pP1fCbNmMptFgAHun+s0vA6YMt6A9GdY/+8TbM9OfYzaNhhfTS+lrCqaYYi0xlJtvyqf73ncIWtQH5gp5Q5um2GtMOTPYkhxOVfRlFNgRwwQc3T1b1229r/5dOGikE+aY31CZOT6BHB1okJiwpkXo8FUNkqxEv/lQtRZI3TIrpdVnQtcdnRlU9cD/PSpG/c8wRhjE29Y/bI1k4rh/PpOqH0rOh1eHexVLGt9jCT4SUGc7+kfVmPpeJj5Rl+UeJEnjdtDPLxEYCXJ5rCUDoYqCYBfMOUOz8Wdd+gRiItAYhJEy9fQuwoBu8s/7ytyIMjosjhr8Sxv24Y2fgExSt1zqoKuJpJzJd+t8WZqEyY9mBy+tBmFqUsjNOabViMvGD4+cM6r26nkT6cYoJLa14K4R0Mgcpa+KUDeXrsfmoB53yMYe95cYDOQbd9spnXLRPlq2DHgX15rmbF6j5aIXXrKELrqfhUdEoQD9Bq7Szg0Sup7JJVTHbgEReftvhgRtQ+YLdwCMaVqpiIgxeFvR6yNcpAP/vQTu492b/Hh0pIeZVID6ORKeQ3VrS2KJgNwtSQa8BKQtw0smo+/FuQaW+l+OHxJhlamS0MJjoQ0FDoq/TWGvZDdpOVEKiU="
-stages:
-- deploy
-jobs:
-  include:
-    - stage: deploy
-      python: 3.6
-      install: skip  # no tests, no depedencies needed
-      script: skip  # we're not running tests
-      deploy:
-        provider: pypi
-        username: "__token__"
-        password:
-          secure: "T7vNc9c5yr7rDP/N/DXuFR2jhSmlUudt+S429puxZOVxF6c7Pw6NG51pg6vlygqnjtIH1KXindKI69Jv46r+jp3v7F+BcftKMDZsubOAvr0JbplPmRgfy58N2mVIo/TKJxP+HpU6x2USH1hTUCIsc2wWa5JuH/rDUjxmyU8Aooj3jo2MoqeZiUNTdDOGAWifa+8xJdunsB5omEyAZNMHxBGNjsepb77+SETql5C4rJPnXqNJ1cXqK9jDlLD+0je/Wz1tEj/ibku/wVbHOkDhJYnKBey8u21ENigq5c6oZ1FXEymBsgx1wd6xYH11ayXyf92WR/1/LTGPZxRZ4FULjidjd1pPyydXEr1XwgtiNMjeSxbkmPOHfyCQ2WO0tyTb1qo8aAxgR/xg3E33F1WigqNQsWFEvGFaNIT+abIedpshAbbXtnt0Emzguh+YT9CU45SX2Hd0C4nWkzpdx29zkbglYjqoQ6U3SaxYI1ESuMKpE9PA86ZXBJfoGuFPUG5qbXoaU3jl5lG/7CnlLbiTf+rp457LqonmVIqVTSfrZHqkk0q++NjxFgv4mYhQCE11DwWL1C2b8DzZgGecG5uH1ckvm5OFZm811Mh8lYd9XLoXBshtcfd5Wc2t0iyOd5VnmyVZz15SuT8LM7dpIKwLJNY1sCmCeuOL+vBLHq8xUw8="
-      on:
-        tags: true
-        branch: master
+
+deploy:
+  provider: pypi
+  username: "__token__"
+  password:
+    secure: "lvbQz0W/t/9Zj981T7z+FbF3QAykIOvt/vK/ZJPkNzUQtuDcmKY2vRHqtFXDrFGg8pCVrCTaM83NInM0euaOv/rq7gyo1dDBi564aLRAWtTa0tXiKGp+OmaI+UQ6x+KYaNqpfppdXN86zl+aC9mxcKf1am8aeMvlFcqL3N9sXaQSpZhxShpwW1pjxOVf00zOM2nlKittAhEpqRUToyoO4dIjMILbIU+QUb+cMtrpBE4+c7807rHV3o0Ze1zi2wM9dKK44xmTxBkf2ff/qorhoEeHIr+6WAGCC5eCs5HdQmDhafNRgtSnqF2iJ/aqDsv2WEFjVS5nEZePYdAj66COj9bdd6CtkFjOw8sxHyATdVK7WPxXO9SVw4W8a04roCGq9hF4aY/7ztBoatzSfo7cwn86ry6xq5pEXnzUtbFmbOQveFJj2T16hZUigtRLh2d2wT5TOOOawQ4IPEXqhxwR2OXvaLTYXMINsioLJ+Jg2GEW2wMPmOYuu63sMkUBSBxb+RYqZLmpo1kYq3STnucv1u/LGpuWQMw9Ys8Bb+BTEumDYoP3uSHJcSeWgrgwDsS1V/6yYx0L8wXY2pQFrT8GPnH5sEaFG0UfM48Z0Kp7+Lf+527ONMrGfTThpR25l8PMw297H4B9fXmd/vjm35T7s/pipxM9Fxn95phwpp+gRxI="
+  on:
+    tags: true
+    branch: master
+    python: 3.7
