@@ -96,12 +96,15 @@ The following is a tiny "Hello World"-like example that you can run to have a su
 
 ```python
 import json
-from xyzspaces.apis import HubApi
+import xyzspaces as xyz
+from geojson import FeatureCollection
+
+xyz = xyz.XYZ(credentials="MY_XYZ_TOKEN")
 
 # Creating a New Space
-api = HubApi(credentials="MY_XYZ_TOKEN")
-data = {"title": "My Demo Space", "description": "Description as markdown"}
-space_id = api.post_space(data=data)["id"]
+title = "My Demo Space"
+description = "Description as markdown"
+space = xyz.spaces.new(title=title, description=description)
 
 # Add a Feature to a Space
 features =  {
@@ -118,10 +121,11 @@ features =  {
         ]]
     }
 }
-feature_id = api.put_space_features(space_id=space_id, data=features)["features"][0]["id"]
+
+feature_id = space.add_features(features=FeatureCollection([features]))["features"][0]["id"]
 
 # Reading a Feature from a Space
-feature = api.get_space_feature(space_id=space_id, feature_id=feature_id)
+feature = space.get_feature(feature_id=feature_id)
 print(json.dumps(feature, indent=4, sort_keys=True))
 ```
 
