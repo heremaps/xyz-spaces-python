@@ -12,7 +12,7 @@ which demonstrates how to use some features of the XYZ Hub's RESTful API to:
 
 The example GeoJSON file is fetched from a third-party [GitHub account](https://github.com/johan/world.geo.json) and is rendered using [Leaflet](https://leafletjs.com) for simplicity.
 
-# ![Example map from xyzspaces demo.ipynb notebook](images/example_map.png)
+# ![Example map from xyzspaces demo.ipynb notebook](https://user-images.githubusercontent.com/30625612/88389592-63d6be00-cdd4-11ea-903b-15c7819d7e13.png)
 
 
 ## Prerequisites
