@@ -23,7 +23,7 @@ deploy:
     username: "__token__"
     password:
       - secure: "lvbQz0W/t/9Zj981T7z+FbF3QAykIOvt/vK/ZJPkNzUQtuDcmKY2vRHqtFXDrFGg8pCVrCTaM83NInM0euaOv/rq7gyo1dDBi564aLRAWtTa0tXiKGp+OmaI+UQ6x+KYaNqpfppdXN86zl+aC9mxcKf1am8aeMvlFcqL3N9sXaQSpZhxShpwW1pjxOVf00zOM2nlKittAhEpqRUToyoO4dIjMILbIU+QUb+cMtrpBE4+c7807rHV3o0Ze1zi2wM9dKK44xmTxBkf2ff/qorhoEeHIr+6WAGCC5eCs5HdQmDhafNRgtSnqF2iJ/aqDsv2WEFjVS5nEZePYdAj66COj9bdd6CtkFjOw8sxHyATdVK7WPxXO9SVw4W8a04roCGq9hF4aY/7ztBoatzSfo7cwn86ry6xq5pEXnzUtbFmbOQveFJj2T16hZUigtRLh2d2wT5TOOOawQ4IPEXqhxwR2OXvaLTYXMINsioLJ+Jg2GEW2wMPmOYuu63sMkUBSBxb+RYqZLmpo1kYq3STnucv1u/LGpuWQMw9Ys8Bb+BTEumDYoP3uSHJcSeWgrgwDsS1V/6yYx0L8wXY2pQFrT8GPnH5sEaFG0UfM48Z0Kp7+Lf+527ONMrGfTThpR25l8PMw297H4B9fXmd/vjm35T7s/pipxM9Fxn95phwpp+gRxI="
-  on:
-    tags: true
-    branch: master
-    python: 3.7
+    on:
+      tags: true
+      branch: master
+      python: 3.7
