@@ -22,7 +22,6 @@ from os import path
 
 from setuptools import find_packages, setup
 
-__version__ = "0.0.1"
 
 here = path.abspath(path.dirname(__file__))
 
@@ -39,14 +38,21 @@ dependency_links = [
 with open(path.join(here, "requirements_dev.txt"), encoding="utf-8") as f:
     dev_reqs = f.read().strip().split("\n")
 
+packages = find_packages(exclude=["docs", "tests"])
+
+version = {}
+with open('{}/__version__.py'.format(packages[0])) as f:
+    exec(f.read(), version)
+
 download_url = (
     "https://github.com/heremaps/xyz-spaces-python"
-    "/archive/" + __version__ + ".zip"
+    "/archive/" + version['__version__'] + ".zip"
 )
 
 setup(
     # download_url=download_url,
-    packages=find_packages(exclude=["docs", "tests"]),
+    packages=packages,
+    version=version['__version__'],
     include_package_data=True,
     install_requires=install_requires,
     dependency_links=dependency_links,
