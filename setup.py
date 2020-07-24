@@ -44,6 +44,8 @@ version = {}
 with open('{}/__version__.py'.format(packages[0])) as f:
     exec(f.read(), version)
 
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 download_url = (
     "https://github.com/heremaps/xyz-spaces-python"
@@ -59,4 +61,6 @@ setup(
     dependency_links=dependency_links,
     # scripts=["bin/xyzspaces"],
     extras_require={"dev": dev_reqs},
+    long_description=long_description,
+    long_description_content_type='text/markdown',
 )
