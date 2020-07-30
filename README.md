@@ -105,8 +105,8 @@ The following is a tiny "Hello World"-like example that you can run to have a su
 
 ```python
 import json
+import geojson
 import xyzspaces as xyz
-from geojson import FeatureCollection
 
 xyz = xyz.XYZ(credentials="MY_XYZ_TOKEN")
 
@@ -116,7 +116,7 @@ description = "Description as markdown"
 space = xyz.spaces.new(title=title, description=description)
 
 # Add a Feature to a Space
-features =  {
+feature =  {
     "type": "Feature",
     "properties": {"party": "Republican"},
     "geometry": {
@@ -131,7 +131,7 @@ features =  {
     }
 }
 
-feature_id = space.add_features(features=FeatureCollection([features]))["features"][0]["id"]
+feature_id = space.add_features(features=geojson.FeatureCollection([feature]))["features"][0]["id"]
 
 # Reading a Feature from a Space
 feature = space.get_feature(feature_id=feature_id)
