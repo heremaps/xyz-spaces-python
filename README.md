@@ -1,12 +1,12 @@
 # XYZ Spaces for Python
 [![Build Status](https://travis-ci.com/heremaps/xyz-spaces-python.svg?branch=master)](https://travis-ci.com/github/heremaps/xyz-spaces-python)
-![PyPI](https://img.shields.io/pypi/v/xyzspaces)
-![PyPI - Status](https://img.shields.io/pypi/status/xyzspaces)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xyzspaces)
+[![PyPI](https://img.shields.io/pypi/v/xyzspaces)](https://pypi.org/project/xyzspaces/)
+[![PyPI - Status](https://img.shields.io/pypi/status/xyzspaces)](https://pypi.org/project/xyzspaces/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![Downloads](https://pepy.tech/badge/xyzspaces)](https://pepy.tech/project/xyzspaces)
 [![Documentation Status](https://readthedocs.org/projects/docs/badge/?version=latest)](https://xyz-spaces-python.readthedocs.io/en/latest/)
-![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)
-![GitHub contributors](https://img.shields.io/github/contributors/heremaps/xyz-spaces-python)
+[![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)]((https://pypi.org/project/xyzspaces/))
+[![GitHub contributors](https://img.shields.io/github/contributors/heremaps/xyz-spaces-python)](https://github.com/heremaps/xyz-spaces-python/graphs/contributors)
 
 
 This package allows you to use your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
@@ -140,7 +140,7 @@ print(json.dumps(feature, indent=4, sort_keys=True))
 
 ### Logging Configuration
 
-Set the variable `XYZ_LOG_CONFIG` to hold the full path of the logging configuration options file `logging_config.json`:
+Set the variable `XYZ_LOG_CONFIG` to hold the full path of the logging configuration options file [logging_config.json](xyzspaces/config/logconfig.json):
 
 ```bash
 export XYZ_LOG_CONFIG=~/logging_config.json
