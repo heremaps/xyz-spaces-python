@@ -96,7 +96,7 @@ class Space:
         """
         api = HubApi()
         obj = cls(api)
-        data = {"title": title, "description": description}
+        data: Dict[Any, Any] = {"title": title, "description": description}
         if schema:
             data["processors"] = [
                 {"id": "schema-validator", "params": dict(schema=schema)}
