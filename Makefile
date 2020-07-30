@@ -4,7 +4,7 @@ all: black build install typing lint test
 
 black:
 	black -l 79 xyzspaces tests
-	isort -rc --atomic .
+	isort --atomic .
 
 build:
 	python3 -m pip install -r requirements.txt
@@ -42,7 +42,7 @@ typing:
 	pytest -v -s --mypy xyzspaces
 
 lint:
-	isort --check -rc --diff xyzspaces tests
+	isort --check --diff xyzspaces tests
 	flake8 -v --statistics --count .
 	black -l 79 --diff --check xyzspaces tests
 

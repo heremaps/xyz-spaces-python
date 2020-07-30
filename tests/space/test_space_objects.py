@@ -478,3 +478,55 @@ def test_file_bulk_upload(space_object):
     ft = space_object.get_feature("1158230457T")
     assert ft["type"] == "Feature"
     assert ft["properties"]["segment"] == "1158230457T"
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_schema_validation(space_object):
+    schema = (
+        '{"definitions":{},"$schema":"http://json-schema.org/draft-07/schema#",'
+        '"$id":"http://example.com/root.json","type":"object",'
+        '"title":"TheRootSchema","required":["geometry","type","properties"]}'
+    )
+    space_object.update(schema=schema)
+
+    feature_collection = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [15.8319, -2.5913],
+                },
+                "type": "Feature",
+                "properties": {"name": "Audi"},
+            },
+            {"type": "Feature", "properties": {"name": "Tesla"}},
+        ],
+    }
+
+    try:
+        space_object.add_features(features=feature_collection)
+    except Exception as e:
+        resp = e.args[0].json()
+        assert resp["type"] == "ErrorResponse"
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_activity_log():
+    """Test activity log."""
+
+    listeners = {
+        "id": "activity-log",
+        "eventTypes": ["ModifySpaceEvent.request"],
+    }
+    space = Space.new(
+        title="Activity-Log Test",
+        description="A test space for Activity-Log",
+        enable_uuid=True,
+        listeners=listeners,
+    )
+    space_id = space.info["id"]
+    space.delete()
+    assert space.info == {}
+    with pytest.raises(ApiError):
+        space.read(id=space_id)
