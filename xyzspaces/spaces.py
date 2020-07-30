@@ -77,7 +77,11 @@ class Space:
 
     @classmethod
     def new(
-        cls, title: str, description: str, space_id: Optional[str] = None
+        cls,
+        title: str,
+        description: str,
+        space_id: Optional[str] = None,
+        schema: str = None,
     ) -> "Space":
         """Create new space object with given title and description.
 
@@ -87,11 +91,17 @@ class Space:
         :param title: A string representing the title of the space.
         :param description: A string representing a description of the space.
         :param space_id: A string representing space_id.
+        :param schema: JSON object or URL to be added as schema for space.
         :return: A object of :class:`Space`.
         """
         api = HubApi()
         obj = cls(api)
         data = {"title": title, "description": description}
+        if schema:
+            data["processors"] = [
+                {"id": "schema-validator", "params": dict(schema=schema)}
+            ]
+
         if space_id is not None:
             data["id"] = space_id
         obj.info = api.post_space(data=data)
@@ -161,6 +171,7 @@ class Space:
         title: Optional[str] = None,
         description: Optional[str] = None,
         tagging_rules: Optional[Dict[str, str]] = None,
+        schema: str = None,
     ) -> Dict:
         """Update space title, description and apply tagging rules on it.
 
@@ -171,6 +182,7 @@ class Space:
         :param description: A string representing a description of the space.
         :param tagging_rules: A dict where the key is the tag to be applied to
             all features matching the JSON-path expression being the value.
+        :param schema: JSON object or URL to be added as schema for space.
         :return: A response from API.
         :raises ValueError: If the provided JSON-path tagging rules are invalid.
 
@@ -184,10 +196,10 @@ class Space:
         ...              description="updated description",
         ...              tagging_rules=tagging_rules)
         """
-        if not (title or description or tagging_rules):
+        if not (title or description or tagging_rules or schema):
             raise ValueError(
-                "Please provide either title, description or tagging rules to"
-                " update."
+                "Please provide either title, description or tagging rules"
+                " or schema to update."
             )
         space_id = self.info["id"]
         data: Dict[str, Any] = {}
@@ -195,13 +207,20 @@ class Space:
             data["title"] = title
         if description is not None:
             data["description"] = description
+
+        data["processors"] = []
+
         if tagging_rules is not None:
-            data["processors"] = [
+            data["processors"].append(
                 {
                     "id": "rule-tagger",
                     "params": dict(taggingRules=tagging_rules),
                 }
-            ]
+            )
+        if schema:
+            data["processors"].append(
+                {"id": "schema-validator", "params": dict(schema=schema)}
+            )
 
         return self.api.patch_space(space_id=space_id, data=data)
 
