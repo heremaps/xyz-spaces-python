@@ -23,18 +23,6 @@ to "features". There is no separate class abstraction for single features,
 but they are taken to be valid :class:`geojson.GeoJSON` objects. Various
 other bits of the XYZ Hub API are simply returned as-is, usually wrapped in
 dictionaries, like the "statistics" of some given XYZ space.
-
-Attention: This is highly subject to to change!!!
-
-TODO:
-
-intuitively:
-- add features
-- update features
-- delete features
-- get features
-- iterate over features
-- search features
 """
 
 import concurrent.futures
@@ -77,7 +65,13 @@ class Space:
 
     @classmethod
     def new(
-        cls, title: str, description: str, space_id: Optional[str] = None
+        cls,
+        title: str,
+        description: str,
+        space_id: Optional[str] = None,
+        schema: str = None,
+        enable_uuid: Optional[bool] = None,
+        listeners: Optional[Dict[str, Union[str, int]]] = None,
     ) -> "Space":
         """Create new space object with given title and description.
 
@@ -87,11 +81,23 @@ class Space:
         :param title: A string representing the title of the space.
         :param description: A string representing a description of the space.
         :param space_id: A string representing space_id.
+        :param schema: JSON object or URL to be added as a schema for space.
+        :param enable_uuid: A boolean if set ``True`` it will create
+            additional activity log space to log the activities in current space.
+        :param listeners: A dict for activity log listener params.
         :return: A object of :class:`Space`.
         """
         api = HubApi()
         obj = cls(api)
-        data = {"title": title, "description": description}
+        data: Dict[Any, Any] = {"title": title, "description": description}
+
+        if schema is not None:
+            data.setdefault("processors", []).append(
+                {"id": "schema-validator", "params": dict(schema=schema)}
+            )
+        if enable_uuid is not None and listeners is not None:
+            data["enableUUID"] = "true"
+            data.setdefault("listeners", []).append(listeners)
         if space_id is not None:
             data["id"] = space_id
         obj.info = api.post_space(data=data)
@@ -161,6 +167,7 @@ class Space:
         title: Optional[str] = None,
         description: Optional[str] = None,
         tagging_rules: Optional[Dict[str, str]] = None,
+        schema: str = None,
     ) -> Dict:
         """Update space title, description and apply tagging rules on it.
 
@@ -171,6 +178,7 @@ class Space:
         :param description: A string representing a description of the space.
         :param tagging_rules: A dict where the key is the tag to be applied to
             all features matching the JSON-path expression being the value.
+        :param schema: JSON object or URL to be added as schema for space.
         :return: A response from API.
         :raises ValueError: If the provided JSON-path tagging rules are invalid.
 
@@ -184,10 +192,10 @@ class Space:
         ...              description="updated description",
         ...              tagging_rules=tagging_rules)
         """
-        if not (title or description or tagging_rules):
+        if not (title or description or tagging_rules or schema):
             raise ValueError(
                 "Please provide either title, description or tagging rules to"
-                " update."
+                " or schema to update."
             )
         space_id = self.info["id"]
         data: Dict[str, Any] = {}
@@ -196,12 +204,16 @@ class Space:
         if description is not None:
             data["description"] = description
         if tagging_rules is not None:
-            data["processors"] = [
+            data.setdefault("processors", []).append(
                 {
                     "id": "rule-tagger",
                     "params": dict(taggingRules=tagging_rules),
                 }
-            ]
+            )
+        if schema:
+            data.setdefault("processors", []).append(
+                {"id": "schema-validator", "params": dict(schema=schema)}
+            )
 
         return self.api.patch_space(space_id=space_id, data=data)
 
