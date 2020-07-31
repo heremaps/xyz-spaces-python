@@ -7,5 +7,3 @@ jupyter labextension install \
 # Notebooks with extensions that auto-run code must be "trusted" to work the first time
 jupyter trust docs/notebooks/*.ipynb
 
-# Install xyz
-pip install -e ../
