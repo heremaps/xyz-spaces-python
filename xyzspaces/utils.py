@@ -59,15 +59,17 @@ def feature_to_bbox(feature: dict) -> List[float]:
 
     p0, p1 = coords[0], coords[1]
     w, s, e, n = p0[0], p0[1], p1[0], p1[1]
-    for lon, lat, alt in coords[1:]:
-        if lon < w:
-            w = lon
-        if lon > e:
-            e = lon
-        if lat < s:
-            s = lat
-        if lat > n:
-            n = lat
+    # unpacking lon, lat, alt in single variable c to avoid issues when alt is
+    # missing in GeoJSON lon = c[0], lat = c[1], alt = c[2]
+    for c in coords[1:]:
+        if c[0] < w:
+            w = c[0]
+        if c[0] > e:
+            e = c[0]
+        if c[1] < s:
+            s = c[1]
+        if c[1] > n:
+            n = c[1]
 
     return [w, s, e, n]
 

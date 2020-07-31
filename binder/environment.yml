@@ -1,0 +1,11 @@
+name: xyzspaces
+channels:
+  - conda-forge
+dependencies:
+  - ipyleaflet
+  - sidecar
+  - pip
+  - pip:
+    - "-r ../requirements.txt"
+    - "-r ../requirements_dev.txt"
+    - "-e ../"
