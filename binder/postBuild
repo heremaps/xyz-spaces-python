@@ -5,7 +5,7 @@ jupyter labextension install \
   @mflevine/jupyterlab_html
 
 # Notebooks with extensions that auto-run code must be "trusted" to work the first time
-jupyter trust demo.ipynb docs/notebooks/*.ipynb
+jupyter trust docs/notebooks/*.ipynb
 
 # Install xyz
-pip install -e .
+pip install -e ../
