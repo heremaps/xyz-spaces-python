@@ -19,6 +19,7 @@
 
 import json
 from pathlib import Path
+from time import sleep
 
 import pytest
 from geojson import GeoJSON
@@ -517,6 +518,11 @@ def test_activity_log():
 
     listeners = {
         "id": "activity-log",
+        "params": {
+            "states": 5,
+            "storageMode": "DIFF_ONLY",
+            "writeInvalidatedAt": "true",
+        },
         "eventTypes": ["ModifySpaceEvent.request"],
     }
     space = Space.new(
@@ -526,6 +532,15 @@ def test_activity_log():
         listeners=listeners,
     )
     space_id = space.info["id"]
+    # Adding some sleep as activity log is async activity
+    sleep(5)
+    space_info = space.info
+    params = space_info["listeners"]["activity-log-writer"][0]
+    assert type(params["params"]["spaceId"]) == str
+    assert params["params"]["storageMode"] == "DIFF_ONLY"
+    assert params["params"]["writeInvalidatedAt"] is True
+
+    # clean up
     space.delete()
     assert space.info == {}
     with pytest.raises(ApiError):

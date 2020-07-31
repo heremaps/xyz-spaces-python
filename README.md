@@ -5,7 +5,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![Downloads](https://pepy.tech/badge/xyzspaces)](https://pepy.tech/project/xyzspaces)
 [![Documentation Status](https://readthedocs.org/projects/docs/badge/?version=latest)](https://xyz-spaces-python.readthedocs.io/en/latest/)
-[![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)]((https://pypi.org/project/xyzspaces/))
+[![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![GitHub contributors](https://img.shields.io/github/contributors/heremaps/xyz-spaces-python)](https://github.com/heremaps/xyz-spaces-python/graphs/contributors)
 
 

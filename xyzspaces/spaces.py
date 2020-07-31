@@ -60,7 +60,7 @@ class Space:
         """Instantiate a space object for an existing space ID."""
         api = HubApi()
         obj = cls(api)
-        obj.info = api.get_space(space_id=space_id)
+        obj._info = api.get_space(space_id=space_id)
         return obj
 
     @classmethod
@@ -100,7 +100,7 @@ class Space:
             data.setdefault("listeners", []).append(listeners)
         if space_id is not None:
             data["id"] = space_id
-        obj.info = api.post_space(data=data)
+        obj._info = api.post_space(data=data)
         return obj
 
     @classmethod
@@ -129,17 +129,24 @@ class Space:
         storage: Dict[str, Any] = dict(id="virtualspace")
         storage["params"] = kwargs
         data["storage"] = storage
-        obj.info = api.post_space(data=data)
+        obj._info = api.post_space(data=data)
         return obj
 
     def __init__(self, api: Optional[HubApi] = None):
         """Instantiate a space object, optionally with authenticated api instance."""
         self.api = api or HubApi()
-        self.info: dict = {}
+        self._info: dict = {}
 
     def __repr__(self):
         """Return string representation of this instance."""
-        return f"space_id: {self.info['id']}"
+        return f"space_id: {self._info.get('id', '')}"
+
+    @property
+    def info(self):
+        """Space config information."""
+        if "id" in self._info:
+            return self.api.get_space(self._info["id"])
+        return {}
 
     def list(self, owner: str = "me", include_rights: bool = False) -> Dict:
         """Return list of spaces for given owner with access rights if desired.
@@ -159,7 +166,7 @@ class Space:
 
     def read(self, id: str) -> "Space":
         """Read existing space object for given space ID."""
-        self.info = self.api.get_space(space_id=id)
+        self._info = self.api.get_space(space_id=id)
         return self
 
     def update(
@@ -197,7 +204,7 @@ class Space:
                 "Please provide either title, description or tagging rules to"
                 " or schema to update."
             )
-        space_id = self.info["id"]
+        space_id = self._info["id"]
         data: Dict[str, Any] = {}
         if title is not None:
             data["title"] = title
@@ -219,9 +226,9 @@ class Space:
 
     def delete(self):
         """Delete this space object."""
-        if self.info:
-            self.api.delete_space(space_id=self.info["id"])
-        self.info = {}
+        if self._info:
+            self.api.delete_space(space_id=self._info["id"])
+        self._info = {}
 
     def get_statistics(self) -> dict:
         """
@@ -229,7 +236,7 @@ class Space:
 
         :return: A JSON object with some statistics about the specified space.
         """
-        return self.api.get_space_statistics(space_id=self.info["id"])
+        return self.api.get_space_statistics(space_id=self._info["id"])
 
     def search(
         self,
@@ -250,7 +257,7 @@ class Space:
         :yields: A Feature object.
         """
         features = self.api.get_space_search(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             tags=tags,
             limit=limit,
             params=params,
@@ -267,7 +274,7 @@ class Space:
         :yields: A Feature object.
         """
         for feature in self.api.get_space_iterate(
-            space_id=self.info["id"], limit=100
+            space_id=self._info["id"], limit=100
         ):
             yield feature
 
@@ -280,7 +287,7 @@ class Space:
              ID inside the space.
         """
         res = self.api.get_space_feature(
-            space_id=self.info["id"], feature_id=feature_id
+            space_id=self._info["id"], feature_id=feature_id
         )
         return GeoJSON(res)
 
@@ -303,7 +310,7 @@ class Space:
         :return: A GeoJSON representing a feature.
         """
         res = self.api.put_space_feature(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             feature_id=feature_id,
             data=data,
             addTags=add_tags,
@@ -330,7 +337,7 @@ class Space:
         :return: A GeoJSON representing a feature.
         """
         res = self.api.patch_space_feature(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             feature_id=feature_id,
             data=data,
             addTags=add_tags,
@@ -346,7 +353,7 @@ class Space:
         :return: An empty string if the operation was successful.
         """
         return self.api.delete_space_feature(
-            space_id=self.info["id"], feature_id=feature_id
+            space_id=self._info["id"], feature_id=feature_id
         )
 
     def get_features(self, feature_ids: List[str]) -> GeoJSON:
@@ -358,7 +365,7 @@ class Space:
             space.
         """
         res = self.api.get_space_features(
-            space_id=self.info["id"], feature_ids=feature_ids
+            space_id=self._info["id"], feature_ids=feature_ids
         )
         return GeoJSON(res)
 
@@ -390,7 +397,7 @@ class Space:
             to get better results in terms of performance.
         :return: A GeoJSON representing a feature collection.
         """
-        space_id = self.info["id"]
+        space_id = self._info["id"]
         total = 0
         if len(features["features"]) > features_size:
             groups = grouper(features_size, features["features"])
@@ -424,7 +431,7 @@ class Space:
         features = [f for f in features if f]
         feature_collection = dict(type="FeatureCollection", features=features)
         self.api.put_space_features(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             data=feature_collection,
             addTags=add_tags,
             removeTags=remove_tags,
@@ -448,7 +455,7 @@ class Space:
             from the features.
         :return: A GeoJSON representing a feature collection.
         """
-        space_id = self.info["id"]
+        space_id = self._info["id"]
         res = self.api.post_space_features(
             space_id=space_id,
             data=features,
@@ -468,7 +475,7 @@ class Space:
             be deleted must have.
         :return: A response from API.
         """
-        space_id = self.info["id"]
+        space_id = self._info["id"]
         return self.api.delete_space_features(
             space_id=space_id, id=feature_ids, tags=tags
         )
@@ -502,7 +509,7 @@ class Space:
         :yields: A Feature object.
         """
         features = self.api.get_space_bbox(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             bbox=bbox,
             tags=tags,
             clip=clip,
@@ -553,7 +560,7 @@ class Space:
         """
         if tile_type in ("quadkeys", "web", "tms", "here"):
             features = self.api.get_space_tile(
-                space_id=self.info["id"],
+                space_id=self._info["id"],
                 tile_type=tile_type,
                 tile_id=tile_id,
                 tags=tags,
@@ -607,7 +614,7 @@ class Space:
         :yields: A Feature object.
         """
         features = self.api.get_space_spatial(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             lat=lat,
             lon=lon,
             ref_space_id=ref_space_id,
@@ -646,7 +653,7 @@ class Space:
         :yields: A Feature object.
         """
         features = self.api.post_space_spatial(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             data=data,
             radius=radius,
             tags=tags,
@@ -778,7 +785,7 @@ class Space:
         if len(bbox) == 0:
             raise Exception("Bounding box cannot be generated for the space")
         return self.api.get_space_bbox(
-            space_id=self.info["id"],
+            space_id=self._info["id"],
             bbox=[bbox[0], bbox[1], bbox[2], bbox[3]],
             clustering=clustering,
             clusteringParams=clustering_params,
