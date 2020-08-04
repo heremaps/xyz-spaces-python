@@ -21,10 +21,28 @@ Module for testing xyzspaces.utils.
 Here we don't generate any temporary spaces.
 """
 
-from xyzspaces.utils import join_string_lists
+import os
+
+import pytest
+
+from xyzspaces.utils import get_xyz_token, join_string_lists
+
+XYZ_TOKEN = get_xyz_token()
 
 
 def test_join_string_lists():
     """Test join_string_lists function."""
     res = join_string_lists(foo=["a", "b", "c"], bar=["a", "b"], foobar=None)
     assert res == {"foo": "a,b,c", "bar": "a,b"}
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_get_xyz_token_empty():
+    """Test for empty xyz_token."""
+    # storing existing token into variable.
+    token = os.environ["XYZ_TOKEN"]
+    os.environ["XYZ_TOKEN"] = ""
+    result = get_xyz_token()
+    assert result == ""
+    # resetting the token again.
+    os.environ["XYZ_TOKEN"] = token

@@ -61,8 +61,6 @@ def space_id():
 @pytest.fixture()
 def empty_space(api):
     """Create shared empty XYZ space as a pytest fixture."""
-    from xyzspaces.spaces import Space
-
     # setup, create temporary space
     space = Space(api=api).new(
         title="Testing xyzspaces",
@@ -101,3 +99,16 @@ def upstream_spaces(api, space_id):
 
     # now teardown (delete temporary spaces)
     api.delete_space(space_id=space_id2)
+
+
+@pytest.fixture()
+def shared_space():
+    """Create a new shared space."""
+    space = Space.new(
+        title="test shared space", description="test shared space", shared=True
+    )
+
+    yield space
+
+    # now teardown (delete temporary space)
+    space.delete()
