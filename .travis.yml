@@ -12,7 +12,7 @@ script:
 - make lint
 - make typing
 - mkdir public
-- pytest -v --cov-report=xml --cov=xyzspaces tests | tee public/coverage.txt
+- pytest -v --cov-report=xml --cov=xyzspaces tests
 - codecov
 deploy:
   provider: pypi
