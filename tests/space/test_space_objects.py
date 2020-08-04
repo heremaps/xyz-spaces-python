@@ -47,7 +47,10 @@ def test_new_space():
     """Test create and delete a new space."""
     # create space
     space = Space.new(title="Foo", description="Bar")
-    assert space.info["title"] == "Foo"
+    space_info = space.info
+    assert space_info["title"] == "Foo"
+    assert "shared" not in space_info
+    assert not space.isshared()
     space_id = space.info["id"]
     # delete space
     space.delete()
@@ -352,6 +355,10 @@ def test_update_space(space_id, empty_space):
     description = "New Description"
     res2 = space.update(description=description)
     assert res2["description"] == description
+
+    res3 = space.update(shared=True)
+    assert res3["shared"]
+    assert space.isshared()
     # test tagging rules
     tagging_rules = {
         "large": "$.features[?(@.properties.area>=500)]",
@@ -545,3 +552,20 @@ def test_activity_log():
     assert space.info == {}
     with pytest.raises(ApiError):
         space.read(id=space_id)
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_new_shared_space(shared_space):
+    """Test create and delete a new space."""
+    assert shared_space.isshared()
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_unshare_space(shared_space):
+    """Test update space to unshare it."""
+    shared_space.update(shared=False)
+    space_info = shared_space.info
+    assert not shared_space.isshared()
+    # checking that there is no impact if we do not pass anything to update method.
+    shared_space.update()
+    assert space_info == shared_space.info

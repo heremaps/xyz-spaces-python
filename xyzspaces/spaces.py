@@ -72,6 +72,7 @@ class Space:
         schema: str = None,
         enable_uuid: Optional[bool] = None,
         listeners: Optional[Dict[str, Union[str, int]]] = None,
+        shared: Optional[bool] = None,
     ) -> "Space":
         """Create new space object with given title and description.
 
@@ -85,6 +86,9 @@ class Space:
         :param enable_uuid: A boolean if set ``True`` it will create
             additional activity log space to log the activities in current space.
         :param listeners: A dict for activity log listener params.
+        :param shared: A boolean, if set to ``True``, space will be shared with
+            other users having XYZ account, they will be able to read from the
+            space using their own token. By default space will not be a shared space.
         :return: A object of :class:`Space`.
         """
         api = HubApi()
@@ -100,6 +104,8 @@ class Space:
             data.setdefault("listeners", []).append(listeners)
         if space_id is not None:
             data["id"] = space_id
+        if shared is True:
+            data["shared"] = "true"
         obj._info = api.post_space(data=data)
         return obj
 
@@ -175,8 +181,13 @@ class Space:
         description: Optional[str] = None,
         tagging_rules: Optional[Dict[str, str]] = None,
         schema: str = None,
+        shared: Optional[bool] = None,
     ) -> Dict:
-        """Update space title, description and apply tagging rules on it.
+        """Update space attributes.
+
+        This method updates title, description, schema, shared status or tagging
+        rules of space, at least one of these params should have a non-default
+        value to update the space.
 
         Does update the space in the XYZ storage and this object mirroring it.
         Also apply the tags based on rules mentioned in `tagging_rules` dict.
@@ -186,8 +197,10 @@ class Space:
         :param tagging_rules: A dict where the key is the tag to be applied to
             all features matching the JSON-path expression being the value.
         :param schema: JSON object or URL to be added as schema for space.
+        :param shared: A boolean, if set to ``True``, space will be shared with
+            other users having XYZ account, they will be able to read from the
+            space using their own token. If set to ``False`` space will be unshared.
         :return: A response from API.
-        :raises ValueError: If the provided JSON-path tagging rules are invalid.
 
         Example:
 
@@ -199,11 +212,6 @@ class Space:
         ...              description="updated description",
         ...              tagging_rules=tagging_rules)
         """
-        if not (title or description or tagging_rules or schema):
-            raise ValueError(
-                "Please provide either title, description or tagging rules to"
-                " or schema to update."
-            )
         space_id = self._info["id"]
         data: Dict[str, Any] = {}
         if title is not None:
@@ -221,6 +229,10 @@ class Space:
             data.setdefault("processors", []).append(
                 {"id": "schema-validator", "params": dict(schema=schema)}
             )
+        if shared is True:
+            data["shared"] = "true"
+        elif shared is False:
+            data["shared"] = "false"
 
         return self.api.patch_space(space_id=space_id, data=data)
 
@@ -790,3 +802,10 @@ class Space:
             clustering=clustering,
             clusteringParams=clustering_params,
         )
+
+    def isshared(self) -> bool:
+        """Return the shared status of the space.
+
+        :return: A boolean to indicate shared status of the space.
+        """
+        return True if "shared" in self.info else False
