@@ -347,8 +347,6 @@ def test_update_space(space_id, empty_space):
     """Test update space title and description."""
     obj = XYZ(credentials=XYZ_TOKEN)
     space = obj.spaces.from_id(space_id=space_id)
-    with pytest.raises(ValueError):
-        space.update(title="", description="")
     title = "New Title"
     res1 = space.update(title=title)
     assert res1["title"] == title
