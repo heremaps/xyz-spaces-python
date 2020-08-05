@@ -48,3 +48,18 @@ def setup_logging(
             format="%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s"
             "- %(message)s",
         )
+
+
+# Set up logging to ``/dev/null`` like a library is supposed to.
+# http://docs.python.org/3.3/howto/logging.html#configuring-logging-for-a-library
+
+class NullHandler(logging.Handler):
+    """NullHandler class is a  'no-op' handler for use by library developers."""
+
+    def emit(self, record):
+        """Skip the emit record. This is used to give preference to user."""
+        pass
+
+
+logger = logging.getLogger("xyzspaces")
+logger.addHandler(NullHandler())

@@ -305,16 +305,16 @@ class Space:
 
     def add_feature(
         self,
-        feature_id: str,
         data: GeoJSON,
+        feature_id: Optional[str] = None,
         add_tags: Optional[List[str]] = None,
         remove_tags: Optional[List[str]] = None,
     ) -> GeoJSON:
         """
         Add one GeoJSON feature with given ID in this space.
 
-        :param feature_id: A string with the ID of the feature to be created.
         :param data: A JSON object describing the feature to be added.
+        :param feature_id: A string with the ID of the feature to be created.
         :param add_tags: A list of strings describing tags to be added to
             the feature.
         :param remove_tags: A list of strings describing tags to be removed

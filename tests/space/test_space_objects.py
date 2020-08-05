@@ -92,6 +92,9 @@ def test_add_feature(empty_space):
     feature = space.get_feature(feature_id="FRA")
     assert type(feature) == GeoJSON
     assert feature["id"] == "FRA"
+    del feature["id"]
+    resp = space.add_feature(data=feature)
+    assert type(resp["features"][0]["id"]) == str
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
