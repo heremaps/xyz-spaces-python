@@ -569,4 +569,7 @@ def test_unshare_space(shared_space):
     assert not shared_space.isshared()
     # checking that there is no impact if we do not pass anything to update method.
     shared_space.update()
-    assert space_info == shared_space.info
+    space_info2 = shared_space.info
+    del space_info["updatedAt"]
+    del space_info2["updatedAt"]
+    assert space_info == space_info2
