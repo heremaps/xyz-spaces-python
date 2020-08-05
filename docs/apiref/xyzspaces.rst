@@ -21,6 +21,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   xyzspaces.__version__
    xyzspaces.apis
    xyzspaces.auth
    xyzspaces.curl
