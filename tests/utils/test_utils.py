@@ -41,7 +41,7 @@ def test_get_xyz_token_empty():
     """Test for empty xyz_token."""
     # storing existing token into variable.
     token = os.environ["XYZ_TOKEN"]
-    os.environ["XYZ_TOKEN"] = ""
+    del os.environ["XYZ_TOKEN"]
     result = get_xyz_token()
     assert result == ""
     # resetting the token again.

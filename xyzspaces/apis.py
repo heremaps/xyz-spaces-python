@@ -36,11 +36,8 @@ import xyzspaces.curl as curl
 
 from .auth import get_auth_cookies
 from .exceptions import ApiError
-from .logconf import setup_logging
 from .utils import join_string_lists
 
-# configuring logging
-setup_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -885,16 +882,16 @@ class HubApi(Api):
     def put_space_feature(
         self,
         space_id: str,
-        feature_id: str,
         data: dict,
+        feature_id: Optional[str] = None,
         addTags: Optional[List[str]] = None,
         removeTags: Optional[List[str]] = None,
     ) -> dict:
         """Create or replace a single feature.
 
         :param space_id: A string with the ID of the desired XYZ space.
-        :param feature_id: A string with the ID of the feature to be created.
         :param data: A JSON object describing the feature to be added.
+        :param feature_id: A string with the ID of the feature to be created.
         :param addTags: A list of strings describing tags to be added to
             the feature.
         :param removeTags: A list of strings describing tags to be removed
@@ -906,7 +903,10 @@ class HubApi(Api):
         >>>	api.put_space_feature(
         ...     space_id=space_id, feature_id=feature_id, data=fra)
         """
-        path = f"/hub/spaces/{space_id}/features/{feature_id}"
+        if feature_id is not None:
+            path = f"/hub/spaces/{space_id}/features/{feature_id}"
+        else:
+            path = f"/hub/spaces/{space_id}/features/"
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
         params = join_string_lists(addTags=addTags, removeTags=removeTags)
