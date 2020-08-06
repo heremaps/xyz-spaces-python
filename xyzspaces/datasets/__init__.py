@@ -23,8 +23,6 @@ from pathlib import Path
 
 import requests
 
-import xyzspaces.datasets
-
 
 def get_countries_data():
     """Pull countries example GeoJSON from the net or a locally cached file.
@@ -41,7 +39,7 @@ def get_countries_data():
 
     :return: A json object.
     """
-    datasets_home = Path(xyzspaces.datasets.__file__).parent
+    datasets_home = Path(__file__).parent
     url_countries = (
         "https://raw.githubusercontent.com"
         "/johan/world.geo.json/master/countries.geo.json"
@@ -76,7 +74,7 @@ def get_countries_data():
 
 def get_chicago_parks_data():
     """Create GeoJSON from file ``chicago_parks.geo.json`` stored locally."""
-    datasets_home = Path(xyzspaces.datasets.__file__).parent
+    datasets_home = Path(__file__).parent
     chicago_parks = datasets_home / "chicago_parks.geo.json"
 
     with open(chicago_parks, encoding="utf-8-sig") as json_file:
