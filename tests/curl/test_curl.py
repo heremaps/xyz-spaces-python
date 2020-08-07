@@ -46,6 +46,9 @@ def test_new_curl_command_list():
     reqs_res = requests.get(url=url)
     assert curl_res.ok == reqs_res.ok
     assert curl_res.content == reqs_res.content
+    resp = curl.execute(["dummy"])
+    assert resp.status_code == 500
+    assert not resp.content
 
 
 def test_curl_command_str():
