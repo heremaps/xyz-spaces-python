@@ -25,7 +25,11 @@ import pytest
 from geojson import GeoJSON
 
 from xyzspaces import XYZ
-from xyzspaces.datasets import get_chicago_parks_data, get_countries_data
+from xyzspaces.datasets import (
+    get_chicago_parks_data,
+    get_countries_data,
+    get_microsoft_buildings_space,
+)
 from xyzspaces.exceptions import ApiError
 from xyzspaces.spaces import Space
 from xyzspaces.utils import get_xyz_token
@@ -573,3 +577,13 @@ def test_unshare_space(shared_space):
     del space_info["updatedAt"]
     del space_info2["updatedAt"]
     assert space_info == space_info2
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_microsoft_public_space():
+    """Test to check microsoft buildings dataset space"""
+    microsoft_space = get_microsoft_buildings_space()
+    feature = microsoft_space.get_feature("4d34cdd884079966adc6e5a2228b10c5")
+    assert feature["type"] == "Feature"
+    assert feature["properties"]["city"] == "Slocomb"
+    assert feature["properties"]["country"] == "USA"
