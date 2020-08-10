@@ -23,6 +23,10 @@ from pathlib import Path
 
 import requests
 
+from xyzspaces import Space
+
+MICROSOFT_BUILDINGS_SPACE_ID = "R4QDHvd1"
+
 
 def get_countries_data():
     """Pull countries example GeoJSON from the net or a locally cached file.
@@ -80,3 +84,10 @@ def get_chicago_parks_data():
     with open(chicago_parks, encoding="utf-8-sig") as json_file:
         chicago_parks_data = json.load(json_file)
     return chicago_parks_data
+
+
+def get_microsoft_buildings_space():
+    """Creates a Datahub space object for Microsoft Buildings Dataset"""
+    microsoft_buildings_space = Space.from_id(MICROSOFT_BUILDINGS_SPACE_ID)
+
+    return microsoft_buildings_space
