@@ -29,9 +29,11 @@ import concurrent.futures
 import csv
 import json
 import logging
+import tempfile
 from functools import partial
 from typing import Any, Dict, Generator, List, Optional, Union
 
+import geopandas as gpd
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
@@ -809,3 +811,28 @@ class Space:
         :return: A boolean to indicate shared status of the space.
         """
         return True if "shared" in self.info else False
+
+    def add_features_shapefile(
+        self, path: str, features_size: int = 2000, chunk_size: int = 1
+    ):
+        """Upload shapefile to the space.
+
+        :param path: A string representing full path of the shapefile. For zipped
+            shapefile prepend ``zip://`` before path of shapefile.
+        :param features_size: An int representing a number of features to upload at
+            a time.
+        :param chunk_size: Number of chunks for each process to handle. The default value
+            is 1, for a large number of features please use `chunk_size` greater than 1.
+
+        Example:
+        >>> from xyzspaces import XYZ
+        >>> xyz = XYZ(credentials="XYZ_TOKEN")
+        >>> space = xyz.spaces.from_id(space_id="existing-space-id")
+        >>> space.add_features_shapefile(path="shapefile.shp")
+        """
+        gdf = gpd.read_file(path)
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            gdf.to_file(temp.name, driver="GeoJSON")
+        self.add_features_geojson(
+            path=temp.name, features_size=features_size, chunk_size=chunk_size
+        )
