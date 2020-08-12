@@ -436,27 +436,33 @@ class HubApi(Api):
 
     # Undocumented endpoints
 
-    def get_hub(self, params: dict = {}) -> dict:
+    def get_hub(self, params: dict = None) -> dict:
         """Get basic information about the XYZ Hub.
 
         :param params: A dict holding the HTTP query parameters.
         :return: A JSON object with hub information.
         """
-        params.update({"clientId": _CLIENT_ID})
+        if params is None:
+            params = {"clientId": _CLIENT_ID}
+        else:
+            params.update({"clientId": _CLIENT_ID})
         return self.get(path="/hub", params=params).json()
 
     # Read Spaces
 
-    def get_spaces(self, params: dict = {}) -> dict:
+    def get_spaces(self, params: dict = None) -> dict:
         """Get Spaces information.
 
         :param params: A dict holding the HTTP query parameters.
         :return: A JSON object with list of spaces.
         """
-        params.update({"clientId": _CLIENT_ID})
+        if params is None:
+            params = {"clientId": _CLIENT_ID}
+        else:
+            params.update({"clientId": _CLIENT_ID})
         return self.get(path="/hub/spaces", params=params).json()
 
-    def get_space(self, space_id: str, params: dict = {}) -> dict:
+    def get_space(self, space_id: str, params: dict = None) -> dict:
         """Get a space by ID.
 
         :param space_id: The desired space ID.
@@ -464,7 +470,10 @@ class HubApi(Api):
         :return: A JSON object with information about the space_id.
         """
         path = f"/hub/spaces/{space_id}"
-        params.update({"clientId": _CLIENT_ID})
+        if params is None:
+            params = {"clientId": _CLIENT_ID}
+        else:
+            params.update({"clientId": _CLIENT_ID})
         return self.get(path=path, params=params).json()
 
     # Edit Spaces
