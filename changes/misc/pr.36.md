@@ -1,0 +1,1 @@
+Added **clientId** in query params of the Hub API requests.

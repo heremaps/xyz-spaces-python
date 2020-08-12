@@ -32,7 +32,8 @@ See also:
 import os
 from typing import Optional
 
-from xyzspaces import logconf  # noqa: F401
+from xyzspaces.__version__ import __version__  # noqa: F401
+from xyzspaces.logconf import setup_logging  # noqa: F401
 from xyzspaces.spaces import Space
 
 from .apis import HubApi
