@@ -525,25 +525,10 @@ def test_schema_validation(space_object):
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
-def test_activity_log():
+def test_activity_log(activity_log_space):
     """Test activity log."""
 
-    listeners = {
-        "id": "activity-log",
-        "params": {
-            "states": 5,
-            "storageMode": "DIFF_ONLY",
-            "writeInvalidatedAt": "true",
-        },
-        "eventTypes": ["ModifySpaceEvent.request"],
-    }
-    space = Space.new(
-        title="Activity-Log Test",
-        description="A test space for Activity-Log",
-        enable_uuid=True,
-        listeners=listeners,
-    )
-    space_id = space.info["id"]
+    space = activity_log_space
     # Adding some sleep as activity log is async activity
     sleep(5)
     space_info = space.info
@@ -551,12 +536,6 @@ def test_activity_log():
     assert type(params["params"]["spaceId"]) == str
     assert params["params"]["storageMode"] == "DIFF_ONLY"
     assert params["params"]["writeInvalidatedAt"] is True
-
-    # clean up
-    space.delete()
-    assert space.info == {}
-    with pytest.raises(ApiError):
-        space.read(id=space_id)
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")

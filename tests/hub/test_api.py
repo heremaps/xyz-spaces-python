@@ -85,8 +85,8 @@ def test_round_trip(api):
     api.put_space_features(
         space_id=space_id,
         data=gj_countries,
-        addTags=["foo", "bar"],
-        removeTags=["bar"],
+        add_tags=["foo", "bar"],
+        remove_tags=["bar"],
     )
 
     # get one feature
@@ -107,7 +107,7 @@ def test_round_trip1(api):
 
     # add features
     api.put_space_features(
-        space_id=space_id, data=gj_countries, addTags=["foo", "bar"]
+        space_id=space_id, data=gj_countries, add_tags=["foo", "bar"]
     )
 
     # delete one features with given tag
@@ -137,11 +137,11 @@ def test_round_trip2(api, space_id):
         space_id=space_id,
         feature_id=feature_id,
         data=fra,
-        addTags=["foo", "bar"],
+        add_tags=["foo", "bar"],
     )
 
     api.patch_space_feature(
-        space_id=space_id, feature_id=feature_id, data=fra, removeTags=["bar"]
+        space_id=space_id, feature_id=feature_id, data=fra, remove_tags=["bar"]
     )
 
     # get two features
