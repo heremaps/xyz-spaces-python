@@ -10,3 +10,4 @@ _build/
 .venv
 .vscode
 .debug.env
+xyz.log
