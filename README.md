@@ -148,7 +148,7 @@ By default logging is disabled. To enable logging, use below code snippets in yo
 
 ```python
 import logging
-from xyzspaces.logconf import setup_logging
+from xyzspaces import setup_logging
 
 setup_logging(default_level=logging.DEBUG)
 ```

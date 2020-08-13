@@ -40,6 +40,8 @@ from .utils import join_string_lists
 
 logger = logging.getLogger(__name__)
 
+_CLIENT_ID = "dhpy"
+
 
 class Api:
     """A low-level HTTP RESTful API client.
@@ -434,25 +436,33 @@ class HubApi(Api):
 
     # Undocumented endpoints
 
-    def get_hub(self, params: dict = {}) -> dict:
+    def get_hub(self, params: dict = None) -> dict:
         """Get basic information about the XYZ Hub.
 
         :param params: A dict holding the HTTP query parameters.
         :return: A JSON object with hub information.
         """
+        if params is None:
+            params = {"clientId": _CLIENT_ID}
+        else:
+            params.update({"clientId": _CLIENT_ID})
         return self.get(path="/hub", params=params).json()
 
     # Read Spaces
 
-    def get_spaces(self, params: dict = {}) -> dict:
+    def get_spaces(self, params: dict = None) -> dict:
         """Get Spaces information.
 
         :param params: A dict holding the HTTP query parameters.
         :return: A JSON object with list of spaces.
         """
+        if params is None:
+            params = {"clientId": _CLIENT_ID}
+        else:
+            params.update({"clientId": _CLIENT_ID})
         return self.get(path="/hub/spaces", params=params).json()
 
-    def get_space(self, space_id: str, params: dict = {}) -> dict:
+    def get_space(self, space_id: str, params: dict = None) -> dict:
         """Get a space by ID.
 
         :param space_id: The desired space ID.
@@ -460,6 +470,10 @@ class HubApi(Api):
         :return: A JSON object with information about the space_id.
         """
         path = f"/hub/spaces/{space_id}"
+        if params is None:
+            params = {"clientId": _CLIENT_ID}
+        else:
+            params.update({"clientId": _CLIENT_ID})
         return self.get(path=path, params=params).json()
 
     # Edit Spaces
@@ -470,7 +484,8 @@ class HubApi(Api):
         :param data: A dict describing the space to be created.
         :return: A JSON object with all information about the created space.
         """
-        return self.post(path="/hub/spaces", json=data).json()
+        params = {"clientId": _CLIENT_ID}
+        return self.post(path="/hub/spaces", json=data, params=params).json()
 
     def patch_space(self, space_id: str, data: dict) -> dict:
         """Update a space.
@@ -480,7 +495,8 @@ class HubApi(Api):
         :return: A JSON object with information about the updated space.
         """
         path = f"/hub/spaces/{space_id}"
-        return self.patch(path=path, json=data).json()
+        params = {"clientId": _CLIENT_ID}
+        return self.patch(path=path, json=data, params=params).json()
 
     def delete_space(self, space_id: str) -> str:
         """Delete a space.
@@ -489,7 +505,8 @@ class HubApi(Api):
         :return: An empty string if the operation was successful.
         """
         path = f"/hub/spaces/{space_id}"
-        return self.delete(path=path).text
+        params = {"clientId": _CLIENT_ID}
+        return self.delete(path=path, params=params).text
 
     # Read Features
 
@@ -510,7 +527,7 @@ class HubApi(Api):
         >>> print(feats)
         """
         path = f"/hub/spaces/{space_id}/features"
-        params = {"id": feature_ids}
+        params = {"id": feature_ids, "clientId": _CLIENT_ID}
         return self.get(path=path, params=params).json()
 
     def get_space_feature(self, space_id: str, feature_id: str) -> dict:
@@ -528,7 +545,8 @@ class HubApi(Api):
         >>>	print(json.dumps(feature, indent=4, sort_keys=True))
         """
         path = f"/hub/spaces/{space_id}/features/{feature_id}"
-        return self.get(path=path).json()
+        params = {"clientId": _CLIENT_ID}
+        return self.get(path=path, params=params).json()
 
     def get_space_statistics(self, space_id: str) -> dict:
         """Get statistics.
@@ -542,7 +560,8 @@ class HubApi(Api):
         >>>	print(json.dumps(stats, indent=4, sort_keys=True))
         """
         path = f"/hub/spaces/{space_id}/statistics"
-        return self.get(path=path).json()
+        params = {"clientId": _CLIENT_ID}
+        return self.get(path=path, params=params).json()
 
     def get_space_bbox(
         self,
@@ -585,6 +604,7 @@ class HubApi(Api):
         q_params: Dict[str, str] = dict(
             west=str(w), south=str(s), east=str(e), north=str(n)
         )
+        q_params.update({"clientId": _CLIENT_ID})
         if tags:
             q_params["tags"] = ",".join(tags)
         if clip:
@@ -654,7 +674,7 @@ class HubApi(Api):
         - here, ?
         """
         path = f"/hub/spaces/{space_id}/tile/{tile_type}/{tile_id}"
-        q_params: Dict[str, str] = {}
+        q_params: Dict[str, str] = {"clientId": _CLIENT_ID}
         if tags:
             q_params["tags"] = ",".join(tags)
         if clip:
@@ -707,7 +727,7 @@ class HubApi(Api):
         >>>	print(feats["type"] )
         >>>	print(len(feats["features"]) )
         """
-        q_params: Dict[str, str] = {}
+        q_params: Dict[str, str] = {"clientId": _CLIENT_ID}
         if tags:
             q_params["tags"] = ",".join(tags)
         if limit:
@@ -730,7 +750,7 @@ class HubApi(Api):
         :yields: A feature in space.
         """
         path = f"/hub/spaces/{space_id}/iterate"
-        params = {"limit": limit}
+        params = {"limit": limit, "clientId": _CLIENT_ID}
         while True:
             res: dict = self.get(path=path, params=params).json()
             handle = res.get("handle", None)
@@ -772,7 +792,8 @@ class HubApi(Api):
             space.
         """
         path = f"/hub/spaces/{space_id}/count"
-        return self.get(path=path).json()
+        params = {"clientId": _CLIENT_ID}
+        return self.get(path=path, params=params).json()
 
     # Edit Features
 
@@ -780,16 +801,16 @@ class HubApi(Api):
         self,
         space_id: str,
         data: dict,
-        addTags: Optional[List[str]] = None,
-        removeTags: Optional[List[str]] = None,
+        add_tags: Optional[List[str]] = None,
+        remove_tags: Optional[List[str]] = None,
     ) -> dict:
         """Create or replace multiple features.
 
         :param space_id: A string with the ID of the desired XYZ space.
         :param data: A JSON object describing one or more features to add.
-        :param addTags: A list of strings describing tags to be added to
+        :param add_tags: A list of strings describing tags to be added to
             the features.
-        :param removeTags: A list of strings describing tags to be removed
+        :param remove_tags: A list of strings describing tags to be removed
             from the features.
         :return: A dict representing a feature collection.
 
@@ -800,15 +821,16 @@ class HubApi(Api):
         >>>	features = api.put_space_features(
         ...     space_id=space_id,
         ...     data=gj_countries,
-        ...     addTags=["foo", "bar"],
-        ...     removeTags=["bar"],
+        ...     add_tags=["foo", "bar"],
+        ...     remove_tags=["bar"],
         ... )
         >>> print(features)
         """
         path = f"/hub/spaces/{space_id}/features"
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
-        params = join_string_lists(addTags=addTags, removeTags=removeTags)
+        params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
+        params.update({"clientId": _CLIENT_ID})
         return self.put(
             path=path, params=params, json=data, headers=headers
         ).json()
@@ -817,17 +839,17 @@ class HubApi(Api):
         self,
         space_id: str,
         data: dict,  # must be a feature collection
-        addTags: Optional[List[str]] = None,
-        removeTags: Optional[List[str]] = None,
+        add_tags: Optional[List[str]] = None,
+        remove_tags: Optional[List[str]] = None,
     ) -> dict:
         """Modify multiple features in the space.
 
         :param space_id: A string with the ID of the desired XYZ space.
         :param data: A JSON object describing one or more features to
             modify.
-        :param addTags: A list of strings describing tags to be added to
+        :param add_tags: A list of strings describing tags to be added to
             the features.
-        :param removeTags: A list of strings describing tags to be removed
+        :param remove_tags: A list of strings describing tags to be removed
             from the features.
         :return: A dict representing a feature collection.
 
@@ -841,7 +863,8 @@ class HubApi(Api):
         path = f"/hub/spaces/{space_id}/features"
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
-        params = join_string_lists(addTags=addTags, removeTags=removeTags)
+        params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
+        params.update({"clientId": _CLIENT_ID})
         return self.post(
             path=path, params=params, json=data, headers=headers
         ).json()
@@ -870,7 +893,7 @@ class HubApi(Api):
         path = f"/hub/spaces/{space_id}/features"
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
-        params = {}
+        params = {"clientId": _CLIENT_ID}
         if id:
             # TODO: The wildcard sign(*) could be used to delete all features
             #       in the space.
@@ -884,17 +907,17 @@ class HubApi(Api):
         space_id: str,
         data: dict,
         feature_id: Optional[str] = None,
-        addTags: Optional[List[str]] = None,
-        removeTags: Optional[List[str]] = None,
+        add_tags: Optional[List[str]] = None,
+        remove_tags: Optional[List[str]] = None,
     ) -> dict:
         """Create or replace a single feature.
 
         :param space_id: A string with the ID of the desired XYZ space.
         :param data: A JSON object describing the feature to be added.
         :param feature_id: A string with the ID of the feature to be created.
-        :param addTags: A list of strings describing tags to be added to
+        :param add_tags: A list of strings describing tags to be added to
             the feature.
-        :param removeTags: A list of strings describing tags to be removed
+        :param remove_tags: A list of strings describing tags to be removed
             from the feature.
         :return: A dict representing a feature.
 
@@ -909,7 +932,8 @@ class HubApi(Api):
             path = f"/hub/spaces/{space_id}/features/"
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
-        params = join_string_lists(addTags=addTags, removeTags=removeTags)
+        params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
+        params.update({"clientId": _CLIENT_ID})
         return self.put(
             path=path, params=params, json=data, headers=headers
         ).json()
@@ -919,24 +943,25 @@ class HubApi(Api):
         space_id: str,
         feature_id: str,
         data: dict,
-        addTags: Optional[List[str]] = None,
-        removeTags: Optional[List[str]] = None,
+        add_tags: Optional[List[str]] = None,
+        remove_tags: Optional[List[str]] = None,
     ) -> dict:
         """Patch a single feature in the space.
 
         :param space_id: A string with the ID of the desired XYZ space.
         :param feature_id: A string with the ID of the feature to be modified.
         :param data: A JSON object describing the feature to be changed.
-        :param addTags: A list of strings describing tags to be added to
+        :param add_tags: A list of strings describing tags to be added to
             the feature.
-        :param removeTags: A list of strings describing tags to be removed
+        :param remove_tags: A list of strings describing tags to be removed
             from the feature.
         :return: A dict representing a feature.
         """
         path = f"/hub/spaces/{space_id}/features/{feature_id}"
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
-        params = join_string_lists(addTags=addTags, removeTags=removeTags)
+        params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
+        params.update({"clientId": _CLIENT_ID})
         return self.patch(
             path=path, params=params, json=data, headers=headers
         ).json()
@@ -949,7 +974,8 @@ class HubApi(Api):
         :return: An empty string if the operation was successful.
         """
         path = f"/hub/spaces/{space_id}/features/{feature_id}"
-        return self.delete(path=path).text
+        params = {"clientId": _CLIENT_ID}
+        return self.delete(path=path, params=params).text
 
     def get_space_spatial(
         self,
@@ -997,7 +1023,7 @@ class HubApi(Api):
                 "or ref_space_id and ref_feature_id should have value."
             )
         path = f"/hub/spaces/{space_id}/spatial"
-        q_params: Dict[str, str] = {}
+        q_params: Dict[str, str] = {"clientId": _CLIENT_ID}
         if lat:
             q_params["lat"] = str(lat)
         if lon:
@@ -1048,7 +1074,7 @@ class HubApi(Api):
         headers = dict(self.headers)
         headers["Content-Type"] = "application/geo+json"
 
-        q_params: Dict[str, str] = {}
+        q_params: Dict[str, str] = {"clientId": _CLIENT_ID}
         if radius:
             q_params["radius"] = str(radius)
         if tags:

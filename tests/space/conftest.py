@@ -112,3 +112,32 @@ def shared_space():
 
     # now teardown (delete temporary space)
     space.delete()
+
+
+@pytest.fixture()
+def activity_log_space():
+    """Create a new space supporting activity log."""
+    listeners = {
+        "id": "activity-log",
+        "params": {
+            "states": 5,
+            "storageMode": "DIFF_ONLY",
+            "writeInvalidatedAt": "true",
+        },
+        "eventTypes": ["ModifySpaceEvent.request"],
+    }
+    space = Space.new(
+        title="Activity-Log Test",
+        description="A test space for Activity-Log",
+        enable_uuid=True,
+        listeners=listeners,
+    )
+    yield space
+
+    # now teardown (delete temporary space and activity log space)
+    activity_log_spaceid = space.info["listeners"]["activity-log-writer"][0][
+        "params"
+    ]["spaceId"]
+    space2 = Space.from_id(activity_log_spaceid)
+    space.delete()
+    space2.delete()

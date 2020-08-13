@@ -1,0 +1,23 @@
+{
+    "#": "This is a config file for Proclamation, the changelog combiner: https://gitlab.com/ryanpavlik/proclamation",
+    "SPDX-License-Identifier: CC0-1.0": "",
+    "SPDX-FileCopyrightText: 2020 Collabora, Ltd. and the Proclamation contributors": "",
+    "$schema": "https://gitlab.com/ryanpavlik/proclamation/-/raw/master/proclamation.schema.json",
+    "project_name": "xyzspaces",
+    "base_url": "https://github.com/heremaps/xyz-spaces-python",
+    "news_filename": "CHANGELOG.md",
+    "sections": {
+        "Features": {
+            "directory": "changes/features"
+        },
+        "Documentation": {
+            "directory": "changes/docs"
+        },
+        "Tests": {
+            "directory": "changes/tests"
+        },
+        "Misc": {
+            "directory": "changes/misc"
+        }
+    }
+}

@@ -325,8 +325,8 @@ class Space:
             space_id=self._info["id"],
             feature_id=feature_id,
             data=data,
-            addTags=add_tags,
-            removeTags=remove_tags,
+            add_tags=add_tags,
+            remove_tags=remove_tags,
         )
         return GeoJSON(res)
 
@@ -352,8 +352,8 @@ class Space:
             space_id=self._info["id"],
             feature_id=feature_id,
             data=data,
-            addTags=add_tags,
-            removeTags=remove_tags,
+            add_tags=add_tags,
+            remove_tags=remove_tags,
         )
         return GeoJSON(res)
 
@@ -429,8 +429,8 @@ class Space:
             res = self.api.put_space_features(
                 space_id=space_id,
                 data=features,
-                addTags=add_tags,
-                removeTags=remove_tags,
+                add_tags=add_tags,
+                remove_tags=remove_tags,
             )
             return GeoJSON(res)
 
@@ -445,8 +445,8 @@ class Space:
         self.api.put_space_features(
             space_id=self._info["id"],
             data=feature_collection,
-            addTags=add_tags,
-            removeTags=remove_tags,
+            add_tags=add_tags,
+            remove_tags=remove_tags,
         )
         return len(features)
 
@@ -471,8 +471,8 @@ class Space:
         res = self.api.post_space_features(
             space_id=space_id,
             data=features,
-            addTags=add_tags,
-            removeTags=remove_tags,
+            add_tags=add_tags,
+            remove_tags=remove_tags,
         )
         return GeoJSON(res)
 
