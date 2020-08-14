@@ -577,3 +577,15 @@ def test_add_features_shapefile(empty_space):
     resp = space.search(params={"p.NAME": "Mumbai"})
     flist = list(resp)
     assert flist[0]["properties"]["NAME"] == "Mumbai"
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_wktfile(empty_space):
+    """Test uploading wkt data"""
+    space = empty_space
+    wkt_file = Path(__file__).parents[1] / "data" / "test.wkt"
+    space.add_features_wkt(path=wkt_file)
+    features = []
+    for f in space.iter_feature():
+        features.append(f)
+    assert len(features) == 6

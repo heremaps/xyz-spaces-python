@@ -37,7 +37,7 @@ import geopandas as gpd
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
-from .utils import grouper
+from .utils import grouper, wkt_to_geojson
 
 logger = logging.getLogger(__name__)
 
@@ -836,3 +836,17 @@ class Space:
         self.add_features_geojson(
             path=temp.name, features_size=features_size, chunk_size=chunk_size
         )
+
+    def add_features_wkt(self, path: str):
+        """
+        To upload data from wkt file to a space
+
+        :param path: Path to wkt file
+        """
+        with open(path) as f:
+            wkt_data = f.read()
+            geojson_data = wkt_to_geojson(wkt_data)
+            if geojson_data["type"] == "FeatureCollection":
+                self.add_features(features=geojson_data)
+            else:
+                self.add_feature(data=geojson_data)
