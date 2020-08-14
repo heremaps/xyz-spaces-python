@@ -51,7 +51,7 @@ test:
 	coverage html
 
 draft_changelog:
-	proclamation draft $(shell python -c "from xyzspaces import __version__; print(__version__)")
+	proclamation draft $(shell python -c "import xyzspaces; print(xyzspaces.__version__)")
 
 build_changelog:
-	proclamation build -o -r $(shell python -c "from xyzspaces import __version__; print(__version__)")
+	proclamation build -o -r $(shell python -c "import xyzspaces; print(xyzspaces.__version__)")
