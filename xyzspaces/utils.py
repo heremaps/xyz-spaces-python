@@ -27,6 +27,9 @@ import warnings
 from itertools import zip_longest
 from typing import List
 
+import geojson
+from shapely import geometry, wkt
+
 
 def join_string_lists(**kwargs) -> dict:
     """Convert named lists of strings to one dict with comma-separated strings.
@@ -99,3 +102,24 @@ def grouper(size, iterable, fillvalue=None):
     """
     args = [iter(iterable)] * size
     return zip_longest(fillvalue=fillvalue, *args)
+
+
+def wkt_to_geojson(wkt_data: str) -> dict:
+    """
+    Converts wkt to geojson
+
+    :param wkt_data: wkt data to be converted
+    :return: Geojson
+    """
+    parsed_wkt = wkt.loads(wkt_data)
+
+    geo = geometry.mapping(parsed_wkt)
+
+    if geo["type"] == "GeometryCollection":
+        feature_collection = []
+        for g in geo["geometries"]:
+            feature = geojson.Feature(geometry=g)
+            feature_collection.append(feature)
+        return geojson.FeatureCollection(feature_collection)
+    else:
+        return geojson.Feature(geometry=geo)
