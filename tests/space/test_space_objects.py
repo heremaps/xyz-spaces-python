@@ -589,3 +589,14 @@ def test_add_features_wktfile(empty_space):
     for f in space.iter_feature():
         features.append(f)
     assert len(features) == 6
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_gpx(empty_space):
+    """Test uploading gpx file to the space."""
+    space = empty_space
+    gpx_file = Path(__file__).parents[1] / "data" / "sample.gpx"
+    space.add_features_gpx(gpx_file, features_size=500)
+    resp = space.search(params={"p.time": "2016-06-17T23:41:13"})
+    flist = list(resp)
+    assert flist[0]["geometry"]["coordinates"] == [-122.391226, 37.778194, 0]

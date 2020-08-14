@@ -1,0 +1,1 @@
+Added feature to upload data from shapefile to the space.
