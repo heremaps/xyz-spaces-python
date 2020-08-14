@@ -850,3 +850,21 @@ class Space:
                 self.add_features(features=geojson_data)
             else:
                 self.add_feature(data=geojson_data)
+
+    def add_features_gpx(
+        self, path: str, features_size: int = 2000, chunk_size: int = 1
+    ):
+        """Upload data from gpx file to the space.
+
+        :param path: A string representing full path of the gpx file.
+        :param features_size: An int representing a number of features to upload at
+            a time.
+        :param chunk_size: Number of chunks for each process to handle. The default value
+            is 1, for a large number of features please use `chunk_size` greater than 1.
+        """
+        gdf = gpd.read_file(path)
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            gdf.to_file(temp.name, driver="GeoJSON")
+        self.add_features_geojson(
+            path=temp.name, features_size=features_size, chunk_size=chunk_size
+        )
