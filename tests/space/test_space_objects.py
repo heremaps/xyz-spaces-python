@@ -595,11 +595,11 @@ def test_add_features_wktfile(empty_space):
 def test_add_features_gpx(empty_space):
     """Test uploading gpx file to the space."""
     space = empty_space
-    gpx_file = Path(__file__).parents[1] / "data" / "sample.gpx"
+    gpx_file = Path(__file__).parents[1] / "data" / "example.gpx"
     space.add_features_gpx(gpx_file, features_size=500)
-    resp = space.search(params={"p.time": "2016-06-17T23:41:13"})
+    resp = space.search(params={"p.ele": "2376"})
     flist = list(resp)
-    assert flist[0]["geometry"]["coordinates"] == [-122.391226, 37.778194, 0]
+    assert flist[0]["geometry"]["coordinates"] == [8.89241667, 46.57608333, 0]
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -623,5 +623,5 @@ def test_spatial_search_geometry_divided(large_data_space):
         )
     )
 
-    assert len(feature_read) == 75188
+    assert len(feature_read) == 7459
     assert feature_read[0]["type"] == "Feature"

@@ -159,7 +159,7 @@ def large_data_space():
     with open(path) as json_file:
         data = json.load(json_file)
 
-    space.add_features(data, features_size=1000, chunk_size=5)
+    space.add_features(data, features_size=5000, chunk_size=2)
 
     yield space
 

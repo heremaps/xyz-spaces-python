@@ -34,6 +34,7 @@ from functools import partial
 from multiprocessing import Manager
 from typing import Any, Dict, Generator, List, Optional, Union
 
+import fiona
 import geopandas as gpd
 from geojson import Feature, GeoJSON
 
@@ -930,9 +931,17 @@ class Space:
         :param chunk_size: Number of chunks for each process to handle. The default value
             is 1, for a large number of features please use `chunk_size` greater than 1.
         """
-        gdf = gpd.read_file(path)
-        with tempfile.NamedTemporaryFile(delete=False) as temp:
-            gdf.to_file(temp.name, driver="GeoJSON")
-        self.add_features_geojson(
-            path=temp.name, features_size=features_size, chunk_size=chunk_size
-        )
+        layers = fiona.listlayers(path)
+        for layer in layers:
+            gdf = gpd.read_file(path, driver="GPX", layer=layer)
+            if gdf.empty:
+                logger.debug(f"Empty Layer: {layer}")
+                continue
+            else:
+                with tempfile.NamedTemporaryFile() as temp:
+                    gdf.to_file(temp.name, driver="GeoJSON")
+                    self.add_features_geojson(
+                        path=temp.name,
+                        features_size=features_size,
+                        chunk_size=chunk_size,
+                    )
