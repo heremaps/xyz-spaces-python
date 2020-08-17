@@ -21,14 +21,19 @@ This is a collection of utilities for using XYZ Hub.
 Actually, they are almost unspecific to any XYZ Hub functionality, apart
 from :func:`feature_to_bbox`, but convenient to use.
 """
-
+import logging
+import math
 import os
 import warnings
 from itertools import zip_longest
-from typing import List
+from typing import List, Optional
 
-import geojson
+from geojson import Feature, FeatureCollection, Point, Polygon
 from shapely import geometry, wkt
+from turfpy.measurement import bbox, bbox_polygon, distance, length
+from turfpy.transformation import intersect
+
+logger = logging.getLogger(__name__)
 
 
 def join_string_lists(**kwargs) -> dict:
@@ -118,8 +123,114 @@ def wkt_to_geojson(wkt_data: str) -> dict:
     if geo["type"] == "GeometryCollection":
         feature_collection = []
         for g in geo["geometries"]:
-            feature = geojson.Feature(geometry=g)
+            feature = Feature(geometry=g)
             feature_collection.append(feature)
-        return geojson.FeatureCollection(feature_collection)
+        return FeatureCollection(feature_collection)
     else:
-        return geojson.Feature(geometry=geo)
+        return Feature(geometry=geo)
+
+
+def grid(bbox, cell_width, cell_height, units):
+    """
+    This function generates the grids for the given bounding box
+
+    :param bbox: bounding box coordinates
+    :param cell_width: Cell width in specified in units
+    :param cell_height: Cell height in specified in units
+    :param units: Units for given sizes
+    :return: FeatureCollection of grid boxes genarated
+        for the giving bounding box
+    """
+    results = []
+    west = bbox[0]
+    south = bbox[1]
+    east = bbox[2]
+    north = bbox[3]
+
+    start = Feature(geometry=Point((west, south)))
+    end = Feature(geometry=Point((east, south)))
+    x_fraction = cell_width / (distance(start, end, units))
+    cell_width_deg = x_fraction * (east - west)
+
+    start = Feature(geometry=Point((west, south)))
+    end = Feature(geometry=Point((west, north)))
+    y_fraction = cell_height / (distance(start, end, units))
+    cell_height_deg = y_fraction * (north - south)
+
+    # rows & columns
+    bbox_width = east - west
+    bbox_height = north - south
+    columns = math.ceil(bbox_width / cell_width_deg)
+    rows = math.ceil(bbox_height / cell_height_deg)
+
+    # if the grid does not fill the bbox perfectly, center it.
+    delta_x = (bbox_width - columns * cell_width_deg) / 2
+    delta_y = (bbox_height - rows * cell_height_deg) / 2
+
+    # iterate over columns & rows
+    current_x = west + delta_x
+    for column in range(0, columns):
+        current_y = south + delta_y
+        for row in range(0, rows):
+            cell_poly = Feature(
+                geometry=Polygon(
+                    [
+                        [
+                            [current_x, current_y],
+                            [current_x, current_y + cell_height_deg],
+                            [
+                                current_x + cell_width_deg,
+                                current_y + cell_height_deg,
+                            ],
+                            [current_x + cell_width_deg, current_y],
+                            [current_x, current_y],
+                        ]
+                    ]
+                )
+            )
+            results.append(cell_poly)
+
+            current_y += cell_height_deg
+
+        current_x += cell_width_deg
+
+    return FeatureCollection(results)
+
+
+def divide_bbox(
+    feature: dict,
+    cell_width: Optional[float] = None,
+    units: Optional[str] = "m",
+):
+    """
+    Divides the given feature into grid
+    boxes as per given cell width
+
+    :param feature: Feature to be divide in grid
+    :param cell_width: Width of each grid boxs
+    :param units: Units for the width of grid boxs
+    :return: List of features in which
+        the input feature is divided
+    """
+    bb = bbox(feature)
+    bbox_polygon_feature = bbox_polygon(bb)
+
+    if not cell_width:
+        gr = grid(
+            bb,
+            length(bbox_polygon_feature, units=units) / 4,
+            length(bbox_polygon_feature, units=units) / 4,
+            units,
+        )
+    else:
+        gr = grid(bb, cell_width, cell_width, units)
+
+    final = []
+    for f in gr["features"]:
+        try:
+            inter = intersect([f, feature])
+            if inter:
+                final.append(inter)
+        except Exception:
+            logger.debug("The intersection geometry is incorrect")
+    return final

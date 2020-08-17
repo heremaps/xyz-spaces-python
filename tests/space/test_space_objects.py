@@ -600,3 +600,28 @@ def test_add_features_gpx(empty_space):
     resp = space.search(params={"p.time": "2016-06-17T23:41:13"})
     flist = list(resp)
     assert flist[0]["geometry"]["coordinates"] == [-122.391226, 37.778194, 0]
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_spatial_search_geometry_divided(large_data_space):
+    """Test spatial search with divide functionality"""
+    feature = dict(
+        type="Feature",
+        properties={},
+        geometry={
+            "type": "Polygon",
+            "coordinates": [
+                [[-120, 60], [120, 60], [120, -60], [-120, -60], [-120, 60]],
+                [[-60, 30], [60, 30], [60, -30], [-60, -30], [-60, 30]],
+            ],
+        },
+    )
+
+    feature_read = list(
+        large_data_space.spatial_search_geometry(
+            data=feature["geometry"], divide=True, cell_width=1000000
+        )
+    )
+
+    assert len(feature_read) == 75188
+    assert feature_read[0]["type"] == "Feature"
