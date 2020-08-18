@@ -15,7 +15,7 @@
 
 This package allows you to use your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
 
-The image below is what you get when running the notebook in [docs/notebooks/demo.ipynb](./docs/notebooks/demo.ipynb),
+The image below is what you get when running the notebook in [docs/notebooks/demo.ipynb](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/demo.ipynb),
 which demonstrates how to use some features of the XYZ Hub's RESTful API to:
 
 - create an XYZ space
@@ -89,11 +89,11 @@ The test suite provides test coverage of around 90% (but less if the tests canno
 
 ## Documentation
 
-For now, the documentation consists of a small number of example Jupyter notebooks in the [docs/notebooks](./docs/notebooks) directory plus an [API reference](https://xyz-spaces-python.readthedocs.io/en/latest/index.html), which is automatically generated from the docstrings in the code.
+For now, the documentation consists of a small number of example Jupyter notebooks in the [docs/notebooks](https://github.com/heremaps/xyz-spaces-python/tree/master/docs/notebooks) directory plus an [API reference](https://xyz-spaces-python.readthedocs.io/en/latest/index.html), which is automatically generated from the docstrings in the code.
 
 ### Jupyter Notebooks
 
-See [docs/notebooks/README.md](./docs/notebooks/README.md) to learn how to install and use the example Jupyter notebooks.
+See [docs/notebooks/README.md](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/README.md) to learn how to install and use the example Jupyter notebooks.
 
 ### API Reference
 
@@ -152,7 +152,7 @@ from xyzspaces import setup_logging
 
 setup_logging(default_level=logging.DEBUG)
 ```
-Default logging configuration is defined in [file](xyzspaces/config/logconfig.json)
+Default logging configuration is defined in [file](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json)
 
 This ensures that log messages will be written to the file `xyz.log` in your current working directory.
 
@@ -164,7 +164,7 @@ Here is an example log file (`xyz.log`):
 2020-02-21 17:55:46,133 - apis.py:132 - ERROR - Response headers: {'Content-Type': 'application/json', 'Content-Length': '150', 'Connection': 'keep-alive', 'Date': 'Fri, 21 Feb 2020 12:25:46 GMT', 'x-amzn-RequestId': '397c8039-79f1-4956-bbe4-46ca78c7ec2d', 'content-encoding': 'gzip', 'Stream-Id': '397c8039-79f1-4956-bbe4-46ca78c7ec2d', 'x-amzn-Remapped-Content-Length': '150', 'x-amzn-Remapped-Connection': 'keep-alive', 'x-amz-apigw-id': 'IPzblGVFjoEF5pg=', 'x-amzn-Remapped-Date': 'Fri, 21 Feb 2020 12:25:46 GMT', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 e25383e25378de918d3b187b3239eb5b.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM51-C2', 'X-Amz-Cf-Id': 'nZAJUB_FBiHdojziSoG3SBcMdf8rNyHuOMSlJljyxDNlx1I0O3t9YQ=='}
 2020-02-21 17:55:46,134 - apis.py:133 - ERROR - Response text: {"type":"ErrorResponse","error":"Exception","errorMessage":"The requested resource does not exist.","streamId":"397c8039-79f1-4956-bbe4-46ca78c7ec2d"}
 ```
-To customize the logging configuration, set the variable `XYZ_LOG_CONFIG` to hold the full path of the logging configuration options file [logging_config.json](xyzspaces/config/logconfig.json):
+To customize the logging configuration, set the variable `XYZ_LOG_CONFIG` to hold the full path of the logging configuration options file [logging_config.json](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json):
 
 ```bash
 export XYZ_LOG_CONFIG=~/logging_config.json
@@ -174,4 +174,4 @@ export XYZ_LOG_CONFIG=~/logging_config.json
 
 Copyright (C) 2019-2020 HERE Europe B.V.
 
-Unless otherwise noted in `LICENSE` files for specific directories, the [LICENSE](LICENSE) in the root applies to all content in this repository.
+Unless otherwise noted in `LICENSE` files for specific directories, the [LICENSE](https://github.com/heremaps/xyz-spaces-python/blob/master/LICENSE) in the root applies to all content in this repository.
