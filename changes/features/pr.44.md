@@ -1,0 +1,1 @@
+Optimized the `spatial search` to search features from large geometries.
