@@ -4,12 +4,10 @@ include LICENSE
 include Makefile
 include requirements*.txt
 include binder/*
-include datasets/*
+include xyzspaces/datasets/*
 include docs/notebooks/README.md docs/notebooks/*.ipynb
-exclude docs/notebooks/non-dist/*
 include scripts/*
 include tests/hub/* tests/project/* tests/token/*
-include images/* demo.ipynb
-exclude non-dist/*
-exclude ort
-include config/logconfig.json
+include images/*
+exclude ort.yml
+include xyzspaces/config/logconfig.json

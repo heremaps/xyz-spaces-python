@@ -22,6 +22,7 @@ deploy:
     tags: true
     branch: master
     python: 3.7
+    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+
 env:
   global:
   - secure: K8I9mDTKeXHLgG/gdwamQ3D1S2I8aQjZfqlRJBwmk3nPhJMfSjgPAMJRp3GmWxxElg/3iF8LoDTrXXw3/l4zd7o6SAZG0fTN2J/9zAa6afi10H43GPiiESiNNfbYFTOk4S2C6+9HsjyjgrYxaMTMvs5euLfBM9Q0uMkgLUCMxbIxQ8yGxgCQHA7zogDkvybxiXw5Yxny8gl8L3hqmixKDZwRwbPgtsEL/Zf4nqQT6D3HRt1v2gdScg/1csLk/CVZ54cess2nspbfuyNW+3+q6twHkzO3XAGOg5gqkBTiXE4n7eIrQUOyTpesT4bw1ku8btAUcb85JcSe/xKCeUI81XaQtULCXr8xo2nefRHxWGYEXZ30vHotJpnTk7CdJPXF7q/gCf+NqaMDy+bCKu9dgqFqRXkBg8mUaSblrk99d4Ec9NdUoJoonXnWEAS3KC/Ijm8XA7/v1+xUVxedCD4v9K0bLS5oqHiRfkn7T7mRl5HuErL12EJCeKD5HT3OyPvu8L7yST7Jaik7Ieznyk1uJCg3UGjAdjbHNneoBmGlavKUEL0OuDyeAJKOZVWy7IXmv9bBKgNoCIM3G+FIYJIJQfPFf52yP2s+/E+8HKyjk6H6M3ntOCsuohUZ1cqtpK5zVkZp7PjMGoN+ZxUycokxHi1Qrm4Me/l+b/JZYRpqAY0=
