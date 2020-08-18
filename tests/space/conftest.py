@@ -17,6 +17,9 @@
 
 """Module for providing test fixtures for the Hub API tests."""
 
+import json
+from pathlib import Path
+
 import pytest
 
 from xyzspaces.apis import HubApi
@@ -141,3 +144,24 @@ def activity_log_space():
     space2 = Space.from_id(activity_log_spaceid)
     space.delete()
     space2.delete()
+
+
+@pytest.fixture()
+def large_data_space():
+    """Create a new large data space."""
+    space = Space.new(
+        title="test large data space",
+        description="test large data space",
+        shared=True,
+    )
+    path = Path(__file__).parent.parent / "data" / "large_data.geojson"
+
+    with open(path) as json_file:
+        data = json.load(json_file)
+
+    space.add_features(data, features_size=5000, chunk_size=2)
+
+    yield space
+
+    # now teardown (delete temporary space)
+    space.delete()
