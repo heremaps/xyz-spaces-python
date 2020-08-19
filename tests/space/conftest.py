@@ -19,6 +19,7 @@
 
 import json
 from pathlib import Path
+from time import sleep
 
 import pytest
 
@@ -53,6 +54,7 @@ def space_id():
 
     # add features to space
     gj_countries = get_countries_data()
+    sleep(0.5)
     api.put_space_features(space_id=space_id, data=gj_countries)
 
     yield space_id
@@ -70,6 +72,7 @@ def empty_space(api):
         description="Temporary empty space containing no features.",
     )
 
+    sleep(0.5)
     yield space
 
     # now teardown (delete temporary space)
@@ -96,6 +99,7 @@ def upstream_spaces(api, space_id):
 
     # add features to space
     gj_countries = get_chicago_parks_data()
+    sleep(0.5)
     api.put_space_features(space_id=space_id2, data=gj_countries)
 
     yield [space_id, space_id2]
@@ -111,6 +115,7 @@ def shared_space():
         title="test shared space", description="test shared space", shared=True
     )
 
+    sleep(0.5)
     yield space
 
     # now teardown (delete temporary space)
@@ -135,6 +140,7 @@ def activity_log_space():
         enable_uuid=True,
         listeners=listeners,
     )
+    sleep(0.5)
     yield space
 
     # now teardown (delete temporary space and activity log space)
@@ -161,6 +167,7 @@ def large_data_space():
 
     space.add_features(data, features_size=5000, chunk_size=2)
 
+    sleep(0.5)
     yield space
 
     # now teardown (delete temporary space)
