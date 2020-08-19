@@ -629,3 +629,13 @@ def test_spatial_search_geometry_divided(large_data_space):
 
     assert len(feature_read) == 7459
     assert feature_read[0]["type"] == "Feature"
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_kml(empty_space):
+    """Test uploading kml file to the space."""
+    space = empty_space
+    kml_file = Path(__file__).parents[1] / "data" / "test.kml"
+    space.add_features_kml(kml_file, features_size=500)
+    stats = space.get_statistics()
+    assert stats["count"]["value"] == 243
