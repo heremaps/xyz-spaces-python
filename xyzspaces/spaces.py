@@ -945,3 +945,46 @@ class Space:
                         features_size=features_size,
                         chunk_size=chunk_size,
                     )
+
+    def add_features_kml(
+        self, path: str, features_size: int = 2000, chunk_size: int = 1
+    ):
+        """
+        To upload data from kml file to a space
+
+        :param path: Path to kml file
+        :param features_size: An int representing a number of features to upload at
+            a time.
+        :param chunk_size: Number of chunks for each process to handle. The default value
+            is 1, for a large number of features please use `chunk_size` greater than 1.
+        """
+        gpd.io.file.fiona.drvsupport.supported_drivers["KML"] = "rw"
+
+        gdf = gpd.read_file(path, driver="KML")
+
+        geometry = gdf.geometry
+        flattened_geometry = []
+
+        flattened_gdf = gpd.GeoDataFrame()
+
+        for geom in geometry:
+            if geom.type in [
+                "GeometryCollection",
+                "MultiPoint",
+                "MultiLineString",
+                "MultiPolygon",
+            ]:
+                for subgeom in geom:
+                    flattened_geometry.append(subgeom)
+            else:
+                flattened_geometry.append(geom)
+
+        flattened_gdf.geometry = flattened_geometry
+
+        with tempfile.NamedTemporaryFile() as temp:
+            flattened_gdf.to_file(temp.name, driver="GeoJSON")
+            self.add_features_geojson(
+                path=temp.name,
+                features_size=features_size,
+                chunk_size=chunk_size,
+            )
