@@ -17,6 +17,8 @@
 
 """Module for providing test fixtures for the Hub API tests."""
 
+from time import sleep
+
 import pytest
 
 from xyzspaces.apis import HubApi
@@ -24,7 +26,6 @@ from xyzspaces.datasets import get_chicago_parks_data, get_countries_data
 from xyzspaces.utils import get_xyz_token
 
 XYZ_TOKEN = get_xyz_token()
-gj_countries = get_countries_data()
 
 
 @pytest.fixture()
@@ -50,6 +51,7 @@ def space_id():
 
     # add features to space
     gj_countries = get_countries_data()
+    sleep(0.5)
     api.put_space_features(space_id=space_id, data=gj_countries)
 
     yield space_id
@@ -71,6 +73,7 @@ def point_space_id():
     )
     space_id = res["id"]
     gj_chicago_parks = get_chicago_parks_data()
+    sleep(0.5)
     api.put_space_features(space_id=space_id, data=gj_chicago_parks)
     yield space_id
 

@@ -51,6 +51,7 @@ def test_new_space():
     """Test create and delete a new space."""
     # create space
     space = Space.new(title="Foo", description="Bar")
+    sleep(0.5)
     space_info = space.info
     assert space_info["title"] == "Foo"
     assert "shared" not in space_info
@@ -68,20 +69,17 @@ def test_create_delete_1(api):
     """Test create and delete a new space."""
     # create space
     space = Space.new(title="Foo", description="Bar")
+    sleep(0.5)
     assert space.info["title"] == "Foo"
-    print("created", space.info)
-    id = space.info["id"]
     assert "id" in space.info
 
     # add features
-    res = space.add_features(features=gj_countries)
+    _ = space.add_features(features=gj_countries)
     # get feature
-    res = space.get_feature(feature_id="FRA")
-    print(res)
+    _ = space.get_feature(feature_id="FRA")
 
     # delete space
     space.delete()
-    print("deleted", id)
     assert space.info == {}
     # TODO: assert that accessing the deleted space causes an error...
 
@@ -471,7 +469,9 @@ def test_add_features_csv_exception(space_object, tmp_path):
         )
 
 
-@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+@pytest.mark.skipif(
+    True, reason="Already getting covered in test_file_bulk_upload."
+)
 def test_bulk_upload(space_object):
     geo_file = Path(__file__).parents[1] / "data" / "road_traffic.geo.json"
 
@@ -572,13 +572,15 @@ def test_microsoft_public_space():
 def test_add_features_shapefile(empty_space):
     """Test uploading shapefile to the space."""
     space = empty_space
-    shapefile = Path(__file__).parents[1] / "data" / "maharashtra_location.zip"
-    space.add_features_shapefile(
-        f"zip://{shapefile}", features_size=200, chunk_size=2
-    )
-    resp = space.search(params={"p.NAME": "Mumbai"})
+    shapefile = Path(__file__).parents[1] / "data" / "stations.zip"
+    space.add_features_shapefile(f"zip://{shapefile}")
+    resp = space.search(params={"p.name": "Van Dorn Street"})
     flist = list(resp)
-    assert flist[0]["properties"]["NAME"] == "Mumbai"
+    assert flist[0]["geometry"]["coordinates"] == [
+        -77.12911152,
+        38.79930767,
+        0,
+    ]
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")

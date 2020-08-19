@@ -900,11 +900,13 @@ class Space:
         >>> space.add_features_shapefile(path="shapefile.shp")
         """
         gdf = gpd.read_file(path)
-        with tempfile.NamedTemporaryFile(delete=False) as temp:
+        with tempfile.NamedTemporaryFile() as temp:
             gdf.to_file(temp.name, driver="GeoJSON")
-        self.add_features_geojson(
-            path=temp.name, features_size=features_size, chunk_size=chunk_size
-        )
+            self.add_features_geojson(
+                path=temp.name,
+                features_size=features_size,
+                chunk_size=chunk_size,
+            )
 
     def add_features_wkt(self, path: str):
         """
