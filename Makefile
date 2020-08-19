@@ -47,7 +47,7 @@ lint:
 	black -l 79 --diff --check xyzspaces tests
 
 test:
-	pytest -v -s --cov=xyzspaces tests
+	pytest -v -s --durations=10 --cov=xyzspaces tests
 	coverage html
 
 draft_changelog:
