@@ -40,7 +40,4 @@ def test_setup_logging_json(api):
     assert log_path.stat().st_size > 0
     with open(log_path) as fh:
         lines = fh.read()
-        assert (
-            "- ERROR - Curl command: curl --request GET "
-            "https://xyz.api.here.com/hub/spaces/dummy-111" in lines
-        )
+        assert " - ERROR - status code: 404, response:" in lines
