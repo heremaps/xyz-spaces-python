@@ -135,7 +135,10 @@ class Api:
             + f"Response text: {resp.text}"
         )
         if not (200 <= code < 300):
-            logger.error(curl_logging)
+            logger.error(
+                f"status code: {code}, response: {resp.text}, "
+                f"response headers: {resp.headers}"
+            )
             raise ApiError(resp)
         logger.debug(curl_logging)
         return resp
