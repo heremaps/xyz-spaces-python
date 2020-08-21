@@ -619,11 +619,7 @@ class HubApi(Api):
         if clustering:
             q_params["clustering"] = clustering
         if params:
-            warnings.warn(
-                f"The 'params' parameter for the `{path}` API endpoint "
-                "is not supported, yet."
-            )
-            # TODO
+            q_params.update(params)
         if selection:
             q_params["selection"] = ",".join(selection)
         if clusteringParams:
