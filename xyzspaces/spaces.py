@@ -283,14 +283,15 @@ class Space:
         for f in features["features"]:
             yield f
 
-    def iter_feature(self) -> Generator[Feature, None, None]:
+    def iter_feature(self, limit: int = 100) -> Generator[Feature, None, None]:
         """
         Iterate over features in this space object.
 
+        :param limit: A max. number of features to return in the result.
         :yields: A Feature object.
         """
         for feature in self.api.get_space_iterate(
-            space_id=self._info["id"], limit=100
+            space_id=self._info["id"], limit=limit
         ):
             yield feature
 
