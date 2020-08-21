@@ -883,7 +883,12 @@ class Space:
         return True if "shared" in self.info else False
 
     def add_features_shapefile(
-        self, path: str, features_size: int = 2000, chunk_size: int = 1
+        self,
+        path: str,
+        features_size: int = 2000,
+        chunk_size: int = 1,
+        crs: str = None,
+        encoding: str = "utf-8",
     ):
         """Upload shapefile to the space.
 
@@ -893,6 +898,10 @@ class Space:
             a time.
         :param chunk_size: Number of chunks for each process to handle. The default value
             is 1, for a large number of features please use `chunk_size` greater than 1.
+        :param crs: A string to represent Coordinate Reference System(CRS),
+            If you want to change CRS, please pass the value of desired CRS
+            Example: ``epsg:4326``.
+        :param encoding: A string to represent the type of encoding.
 
         Example:
         >>> from xyzspaces import XYZ
@@ -900,7 +909,9 @@ class Space:
         >>> space = xyz.spaces.from_id(space_id="existing-space-id")
         >>> space.add_features_shapefile(path="shapefile.shp")
         """
-        gdf = gpd.read_file(path)
+        gdf = gpd.read_file(path, encoding=encoding)
+        if crs is not None:
+            gdf = gdf.to_crs(crs)
         with tempfile.NamedTemporaryFile() as temp:
             gdf.to_file(temp.name, driver="GeoJSON")
             self.add_features_geojson(

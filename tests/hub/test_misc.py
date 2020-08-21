@@ -183,15 +183,11 @@ def test_get_space_bbox(api, space_id):
     assert len(bbox["features"]) == 0
     assert bbox["type"] == "FeatureCollection"
 
-    with warnings.catch_warnings(record=True) as w:
-        # Cause all warnings to always be triggered.
-        warnings.simplefilter("always")
-        # Trigger a warning.
-        api.get_space_bbox(space_id=space_id, bbox=bb, params={"foo": "bar"})
-        # Verify some things
-        assert len(w) == 1
-        assert issubclass(w[-1].category, UserWarning)
-        assert str(w[-1].message).endswith("not supported, yet.")
+    resp = api.get_space_bbox(
+        space_id=space_id, bbox=bb, params={"p.name": "Ghana"}
+    )
+    assert len(resp["features"]) == 1
+    assert resp["type"] == "FeatureCollection"
 
     bbox = api.get_space_bbox(space_id=space_id, bbox=bb, selection=["p.name"])
     assert bbox["features"][0]["properties"]["name"] == "Benin"
