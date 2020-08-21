@@ -1,1 +1,0 @@
-Added feature to upload data from `WKT` file to the space.
