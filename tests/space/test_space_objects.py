@@ -573,7 +573,7 @@ def test_add_features_shapefile(empty_space):
     """Test uploading shapefile to the space."""
     space = empty_space
     shapefile = Path(__file__).parents[1] / "data" / "stations.zip"
-    space.add_features_shapefile(f"zip://{shapefile}")
+    space.add_features_shapefile(f"zip://{shapefile}", crs="EPSG:4326")
     resp = space.search(params={"p.name": "Van Dorn Street"})
     flist = list(resp)
     assert flist[0]["geometry"]["coordinates"] == [
