@@ -1008,25 +1008,21 @@ class Space:
         self, path: str, features_size: int = 2000, chunk_size: int = 1
     ):
         """
-        To upload data from geobuff file to a space
-        :param path: Path to geobuff file
+        To upload data from geobuff file to a space.
+
+        :param path: Path to geobuff file.
         :param features_size: An int representing a number of features to upload at
             a time.
         :param chunk_size: Number of chunks for each process to handle. The default value
             is 1, for a large number of features please use `chunk_size` greater than 1.
         """
 
-        with tempfile.NamedTemporaryFile() as temp:
+        with open(path, "rb") as f:
+            geobuff_data = f.read()
+            geojson = geobuf.decode(geobuff_data)
 
-            with open(path, "rb") as f:
-                geobuff_data = f.read()
-                geojson = geobuf.decode(geobuff_data)
-
-            with open(temp.name, "w") as f:
-                json.dump(geojson, f)
-            print(temp.name)
-            self.add_features_geojson(
-                path=temp.name,
-                features_size=features_size,
-                chunk_size=chunk_size,
-            )
+        self.add_features(
+            features=geojson,
+            features_size=features_size,
+            chunk_size=chunk_size,
+        )

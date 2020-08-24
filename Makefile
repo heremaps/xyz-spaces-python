@@ -55,4 +55,4 @@ draft_changelog:
 	proclamation draft $(shell python -c "import xyzspaces; print(xyzspaces.__version__)")
 
 build_changelog:
-	proclamation build -o  $(shell python -c "import xyzspaces; print(xyzspaces.__version__)")
+	proclamation build -d -o  $(shell python -c "import xyzspaces; print(xyzspaces.__version__)")
