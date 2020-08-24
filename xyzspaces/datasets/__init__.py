@@ -41,7 +41,7 @@ def get_countries_data():
     The data contains 180 countries, and does not cover all existing countries,
     ca. 200. For example the Vatican is missing.
 
-    :return: A json object.
+    :return: A JSON object.
     """
     datasets_home = Path(__file__).parent
     url_countries = (
@@ -64,7 +64,7 @@ def get_countries_data():
     # Clean data for this specific file (simply remove features with ID "-99".)
     # gj_countries = [f for f in gj_countries["features"] if f["id"] != "-99"]
 
-    # clean data to replace non-unique IDs (-99 appears twice) with new ones
+    # Clean data to replace non-unique IDs (-99 appears twice) with new ones:
     for f in gj_countries["features"]:
         if f["id"] == "-99":
             name = f["properties"]["name"]
@@ -87,7 +87,11 @@ def get_chicago_parks_data():
 
 
 def get_microsoft_buildings_space():
-    """Creates a Datahub space object for Microsoft Buildings Dataset"""
+    """Create a space object for the MS "US Buildings Footprints" dataset.
+
+    The original source for this dataset can be found on
+    https://github.com/Microsoft/USBuildingFootprints.
+    """
     microsoft_buildings_space = Space.from_id(MICROSOFT_BUILDINGS_SPACE_ID)
 
     return microsoft_buildings_space
