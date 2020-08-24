@@ -573,7 +573,7 @@ def test_add_features_shapefile(empty_space):
     """Test uploading shapefile to the space."""
     space = empty_space
     shapefile = Path(__file__).parents[1] / "data" / "stations.zip"
-    space.add_features_shapefile(f"zip://{shapefile}")
+    space.add_features_shapefile(f"zip://{shapefile}", crs="EPSG:4326")
     resp = space.search(params={"p.name": "Van Dorn Street"})
     flist = list(resp)
     assert flist[0]["geometry"]["coordinates"] == [
@@ -639,3 +639,13 @@ def test_add_features_kml(empty_space):
     space.add_features_kml(kml_file, features_size=500)
     stats = space.get_statistics()
     assert stats["count"]["value"] == 243
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_geobuff(empty_space):
+    """Test uploading geobuff file to the space."""
+    space = empty_space
+    geobuff_file = Path(__file__).parents[1] / "data" / "test.pbf"
+    space.add_features_geobuf(geobuff_file, features_size=500)
+    stats = space.get_statistics()
+    assert stats["count"]["value"] == 180
