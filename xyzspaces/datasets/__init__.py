@@ -91,6 +91,8 @@ def get_microsoft_buildings_space():
 
     The original source for this dataset can be found on
     https://github.com/Microsoft/USBuildingFootprints.
+
+    :return: A space object.
     """
     microsoft_buildings_space = Space.from_id(MICROSOFT_BUILDINGS_SPACE_ID)
 
