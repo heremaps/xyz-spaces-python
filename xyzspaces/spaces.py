@@ -722,7 +722,9 @@ class Space:
                 ):
                     pass
 
-            for f in feature_list:
+            unique_features = list({each['id']: each for each in feature_list}.values())
+
+            for f in unique_features:
                 yield f
 
     def _spatial_search_geometry(
