@@ -717,12 +717,16 @@ class Space:
             )
 
             with concurrent.futures.ProcessPoolExecutor() as executor:
-                for f in executor.map(
+                for _ in executor.map(
                     part_func, divide_features, chunksize=chunk_size
                 ):
                     pass
 
-            for f in feature_list:
+            unique_features = {
+                each["id"]: each for each in feature_list
+            }.values()
+
+            for f in unique_features:
                 yield f
 
     def _spatial_search_geometry(
