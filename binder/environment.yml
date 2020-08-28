@@ -2,6 +2,7 @@ name: xyzspaces
 channels:
   - conda-forge
 dependencies:
+  - bqplot
   - ipyleaflet
   - sidecar
   - pip
