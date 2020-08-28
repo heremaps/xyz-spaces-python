@@ -270,6 +270,7 @@ class Space:
         :param limit: A max. number of features to return in the result.
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
+
             - If user provides ``params={"p.name": "foo"}``,
               Then all features having value of property ``name`` equals ``foo`` will be
               returned.
@@ -545,6 +546,7 @@ class Space:
         :param limit: A max. number of features to return in the result.
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
+
             - If user provides ``params={"p.name": "foo"}``,
               Then all features having value of property ``name`` equals ``foo`` will be
               returned.
@@ -615,6 +617,7 @@ class Space:
             (default: False).
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
+
             - If user provides ``params={"p.name": "foo"}``,
               Then all features having value of property ``name`` equals ``foo`` will be
               returned.
@@ -699,6 +702,7 @@ class Space:
         :param limit: A max. number of features to return in the result.
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
+
             - If user provides ``params={"p.name": "foo"}``,
               Then all features having value of property ``name`` equals ``foo`` will be
               returned.
@@ -764,6 +768,7 @@ class Space:
         :param limit: A max. number of features to return in the result.
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
+
             - If user provides ``params={"p.name": "foo"}``,
               Then all features having value of property ``name`` equals ``foo`` will be
               returned.
