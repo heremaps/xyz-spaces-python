@@ -1,0 +1,1 @@
+Enabled property search while searching features in bounding box.
