@@ -21,8 +21,6 @@ Module for testing various endpoints quickly to increase test code coverage.
 These tests should be spread over other modules, soon...
 """
 
-import warnings
-
 import pytest
 
 from xyzspaces.exceptions import ApiError
@@ -103,7 +101,10 @@ def test_delete_space_features(api, space_id):
 def test_get_space_tile(api, space_id, point_space_id):
     """Get space tile."""
     tile = api.get_space_tile(
-        space_id=space_id, tile_type="here", tile_id="12"
+        space_id=space_id,
+        tile_type="here",
+        tile_id="12",
+        params={"name!": "India"},
     )
     assert len(tile["features"]) == 97
     assert tile["type"] == "FeatureCollection"
@@ -123,20 +124,6 @@ def test_get_space_tile(api, space_id, point_space_id):
     assert len(tile["features"]) == 0
     assert tile["type"] == "FeatureCollection"
 
-    with warnings.catch_warnings(record=True) as w:
-        # Cause all warnings to always be triggered.
-        warnings.simplefilter("always")
-        # Trigger a warning.
-        api.get_space_tile(
-            space_id=space_id,
-            tile_type="here",
-            tile_id="12",
-            params={"foo": "bar"},
-        )
-        # Verify some things
-        assert len(w) == 1
-        assert issubclass(w[-1].category, UserWarning)
-        assert str(w[-1].message).endswith("not supported, yet.")
     tile = api.get_space_tile(
         space_id=space_id,
         tile_type="here",

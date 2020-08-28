@@ -26,7 +26,6 @@ way.
 import logging
 import os
 import urllib
-import warnings
 from typing import Any, Dict, Generator, List, Optional, Union
 
 import geojson
@@ -679,11 +678,7 @@ class HubApi(Api):
         if clip:
             q_params["clip"] = str(clip).lower()
         if params:
-            warnings.warn(
-                f"The 'params' parameter for the `{path}` API endpoint "
-                "is not supported, yet."
-            )
-            # TODO
+            q_params.update(params)
         if selection:
             q_params["selection"] = ",".join(selection)
         if skip_cache:
