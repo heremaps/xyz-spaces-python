@@ -1,0 +1,1 @@
+Fixed encoding and projections issue for `shapefile` upload.

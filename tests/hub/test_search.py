@@ -43,8 +43,8 @@ def test_get_space_search(api, space_id):
     assert feats["type"] == "FeatureCollection"
     assert len(feats["features"]) == 0
 
-    feats = api.get_space_search(space_id=space_id, params={"p.name": "India"})
-    assert feats["features"][0]["id"] == "IND"
+    feats = api.get_space_search(space_id=space_id, params={"f.id=lte": "AGO"})
+    assert len(feats["features"]) == 2
 
     feats = api.get_space_search(space_id=space_id, params={"f.id": "IND"})
     assert feats["features"][0]["id"] == "IND"

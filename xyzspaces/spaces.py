@@ -268,9 +268,34 @@ class Space:
 
         :param tags: A list of strings holding tag values.
         :param limit: A max. number of features to return in the result.
-        :param params: ...
-        :param selection: ...
-        :param skip_cache: ...
+        :param params: A dict to represent additional filter on features to be searched.
+            Examples:
+
+            - If user provides ``params={"p.name": "foo"}``,
+              Then all features having value of property ``name`` equals ``foo`` will be
+              returned.
+            - If user provides ``params={"p.name!": "foo"}``,
+              Then all features having value of property ``name`` not quals to ``foo``
+              will be returned.
+            - If user provides ``params={"p.count=gte": "10"}``,
+              Then all features having value property ``count`` greater than quals
+              to ``10`` will be returned.
+            - If user provides ``params={"p.count=lte": "10"}``,
+              Then all features having value property ``count`` less than quals to ``10``
+              will be returned.
+            - If user provides ``params={"p.count=gt": "10"}``,
+              Then all features having value of property ``count`` greater than ``10``
+              will be returned.
+            - If user provides ``params={"p.count=lt": "10"}``,
+              Then all features having value of property ``count`` less than ``10``
+              will be returned.
+            - If user provides ``params={"p.name=cs": "bar"}``,
+              Then all features having value of property ``name`` which contains ``bar``
+              wiil be returned.
+        :param selection: A list, only these properties will be returned in features
+            result list.
+        :param skip_cache: If set to ``True`` the response is not returned from cache.
+            Default is ``False``.
         :yields: A Feature object.
         """
         features = self.api.get_space_search(
@@ -519,9 +544,34 @@ class Space:
         :param clip: A Boolean indicating if the result should be clipped
             (default: False).
         :param limit: A max. number of features to return in the result.
-        :param params: ...
-        :param selection: ...
-        :param skip_cache: ...
+        :param params: A dict to represent additional filter on features to be searched.
+            Examples:
+
+            - If user provides ``params={"p.name": "foo"}``,
+              Then all features having value of property ``name`` equals ``foo`` will be
+              returned.
+            - If user provides ``params={"p.name!": "foo"}``,
+              Then all features having value of property ``name`` not quals to ``foo``
+              will be returned.
+            - If user provides ``params={"p.count=gte": "10"}``,
+              Then all features having value property ``count`` greater than quals
+              to ``10`` will be returned.
+            - If user provides ``params={"p.count=lte": "10"}``,
+              Then all features having value property ``count`` less than quals to ``10``
+              will be returned.
+            - If user provides ``params={"p.count=gt": "10"}``,
+              Then all features having value of property ``count`` greater than ``10``
+              will be returned.
+            - If user provides ``params={"p.count=lt": "10"}``,
+              Then all features having value of property ``count`` less than ``10``
+              will be returned.
+            - If user provides ``params={"p.name=cs": "bar"}``,
+              Then all features having value of property ``name`` which contains ``bar``
+              wiil be returned.
+        :param selection: A list, only these properties will be returned in features
+            result list.
+        :param skip_cache: If set to ``True`` the response is not returned from cache.
+            Default is ``False``.
         :param clustering: ...
         :param clustering_params: ...
         :yields: A Feature object.
@@ -565,9 +615,34 @@ class Space:
         :param tags: A list of strings holding tag values.
         :param clip: A Boolean indicating if the result should be clipped
             (default: False).
-        :param params: ...
-        :param selection: ...
-        :param skip_cache: ...
+        :param params: A dict to represent additional filter on features to be searched.
+            Examples:
+
+            - If user provides ``params={"p.name": "foo"}``,
+              Then all features having value of property ``name`` equals ``foo`` will be
+              returned.
+            - If user provides ``params={"p.name!": "foo"}``,
+              Then all features having value of property ``name`` not quals to ``foo``
+              will be returned.
+            - If user provides ``params={"p.count=gte": "10"}``,
+              Then all features having value property ``count`` greater than quals
+              to ``10`` will be returned.
+            - If user provides ``params={"p.count=lte": "10"}``,
+              Then all features having value property ``count`` less than quals to ``10``
+              will be returned.
+            - If user provides ``params={"p.count=gt": "10"}``,
+              Then all features having value of property ``count`` greater than ``10``
+              will be returned.
+            - If user provides ``params={"p.count=lt": "10"}``,
+              Then all features having value of property ``count`` less than ``10``
+              will be returned.
+            - If user provides ``params={"p.name=cs": "bar"}``,
+              Then all features having value of property ``name`` which contains ``bar``
+              wiil be returned.
+        :param selection: A list, only these properties will be returned in features
+            result list.
+        :param skip_cache: If set to ``True`` the response is not returned from cache.
+            Default is ``False``.
         :param clustering: ...
         :param clustering_params: ...
         :param margin: ...
@@ -625,7 +700,30 @@ class Space:
         :param radius: An int in meter which defines the diameter of the search request.
         :param tags: A list of strings holding tag values.
         :param limit: A max. number of features to return in the result.
-        :param params: A dict holding the HTTP query parameters.
+        :param params: A dict to represent additional filter on features to be searched.
+            Examples:
+
+            - If user provides ``params={"p.name": "foo"}``,
+              Then all features having value of property ``name`` equals ``foo`` will be
+              returned.
+            - If user provides ``params={"p.name!": "foo"}``,
+              Then all features having value of property ``name`` not quals to ``foo``
+              will be returned.
+            - If user provides ``params={"p.count=gte": "10"}``,
+              Then all features having value property ``count`` greater than quals
+              to ``10`` will be returned.
+            - If user provides ``params={"p.count=lte": "10"}``,
+              Then all features having value property ``count`` less than quals to ``10``
+              will be returned.
+            - If user provides ``params={"p.count=gt": "10"}``,
+              Then all features having value of property ``count`` greater than ``10``
+              will be returned.
+            - If user provides ``params={"p.count=lt": "10"}``,
+              Then all features having value of property ``count`` less than ``10``
+              will be returned.
+            - If user provides ``params={"p.name=cs": "bar"}``,
+              Then all features having value of property ``name`` which contains ``bar``
+              wiil be returned.
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
@@ -668,7 +766,30 @@ class Space:
         :param radius: An int which defines the diameter(meters) of the search request.
         :param tags: A list of strings holding tag values.
         :param limit: A max. number of features to return in the result.
-        :param params: A dict holding the HTTP query parameters.
+        :param params: A dict to represent additional filter on features to be searched.
+            Examples:
+
+            - If user provides ``params={"p.name": "foo"}``,
+              Then all features having value of property ``name`` equals ``foo`` will be
+              returned.
+            - If user provides ``params={"p.name!": "foo"}``,
+              Then all features having value of property ``name`` not quals to ``foo``
+              will be returned.
+            - If user provides ``params={"p.count=gte": "10"}``,
+              Then all features having value property ``count`` greater than quals
+              to ``10`` will be returned.
+            - If user provides ``params={"p.count=lte": "10"}``,
+              Then all features having value property ``count`` less than quals to ``10``
+              will be returned.
+            - If user provides ``params={"p.count=gt": "10"}``,
+              Then all features having value of property ``count`` greater than ``10``
+              will be returned.
+            - If user provides ``params={"p.count=lt": "10"}``,
+              Then all features having value of property ``count`` less than ``10``
+              will be returned.
+            - If user provides ``params={"p.name=cs": "bar"}``,
+              Then all features having value of property ``name`` which contains ``bar``
+              wiil be returned.
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
