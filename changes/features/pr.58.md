@@ -1,0 +1,1 @@
+Remove duplicate features for `spatial_search_geometry` with division

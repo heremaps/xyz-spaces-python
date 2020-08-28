@@ -1,7 +1,7 @@
 # Development dependencies, use pip install -e .[dev]
 codecov
 coverage
-black
+black==19.10b0
 mypy
 proclamation
 proxy.py

@@ -717,12 +717,14 @@ class Space:
             )
 
             with concurrent.futures.ProcessPoolExecutor() as executor:
-                for f in executor.map(
+                for _ in executor.map(
                     part_func, divide_features, chunksize=chunk_size
                 ):
                     pass
 
-            unique_features = list({each['id']: each for each in feature_list}.values())
+            unique_features = {
+                each["id"]: each for each in feature_list
+            }.values()
 
             for f in unique_features:
                 yield f
