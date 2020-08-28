@@ -13,19 +13,12 @@
 [![Codecov](https://codecov.io/gh/heremaps/xyz-spaces-python/branch/master/graph/badge.svg)](https://codecov.io/gh/heremaps/xyz-spaces-python)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/heremaps/xyz-spaces-python/master)
 
-This package allows you to use your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
+Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
 
-The image below is what you get when running the notebook in [docs/notebooks/demo.ipynb](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/demo.ipynb),
-which demonstrates how to use some features of the XYZ Hub's RESTful API to:
+The GIF below is a short recording of an interaction with the notebook in [docs/notebooks/building_numbers.ipynb](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/building_numbers.ipynb),
+which demonstrates how to use a spatial search on a big public dataset, loaded from the HERE [Data Hub](https://here.xyz).
 
-- create an XYZ space
-- add features from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) file
-- extract a single feature as a whole or within some bounding box (with and without clipping)
-- delete the XYZ space
-
-The example GeoJSON file is fetched from a third-party [GitHub account](https://github.com/johan/world.geo.json) and is rendered using [Leaflet](https://leafletjs.com) for simplicity.
-
-# ![Example map from xyzspaces demo.ipynb notebook](https://user-images.githubusercontent.com/30625612/88389592-63d6be00-cdd4-11ea-903b-15c7819d7e13.png)
+# ![Example from xyzspaces building_numbers.ipynb notebook](https://github.com/heremaps/xyz-spaces-python/raw/master/images/building_numbers.gif)
 
 
 ## Prerequisites
