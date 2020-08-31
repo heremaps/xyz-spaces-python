@@ -649,3 +649,33 @@ def test_add_features_geobuff(empty_space):
     space.add_features_geobuf(geobuff_file, features_size=500)
     stats = space.get_statistics()
     assert stats["count"]["value"] == 180
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_duplicate_properties(empty_space):
+    geojson_file = Path(__file__).parents[1] / "data" / "countries.geo.json"
+    with open(geojson_file) as f:
+        geojson = json.loads(f.read())
+    for f in geojson["features"]:
+        f.pop("id", None)
+        f["properties"]["test"] = "test"
+    empty_space.add_features(
+        geojson, features_size=100, id_properties=["name", "test"]
+    )
+    stats = empty_space.get_statistics()
+    assert stats["count"]["value"] == 180
+    assert (
+        empty_space.get_feature(feature_id="India-test")["type"] == "Feature"
+    )
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_duplicate(empty_space):
+    geojson_file = Path(__file__).parents[1] / "data" / "countries.geo.json"
+    with open(geojson_file) as f:
+        geojson = json.loads(f.read())
+    for f in geojson["features"]:
+        f.pop("id", None)
+    empty_space.add_features(geojson, features_size=100)
+    stats = empty_space.get_statistics()
+    assert stats["count"]["value"] == 180

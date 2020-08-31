@@ -26,7 +26,9 @@ dictionaries, like the "statistics" of some given XYZ space.
 """
 
 import concurrent.futures
+import copy
 import csv
+import hashlib
 import json
 import logging
 import tempfile
@@ -419,6 +421,8 @@ class Space:
         remove_tags: Optional[List[str]] = None,
         features_size: int = 2000,
         chunk_size: int = 1,
+        id_properties: Optional[List[str]] = None,
+        mutate: Optional[bool] = True,
     ) -> GeoJSON:
         """
         Add GeoJSON features to this space.
@@ -438,16 +442,27 @@ class Space:
         :param chunk_size: Number of chunks each process to handle. The default value is
             1, for a large number of features please use `chunk_size` greater than 1
             to get better results in terms of performance.
+        :param id_properties: List of properties name from which id to be generated
+            if id does not exists for a feature.
+        :param mutate: If True will update the existing features object passed,
+                    (significant performance increase if False)
         :return: A GeoJSON representing a feature collection.
         """
+
+        if not mutate:
+            features = copy.deepcopy(features)
+
         space_id = self._info["id"]
         total = 0
+        ids_map: Dict[str, str] = dict()
         if len(features["features"]) > features_size:
             groups = grouper(features_size, features["features"])
             part_func = partial(
                 self._upload_features,
+                ids_map=ids_map,
                 add_tags=add_tags,
                 remove_tags=remove_tags,
+                id_properties=id_properties,
             )
             with concurrent.futures.ProcessPoolExecutor() as executor:
                 for ft in executor.map(
@@ -457,9 +472,15 @@ class Space:
                     total += ft
             logger.info(f"{total} features are uploaded on space: {space_id}")
         else:
+            features = self._process_features(
+                features["features"], id_properties, ids_map
+            )
+            feature_collection = dict(
+                type="FeatureCollection", features=features
+            )
             res = self.api.put_space_features(
                 space_id=space_id,
-                data=features,
+                data=feature_collection,
                 add_tags=add_tags,
                 remove_tags=remove_tags,
             )
@@ -468,18 +489,55 @@ class Space:
     def _upload_features(
         self,
         features,
+        ids_map,
         add_tags: Optional[List[str]] = None,
         remove_tags: Optional[List[str]] = None,
+        id_properties: Optional[List[str]] = None,
     ):
-        features = [f for f in features if f]
-        feature_collection = dict(type="FeatureCollection", features=features)
+        features_list = self._process_features(
+            features, id_properties, ids_map
+        )
+        feature_collection = dict(
+            type="FeatureCollection", features=features_list
+        )
         self.api.put_space_features(
             space_id=self._info["id"],
             data=feature_collection,
             add_tags=add_tags,
             remove_tags=remove_tags,
         )
-        return len(features)
+        return len(features_list)
+
+    def _process_features(self, features, id_properties, ids_map):
+        features_list = []
+        for f in features:
+            if f:
+                if "id" not in f:
+                    if id_properties:
+                        f["id"] = self._gen_id_from_properties(
+                            f, id_properties
+                        )
+                    else:
+                        f["id"] = hashlib.md5(
+                            json.dumps(f, sort_keys=True).encode("utf-8")
+                        ).hexdigest()
+                if f["id"] not in ids_map:
+                    ids_map[f["id"]] = f
+                    features_list.append(f)
+                else:
+                    logger.info(
+                        f"feature with id {f['id']} is skipped due to duplicate id"
+                    )
+        return features_list
+
+    def _gen_id_from_properties(self, feature, id_properties):
+        values = []
+        if not feature.get("properties"):
+            raise Exception("Feature does not have properties")
+        for prop in id_properties:
+            properties = feature.get("properties", "")
+            values.append(properties.get(prop, ""))
+        return "-".join(filter(None, values))
 
     def update_features(
         self,
