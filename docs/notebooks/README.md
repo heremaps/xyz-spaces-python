@@ -6,8 +6,8 @@ Th XYZ Spaces for Python project includes several [Jupyter notebooks](https://ju
 
 Before you can use the example notebooks, make sure your system meets the following prerequisities:
 
-- A Python installation, 3.6+ recommended, with the `pip` command available to install dependencies
-- A HERE developer account, free and available under [HERE Developer Portal](https://developer.here.com)
+- A Python installation, 3.6+ recommended, with the `pip` command available to install dependencies.
+- A HERE developer account, free and available under [HERE Developer Portal](https://developer.here.com).
 - An XYZ API access token from your XYZ Hub server or the [XYZ portal](https://www.here.xyz) (see also its [Getting started](https://www.here.xyz/getting-started/) section) in an environment variable named `XYZ_TOKEN` which you can set like this (with a valid value, of course):
 
     ```bash
@@ -22,6 +22,7 @@ on your system.
 1. Copy the text below to a file named `viz.txt`.
 
 ```
+bqplot
 ipyleaflet
 ipyrest
 ipywidgets>=7.5.1
