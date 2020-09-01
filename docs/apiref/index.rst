@@ -3,8 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to xyzspaces's documentation!
-=====================================
+Documentation for xyzspaces
+===========================
+
+At the moment this consists only of this API reference which is automatically
+generated from the source code. Apart from this there are Jupyter notebooks
+to get started with some examples. A more prosaic documentation will hopefully
+follow, soon.
 
 .. toctree::
    :maxdepth: 4
