@@ -423,7 +423,7 @@ class Space:
         chunk_size: int = 1,
         id_properties: Optional[List[str]] = None,
         mutate: Optional[bool] = True,
-    ) -> GeoJSON:
+    ) -> GeoJSON:  # noqa DAR401
         """
         Add GeoJSON features to this space.
 
@@ -449,43 +449,54 @@ class Space:
                     may help to improving performance.
         :return: A GeoJSON representing a feature collection.
         """
+        if features.get("features"):
 
-        if not mutate:
-            features = copy.deepcopy(features)
+            if len(features["features"]) == 0:
+                raise Exception("Invalid FeatureCollection with zero features")
 
-        space_id = self._info["id"]
-        total = 0
-        ids_map: Dict[str, str] = dict()
-        if len(features["features"]) > features_size:
-            groups = grouper(features_size, features["features"])
-            part_func = partial(
-                self._upload_features,
-                ids_map=ids_map,
-                add_tags=add_tags,
-                remove_tags=remove_tags,
-                id_properties=id_properties,
-            )
-            with concurrent.futures.ProcessPoolExecutor() as executor:
-                for ft in executor.map(
-                    part_func, groups, chunksize=chunk_size
-                ):
-                    logger.info(f"features processed: {ft}")
-                    total += ft
-            logger.info(f"{total} features are uploaded on space: {space_id}")
+            if not mutate:
+                features = copy.deepcopy(features)
+
+            space_id = self._info["id"]
+            total = 0
+            ids_map: Dict[str, str] = dict()
+            if len(features["features"]) > features_size:
+                groups = grouper(features_size, features["features"])
+                part_func = partial(
+                    self._upload_features,
+                    ids_map=ids_map,
+                    add_tags=add_tags,
+                    remove_tags=remove_tags,
+                    id_properties=id_properties,
+                )
+                with concurrent.futures.ProcessPoolExecutor() as executor:
+                    for ft in executor.map(
+                        part_func, groups, chunksize=chunk_size
+                    ):
+                        logger.info(f"features processed: {ft}")
+                        total += ft
+                logger.info(
+                    f"{total} features are uploaded on space: {space_id}"
+                )
+            else:
+
+                features = self._process_features(
+                    features["features"], id_properties, ids_map
+                )
+                feature_collection = dict(
+                    type="FeatureCollection", features=features
+                )
+                res = self.api.put_space_features(
+                    space_id=space_id,
+                    data=feature_collection,
+                    add_tags=add_tags,
+                    remove_tags=remove_tags,
+                )
+                return GeoJSON(res)
         else:
-            features = self._process_features(
-                features["features"], id_properties, ids_map
+            return self.add_feature(
+                data=features, add_tags=add_tags, remove_tags=remove_tags
             )
-            feature_collection = dict(
-                type="FeatureCollection", features=features
-            )
-            res = self.api.put_space_features(
-                space_id=space_id,
-                data=feature_collection,
-                add_tags=add_tags,
-                remove_tags=remove_tags,
-            )
-            return GeoJSON(res)
 
     def _upload_features(
         self,
