@@ -1,10 +1,13 @@
 # XYZ Spaces for Python
+
+[![Documentation Status](https://readthedocs.org/projects/xyz-spaces-python/badge/?version=latest)](https://xyz-spaces-python.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.com/heremaps/xyz-spaces-python.svg?branch=master)](https://travis-ci.com/github/heremaps/xyz-spaces-python)
-[![PyPI](https://img.shields.io/pypi/v/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![PyPI - Status](https://img.shields.io/pypi/status/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/xyzspaces)](https://pypi.org/project/xyzspaces/)
+[![PyPI](https://img.shields.io/pypi/v/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![Downloads](https://pepy.tech/badge/xyzspaces)](https://pepy.tech/project/xyzspaces)
-[![Documentation Status](https://readthedocs.org/projects/xyz-spaces-python/badge/?version=latest)](https://xyz-spaces-python.readthedocs.io/en/latest/?badge=latest)
+[![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/xyzspaces)](https://anaconda.org/conda-forge/xyzspaces)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/xyzspaces)](https://anaconda.org/conda-forge/xyzspaces)
 [![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![LGTM alerts](https://img.shields.io/lgtm/alerts/g/heremaps/xyz-spaces-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/heremaps/xyz-spaces-python/alerts/)
 [![LGTM context](https://img.shields.io/lgtm/grade/python/g/heremaps/xyz-spaces-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/heremaps/xyz-spaces-python/context:python)
