@@ -445,7 +445,8 @@ class Space:
         :param id_properties: List of properties name from which id to be generated
             if id does not exists for a feature.
         :param mutate: If True will update the existing features object passed,
-                    (significant performance increase if False)
+                    this will prevent making copy of the features object which
+                    may help to improving performance.
         :return: A GeoJSON representing a feature collection.
         """
 
