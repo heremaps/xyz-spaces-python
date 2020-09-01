@@ -92,6 +92,7 @@ def test_add_feature(empty_space):
     # add features
     space.add_features(features=gj_countries)
     feature = space.get_feature(feature_id="FRA")
+    space.add_features(features=feature)
     assert type(feature) == GeoJSON
     assert feature["id"] == "FRA"
     del feature["id"]
