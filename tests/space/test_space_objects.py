@@ -59,6 +59,7 @@ def test_new_space():
     space_id = space.info["id"]
     # delete space
     space.delete()
+    sleep(0.5)
     assert space.info == {}
     with pytest.raises(ApiError):
         space.read(id=space_id)
@@ -68,7 +69,7 @@ def test_new_space():
 def test_create_delete_1(api):
     """Test create and delete a new space."""
     # create space
-    space = Space.new(title="Foo", description="Bar")
+    space = Space.new(title="Foo")
     sleep(0.5)
     assert space.info["title"] == "Foo"
     assert "id" in space.info
@@ -302,9 +303,8 @@ def test_virtual_space_merge(space_id, empty_space):
     # Creating duplicate space_id and checking post merge there are no duplicate features.
     empty_space.add_features(features=gj_countries)
     title = "Virtual Space to check merge operation"
-    description = "Test merge functionality of virtual space"
     kwargs = {"virtualspace": {"merge": [space_id, empty_space.info["id"]]}}
-    vspace = Space.virtual(title=title, description=description, **kwargs)
+    vspace = Space.virtual(title=title, **kwargs)
     feature = vspace.get_feature(feature_id="FRA")
     assert feature["properties"]["@ns:com:here:xyz"]["space"] is None
     vspace.delete()

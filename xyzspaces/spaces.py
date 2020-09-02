@@ -74,7 +74,7 @@ class Space:
     def new(
         cls,
         title: str,
-        description: str,
+        description: Optional[str] = None,
         space_id: Optional[str] = None,
         schema: str = None,
         enable_uuid: Optional[bool] = None,
@@ -100,8 +100,10 @@ class Space:
         """
         api = HubApi()
         obj = cls(api)
-        data: Dict[Any, Any] = {"title": title, "description": description}
+        data: Dict[Any, Any] = {"title": title}
 
+        if description is not None:
+            data["description"] = description
         if schema is not None:
             data.setdefault("processors", []).append(
                 {"id": "schema-validator", "params": dict(schema=schema)}
@@ -118,7 +120,10 @@ class Space:
 
     @classmethod
     def virtual(
-        cls, title: str, description: str, **kwargs: Dict[str, Dict]
+        cls,
+        title: str,
+        description: Optional[str] = None,
+        **kwargs: Dict[str, Dict],
     ) -> "Space":
         """Create a new virtual-space.
 
@@ -138,7 +143,9 @@ class Space:
         """
         api = HubApi()
         obj = cls(api)
-        data: Dict[str, Any] = {"title": title, "description": description}
+        data: Dict[str, Any] = {"title": title}
+        if description is not None:
+            data["description"] = description
         storage: Dict[str, Any] = dict(id="virtualspace")
         storage["params"] = kwargs
         data["storage"] = storage
