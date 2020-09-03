@@ -43,7 +43,7 @@ Before you can install this package, run its test-suite or use the example noteb
 
 ## Installation
 
-This package can be installed with `pip` from various sources:
+This package can be installed with `pip` or `conda` from various sources:
 
 - Install from its source repository on GitHub:
 
@@ -55,6 +55,11 @@ This package can be installed with `pip` from various sources:
 
     ```bash
     pip install xyzspaces
+    ```
+- Install from the [conda](https://anaconda.org/conda-forge/xyzspaces):
+
+    ```bash
+    conda install -c conda-forge xyzspaces
     ```
 
 If you want to run the test suite or experiment with the example notebooks bundled, you need to clone the whole repository:
