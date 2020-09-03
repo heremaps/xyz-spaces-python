@@ -15,6 +15,8 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/heremaps/xyz-spaces-python)](https://github.com/heremaps/xyz-spaces-python/graphs/contributors)
 [![Codecov](https://codecov.io/gh/heremaps/xyz-spaces-python/branch/master/graph/badge.svg)](https://codecov.io/gh/heremaps/xyz-spaces-python)
 [![Slack](https://img.shields.io/badge/heredev-datahub-00AFAA?logo=slack)](https://heredev.slack.com)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![commits since](https://img.shields.io/github/commits-since/heremaps/xyz-spaces-python/latest.svg)](https://github.com/heremaps/xyz-spaces-python/commits/master)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/heremaps/xyz-spaces-python/master)
 
 Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
@@ -56,7 +58,7 @@ This package can be installed with `pip` or `conda` from various sources:
     ```bash
     pip install xyzspaces
     ```
-- Install from the [conda](https://anaconda.org/conda-forge/xyzspaces):
+- Install with conda from the Anaconda [conda-forge channel](https://anaconda.org/conda-forge/xyzspaces):
 
     ```bash
     conda install -c conda-forge xyzspaces
