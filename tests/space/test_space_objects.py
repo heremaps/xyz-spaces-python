@@ -46,6 +46,7 @@ def test_create_from_id(api, space_id):
     assert space.info == api.get_space(space_id=space_id)
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_new_space():
     """Test create and delete a new space."""
@@ -59,7 +60,7 @@ def test_new_space():
     space_id = space.info["id"]
     # delete space
     space.delete()
-    sleep(0.5)
+    sleep(1)
     assert space.info == {}
     with pytest.raises(ApiError):
         space.read(id=space_id)
@@ -348,6 +349,7 @@ def test_spaces_list(space_id):
     assert len(spaces_list) > 0
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_update_space(space_id, empty_space):
     """Test update space title and description."""
@@ -487,11 +489,16 @@ def test_bulk_upload(space_object):
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_file_bulk_upload(space_object):
-    geo_file = Path(__file__).parents[1] / "data" / "road_traffic.geo.json"
-    space_object.add_features_geojson(geo_file, features_size=5000)
-    ft = space_object.get_feature("1158230457T")
+    geo_file = (
+        Path(__file__).parents[2]
+        / "xyzspaces"
+        / "datasets"
+        / "countries.geo.json"
+    )
+    space_object.add_features_geojson(geo_file, features_size=50)
+    ft = space_object.get_feature("IND")
     assert ft["type"] == "Feature"
-    assert ft["properties"]["segment"] == "1158230457T"
+    assert ft["properties"]["name"] == "India"
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -525,6 +532,7 @@ def test_schema_validation(space_object):
         assert resp["type"] == "ErrorResponse"
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_activity_log(activity_log_space):
     """Test activity log."""
@@ -652,6 +660,7 @@ def test_add_features_geobuff(empty_space):
     assert stats["count"]["value"] == 180
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_add_features_duplicate_properties(empty_space):
     geojson_file = Path(__file__).parents[1] / "data" / "countries.geo.json"
@@ -670,6 +679,7 @@ def test_add_features_duplicate_properties(empty_space):
     )
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_add_features_duplicate(empty_space):
     geojson_file = Path(__file__).parents[1] / "data" / "countries.geo.json"
