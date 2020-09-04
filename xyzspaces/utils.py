@@ -28,6 +28,7 @@ import warnings
 from itertools import zip_longest
 from typing import List, Optional
 
+import geopandas as gpd
 from geojson import Feature, FeatureCollection, Point, Polygon
 from shapely import geometry, wkt
 from turfpy.measurement import bbox, bbox_polygon, distance, length
@@ -234,3 +235,35 @@ def divide_bbox(
         except Exception:
             logger.debug("The intersection geometry is incorrect")
     return final
+
+
+def flatten_geometry(data: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """
+    Flatten the geometries in the given GeoPandas dataframe.
+    Flatten geometry is formed by extracting individual geometries from
+    GeometryCollection, MultiPoint, MultiLineString, MultiPolygon.
+
+    :param data: GeoPandas dataframe to be flatten
+    :return: Flat GeoPandas dataframe
+    """
+    geometry = data.geometry
+
+    flattened_geometry = []
+
+    flattened_gdf = gpd.GeoDataFrame()
+
+    for geom in geometry:
+        if geom.type in [
+            "GeometryCollection",
+            "MultiPoint",
+            "MultiLineString",
+            "MultiPolygon",
+        ]:
+            for subgeom in geom:
+                flattened_geometry.append(subgeom)
+        else:
+            flattened_geometry.append(geom)
+
+    flattened_gdf.geometry = flattened_geometry
+
+    return flattened_gdf

@@ -21,6 +21,7 @@ import json
 from pathlib import Path
 from time import sleep
 
+import geopandas as gpd
 import pytest
 from geojson import GeoJSON
 
@@ -690,3 +691,12 @@ def test_add_features_duplicate(empty_space):
     empty_space.add_features(geojson, features_size=100)
     stats = empty_space.get_statistics()
     assert stats["count"]["value"] == 180
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_geopandas(empty_space):
+    geojson_file = Path(__file__).parents[1] / "data" / "countries.geo.json"
+    df = gpd.read_file(geojson_file)
+    empty_space.add_features_geopandas(data=df)
+    stats = empty_space.get_statistics()
+    assert stats["count"]["value"] == 292
