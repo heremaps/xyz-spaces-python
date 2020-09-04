@@ -42,7 +42,7 @@ import geopandas as gpd
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
-from .utils import divide_bbox, grouper, wkt_to_geojson
+from .utils import divide_bbox, flatten_geometry, grouper, wkt_to_geojson
 
 logger = logging.getLogger(__name__)
 
@@ -1179,24 +1179,7 @@ class Space:
 
         gdf = gpd.read_file(path, driver="KML")
 
-        geometry = gdf.geometry
-        flattened_geometry = []
-
-        flattened_gdf = gpd.GeoDataFrame()
-
-        for geom in geometry:
-            if geom.type in [
-                "GeometryCollection",
-                "MultiPoint",
-                "MultiLineString",
-                "MultiPolygon",
-            ]:
-                for subgeom in geom:
-                    flattened_geometry.append(subgeom)
-            else:
-                flattened_geometry.append(geom)
-
-        flattened_gdf.geometry = flattened_geometry
+        flattened_gdf = flatten_geometry(gdf)
 
         with tempfile.NamedTemporaryFile() as temp:
             flattened_gdf.to_file(temp.name, driver="GeoJSON")
@@ -1228,3 +1211,28 @@ class Space:
             features_size=features_size,
             chunk_size=chunk_size,
         )
+
+    def add_features_geopandas(
+        self,
+        data: gpd.GeoDataFrame,
+        features_size: int = 2000,
+        chunk_size: int = 1,
+    ):
+        """
+        Add features from GeoPandas dataframe to a space.
+
+        :param data: GeoPandas dataframe to be uploaded
+        :param features_size: The number of features to upload at
+            a time.
+        :param chunk_size: Number of chunks for each process to handle. The default value
+            is 1, for a large number of features please use `chunk_size` greater than 1.
+        """
+        flattened_gdf = flatten_geometry(data)
+
+        with tempfile.NamedTemporaryFile() as temp:
+            flattened_gdf.to_file(temp.name, driver="GeoJSON")
+            self.add_features_geojson(
+                path=temp.name,
+                features_size=features_size,
+                chunk_size=chunk_size,
+            )
