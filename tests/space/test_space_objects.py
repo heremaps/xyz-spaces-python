@@ -110,9 +110,10 @@ def test_space_search(space_object):
     assert feats[0]["type"] == "Feature"
     assert len(feats) > 0
 
-    feats = list(space_object.search(limit=10))
-    assert feats[0]["type"] == "Feature"
-    assert len(feats) <= 10
+    feats = space_object.search(limit=10, geo_dataframe=True)
+    gdf = next(feats)
+    assert isinstance(gdf, gpd.GeoDataFrame)
+    assert gdf["name"][0] == "Afghanistan"
 
     feats = list(space_object.search(tags=["non-existing"]))
     assert len(feats) == 0
@@ -168,6 +169,10 @@ def test_space_feature_operations(space_object):
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_space_features_operations(space_object):
     """Test for get, add, update and delete features operations."""
+    gdf = space_object.get_features(
+        feature_ids=["DEU", "ITA"], geo_dataframe=True
+    )
+    assert isinstance(gdf, gpd.GeoDataFrame)
     # get two features
     data = space_object.get_features(feature_ids=["DEU", "ITA"])
     assert isinstance(data, GeoJSON)
@@ -191,9 +196,10 @@ def test_space_features_search_operations(space_object):
     assert len(bbox) == 15
     assert bbox[0]["type"] == "Feature"
 
-    tile = list(space_object.features_in_tile(tile_type="here", tile_id="12"))
-    assert len(tile) == 97
-    assert tile[0]["type"] == "Feature"
+    gdf = next(
+        space_object.features_in_bbox(bbox=[0, 0, 20, 20], geo_dataframe=True)
+    )
+    assert gdf.shape == (15, 3)
 
     spatial_search = list(
         space_object.spatial_search(
@@ -203,14 +209,30 @@ def test_space_features_search_operations(space_object):
     assert spatial_search[0]["type"] == "Feature"
     assert spatial_search[0]["id"] == "AFG"
 
+    ss_gdf = next(
+        space_object.spatial_search(
+            lat=37.377228699000057, lon=74.512691691000043, geo_dataframe=True
+        )
+    )
+    assert ss_gdf.shape == (1, 3)
+
     data1 = {"type": "Point", "coordinates": [72.8557, 19.1526]}
     spatial_search_geom = list(
         space_object.spatial_search_geometry(data=data1)
     )
     assert spatial_search_geom[0]["type"] == "Feature"
     assert spatial_search_geom[0]["id"] == "IND"
+    ss_gdf = next(
+        space_object.spatial_search_geometry(data=data1, geo_dataframe=True)
+    )
+    assert ss_gdf.shape == (1, 3)
     with pytest.raises(ValueError):
         list(space_object.features_in_tile(tile_type="dummy", tile_id="12"))
+    res = space_object.features_in_tile(
+        tile_type="here", tile_id="12", limit=10, geo_dataframe=True
+    )
+    gdf = next(res)
+    assert gdf.shape == (10, 3)
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
