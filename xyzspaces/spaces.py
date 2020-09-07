@@ -717,13 +717,13 @@ class Space:
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
 
-            - ``params={"p.name": "foo"}`` 
+            - ``params={"p.name": "foo"}``
               returns all features with a value of property ``name`` equal to ``foo``.
             - ``params={"p.name!": "foo"}``
               returns all features with a value of property ``name`` not qual to ``foo``.
             - ``params={"p.count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or equal
-              to ``10``.
+              returns all features with a value of property ``count`` greater than or
+              equal to ``10``.
             - ``params={"p.count=lte": "10"}``
               returns all features with a value of property ``count`` less than or equal
               to ``10``.
@@ -732,7 +732,8 @@ class Space:
             - ``params={"p.count=lt": "10"}``
               returns all features with a value of property ``count`` less than ``10``.
             - ``params={"p.name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains ``bar``.
+              returns all features with a value of property ``name`` which contains
+              ``bar``.
         :param selection: A list, only these properties will be returned in features
             result list.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
