@@ -236,21 +236,21 @@ def test_space_features_search_operations(space_object):
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
-def test_space_add_features_from_files_without_altitude(
-    space_object, tmp_path
-):
+def test_space_add_features_from_files_without_altitude(empty_space, tmp_path):
     """Test for adding features using csv and geojson."""
     fp_csv = Path(__file__).parents[1] / "data" / "test.csv"
-    space_object.add_features_csv(
-        fp_csv, lat_col="latitude", lon_col="longitude", id_col="policyID"
+    space = empty_space
+    space.add_features_csv(
+        fp_csv, lon_col="longitude", lat_col="latitude", id_col="policyID"
     )
-    feature = space_object.get_feature(feature_id="333743")
+    breakpoint()
+    feature = space.get_feature(feature_id="333743")
     assert feature["type"] == "Feature"
 
     fp_geojson = Path(__file__).parents[1] / "data" / "test.geojson"
-    space_object.add_features_geojson(fp_geojson)
+    space.add_features_geojson(fp_geojson)
 
-    feature = space_object.get_feature(feature_id="test_geojson_1")
+    feature = space.get_feature(feature_id="test_geojson_1")
     assert feature["type"] == "Feature"
     geo_data_dict = {
         "type": "Feature",
@@ -262,8 +262,8 @@ def test_space_add_features_from_files_without_altitude(
     temp_file = Path(tmp_path) / "temp.geojson"
     with open(temp_file, "w") as f:
         f.write(geo_data)
-    space_object.add_features_geojson(temp_file)
-    feature = space_object.get_feature(feature_id="test_id")
+    space.add_features_geojson(temp_file)
+    feature = space.get_feature(feature_id="test_id")
     assert feature["type"] == "Feature"
 
 
@@ -273,8 +273,8 @@ def test_space_add_features_from_files_with_altitude(space_object):
     fp_csv = Path(__file__).parents[1] / "data" / "test_altitude.csv"
     space_object.add_features_csv(
         fp_csv,
-        lat_col="latitude",
         lon_col="longitude",
+        lat_col="latitude",
         id_col="policyID",
         alt_col="altitude",
     )
@@ -491,7 +491,7 @@ def test_add_features_csv_exception(space_object, tmp_path):
         f.write(csv_data)
     with pytest.raises(Exception):
         space_object.add_features_csv(
-            temp_file, lon_col="", lat_col="", id_col=""
+            temp_file, lon_col="dummy_a", lat_col="dummy", id_col=""
         )
 
 
