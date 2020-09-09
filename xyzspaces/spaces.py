@@ -32,6 +32,7 @@ import hashlib
 import json
 import logging
 import tempfile
+from decimal import Decimal
 from functools import partial
 from multiprocessing import Manager
 from typing import Any, Dict, Generator, List, Optional, Union
@@ -39,6 +40,7 @@ from typing import Any, Dict, Generator, List, Optional, Union
 import fiona
 import geobuf
 import geopandas as gpd
+import ijson
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
@@ -973,23 +975,53 @@ class Space:
             a time.
         :param chunk_size: Number of chunks for each process to handle. The default value
             is 1, for a large number of features please use `chunk_size` greater than 1.
-        :raises Exception: If GeoJSON file does not contain Feature or FeatureCollection.
         """
+        is_feature_collection = False
         with open(path, encoding=encoding) as f:
-            features = json.load(f)
+            objects = ijson.items(f, "features.item")
+            count = 0
+            feature_list = []
+            for o in objects:
+                if not is_feature_collection:
+                    is_feature_collection = True
+                count += 1
+                feature_list.append(
+                    json.loads(
+                        json.dumps(
+                            o,
+                            default=lambda o: str(o)
+                            if isinstance(o, Decimal)
+                            else o,
+                        )
+                    )
+                )
 
-        if features["type"] == "Feature":
-            if "id" not in features:
-                raise Exception("Feature should have a id attribute")
-            self.add_feature(feature_id=features["id"], data=features)
-        elif features["type"] == "FeatureCollection":
-            self.add_features(
-                features, features_size=features_size, chunk_size=chunk_size
-            )
-        else:
-            raise Exception(
-                "The geojson file should contain either Feature or FeatureCollection"
-            )
+                if count == 10000:
+                    feature_collection = dict(
+                        type="FeatureCollection", features=feature_list
+                    )
+                    self.add_features(
+                        feature_collection,
+                        features_size=features_size,
+                        chunk_size=chunk_size,
+                    )
+                    count = 0
+                    feature_list = []
+
+            if len(feature_list) != 0:
+                feature_collection = dict(
+                    type="FeatureCollection", features=feature_list
+                )
+                self.add_features(
+                    feature_collection,
+                    features_size=features_size,
+                    chunk_size=chunk_size,
+                )
+
+        if not is_feature_collection:
+            with open(path, encoding=encoding) as f:
+                features = json.load(f)
+                self.add_feature(feature_id=features["id"], data=features)
 
     def add_features_csv(
         self,
