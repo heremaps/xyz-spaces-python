@@ -273,6 +273,7 @@ class Space:
         params: Optional[dict] = None,
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
+        geo_dataframe: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Search features for this space object.
@@ -282,32 +283,31 @@ class Space:
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
 
-            - If user provides ``params={"p.name": "foo"}``,
-              Then all features having value of property ``name`` equals ``foo`` will be
-              returned.
-            - If user provides ``params={"p.name!": "foo"}``,
-              Then all features having value of property ``name`` not quals to ``foo``
-              will be returned.
-            - If user provides ``params={"p.count=gte": "10"}``,
-              Then all features having value property ``count`` greater than quals
-              to ``10`` will be returned.
-            - If user provides ``params={"p.count=lte": "10"}``,
-              Then all features having value property ``count`` less than quals to ``10``
-              will be returned.
-            - If user provides ``params={"p.count=gt": "10"}``,
-              Then all features having value of property ``count`` greater than ``10``
-              will be returned.
-            - If user provides ``params={"p.count=lt": "10"}``,
-              Then all features having value of property ``count`` less than ``10``
-              will be returned.
-            - If user provides ``params={"p.name=cs": "bar"}``,
-              Then all features having value of property ``name`` which contains ``bar``
-              wiil be returned.
+            - ``params={"p.name": "foo"}``
+              returns all features with a value of property ``name`` equal to ``foo``.
+            - ``params={"p.name!": "foo"}``
+              returns all features with a value of property ``name`` not qual to ``foo``.
+            - ``params={"p.count=gte": "10"}``
+              returns all features with a value of property ``count`` greater than or
+              equal to ``10``.
+            - ``params={"p.count=lte": "10"}``
+              returns all features with a value of property ``count`` less than or equal
+              to ``10``.
+            - ``params={"p.count=gt": "10"}``
+              returns all features with a value of property ``count`` greater than ``10``.
+            - ``params={"p.count=lt": "10"}``
+              returns all features with a value of property ``count`` less than ``10``.
+            - ``params={"p.name=cs": "bar"}``
+              returns all features with a value of property ``name`` which contains
+              ``bar``.
         :param selection: A list, only these properties will be returned in features
             result list.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
             Default is ``False``.
-        :yields: A Feature object.
+        :param geo_dataframe: A boolean if set to ``True`` searched features will be
+            yield as single Geopandas Dataframe.
+        :yields: A Feature object by default. If param ``geo_dataframe`` is True then
+            yields single Geopandas Dataframe.
         """
         features = self.api.get_space_search(
             space_id=self._info["id"],
@@ -317,6 +317,8 @@ class Space:
             selection=selection,
             skip_cache=skip_cache,
         )
+        if geo_dataframe is not None:
+            yield gpd.GeoDataFrame.from_features(features=features["features"])
         for f in features["features"]:
             yield f
 
@@ -410,17 +412,24 @@ class Space:
             space_id=self._info["id"], feature_id=feature_id
         )
 
-    def get_features(self, feature_ids: List[str]) -> GeoJSON:
+    def get_features(
+        self, feature_ids: List[str], geo_dataframe: Optional[bool] = None
+    ) -> Union[GeoJSON, gpd.GeoDataFrame]:
         """
         Retrieve one GeoJSON feature with given ID from this space.
 
         :param feature_ids: A list of feature_ids.
+        :param geo_dataframe: A boolean if set to ``True`` features will be
+            returned as single Geopandas Dataframe.
         :return: A feature collection with all features inside the specified
-            space.
+            space. If param ``geo_dataframe`` is set to ``True`` then return features
+            in single Geopandas Dataframe.
         """
         res = self.api.get_space_features(
             space_id=self._info["id"], feature_ids=feature_ids
         )
+        if geo_dataframe is not None:
+            return gpd.GeoDataFrame.from_features(features=res["features"])
         return GeoJSON(res)
 
     def add_features(
@@ -613,6 +622,7 @@ class Space:
         skip_cache: Optional[bool] = None,
         clustering: Optional[str] = None,
         clustering_params: Optional[dict] = None,
+        geo_dataframe: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features inside some given bounding box.
@@ -626,34 +636,33 @@ class Space:
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
 
-            - If user provides ``params={"p.name": "foo"}``,
-              Then all features having value of property ``name`` equals ``foo`` will be
-              returned.
-            - If user provides ``params={"p.name!": "foo"}``,
-              Then all features having value of property ``name`` not quals to ``foo``
-              will be returned.
-            - If user provides ``params={"p.count=gte": "10"}``,
-              Then all features having value property ``count`` greater than quals
-              to ``10`` will be returned.
-            - If user provides ``params={"p.count=lte": "10"}``,
-              Then all features having value property ``count`` less than quals to ``10``
-              will be returned.
-            - If user provides ``params={"p.count=gt": "10"}``,
-              Then all features having value of property ``count`` greater than ``10``
-              will be returned.
-            - If user provides ``params={"p.count=lt": "10"}``,
-              Then all features having value of property ``count`` less than ``10``
-              will be returned.
-            - If user provides ``params={"p.name=cs": "bar"}``,
-              Then all features having value of property ``name`` which contains ``bar``
-              wiil be returned.
+            - ``params={"p.name": "foo"}``
+              returns all features with a value of property ``name`` equal to ``foo``.
+            - ``params={"p.name!": "foo"}``
+              returns all features with a value of property ``name`` not qual to ``foo``.
+            - ``params={"p.count=gte": "10"}``
+              returns all features with a value of property ``count`` greater than or
+              equal to ``10``.
+            - ``params={"p.count=lte": "10"}``
+              returns all features with a value of property ``count`` less than or equal
+              to ``10``.
+            - ``params={"p.count=gt": "10"}``
+              returns all features with a value of property ``count`` greater than ``10``.
+            - ``params={"p.count=lt": "10"}``
+              returns all features with a value of property ``count`` less than ``10``.
+            - ``params={"p.name=cs": "bar"}``
+              returns all features with a value of property ``name`` which contains
+              ``bar``.
         :param selection: A list, only these properties will be returned in features
             result list.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
             Default is ``False``.
         :param clustering: ...
         :param clustering_params: ...
-        :yields: A Feature object.
+        :param geo_dataframe: A boolean if set to ``True`` searched features will be
+            yield as single Geopandas Dataframe.
+        :yields: A Feature object by default. If param ``geo_dataframe`` is True then
+            yields single Geopandas Dataframe.
         """
         features = self.api.get_space_bbox(
             space_id=self._info["id"],
@@ -667,8 +676,12 @@ class Space:
             clustering=clustering,
             clusteringParams=clustering_params,
         )
-        for f in features["features"]:
-            yield f
+
+        if geo_dataframe is not None:
+            yield gpd.GeoDataFrame.from_features(features=features["features"])
+        else:
+            for f in features["features"]:
+                yield f
 
     def features_in_tile(
         self,
@@ -683,6 +696,7 @@ class Space:
         clustering_params: Optional[dict] = None,
         margin: Optional[int] = None,
         limit: Optional[int] = None,
+        geo_dataframe: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features in tile.
@@ -697,27 +711,23 @@ class Space:
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
 
-            - If user provides ``params={"p.name": "foo"}``,
-              Then all features having value of property ``name`` equals ``foo`` will be
-              returned.
-            - If user provides ``params={"p.name!": "foo"}``,
-              Then all features having value of property ``name`` not quals to ``foo``
-              will be returned.
-            - If user provides ``params={"p.count=gte": "10"}``,
-              Then all features having value property ``count`` greater than quals
-              to ``10`` will be returned.
-            - If user provides ``params={"p.count=lte": "10"}``,
-              Then all features having value property ``count`` less than quals to ``10``
-              will be returned.
-            - If user provides ``params={"p.count=gt": "10"}``,
-              Then all features having value of property ``count`` greater than ``10``
-              will be returned.
-            - If user provides ``params={"p.count=lt": "10"}``,
-              Then all features having value of property ``count`` less than ``10``
-              will be returned.
-            - If user provides ``params={"p.name=cs": "bar"}``,
-              Then all features having value of property ``name`` which contains ``bar``
-              wiil be returned.
+            - ``params={"p.name": "foo"}``
+              returns all features with a value of property ``name`` equal to ``foo``.
+            - ``params={"p.name!": "foo"}``
+              returns all features with a value of property ``name`` not qual to ``foo``.
+            - ``params={"p.count=gte": "10"}``
+              returns all features with a value of property ``count`` greater than or
+              equal to ``10``.
+            - ``params={"p.count=lte": "10"}``
+              returns all features with a value of property ``count`` less than or equal
+              to ``10``.
+            - ``params={"p.count=gt": "10"}``
+              returns all features with a value of property ``count`` greater than ``10``.
+            - ``params={"p.count=lt": "10"}``
+              returns all features with a value of property ``count`` less than ``10``.
+            - ``params={"p.name=cs": "bar"}``
+              returns all features with a value of property ``name`` which contains
+              ``bar``.
         :param selection: A list, only these properties will be returned in features
             result list.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -726,7 +736,10 @@ class Space:
         :param clustering_params: ...
         :param margin: ...
         :param limit: A max. number of features to return in the result.
-        :yields: A Feature object.
+        :param geo_dataframe: A boolean if set to ``True`` searched features will be
+            yield as single Geopandas Dataframe.
+        :yields: A Feature object by default. If param ``geo_dataframe`` is True then
+            yields single Geopandas Dataframe.
         :raises ValueError: If `tile_type` is invalid, valid tile_types are
              `quadkeys`, `web`, `tms` and `here`.
         """
@@ -745,8 +758,13 @@ class Space:
                 margin=margin,
                 limit=limit,
             )
-            for f in features["features"]:
-                yield f
+            if geo_dataframe is not None:
+                yield gpd.GeoDataFrame.from_features(
+                    features=features["features"]
+                )
+            else:
+                for f in features["features"]:
+                    yield f
         else:
             raise ValueError("Invalid value for parameter tile_type")
 
@@ -762,6 +780,7 @@ class Space:
         params: Optional[dict] = None,
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
+        geo_dataframe: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features with radius search.
@@ -782,31 +801,30 @@ class Space:
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
 
-            - If user provides ``params={"p.name": "foo"}``,
-              Then all features having value of property ``name`` equals ``foo`` will be
-              returned.
-            - If user provides ``params={"p.name!": "foo"}``,
-              Then all features having value of property ``name`` not quals to ``foo``
-              will be returned.
-            - If user provides ``params={"p.count=gte": "10"}``,
-              Then all features having value property ``count`` greater than quals
-              to ``10`` will be returned.
-            - If user provides ``params={"p.count=lte": "10"}``,
-              Then all features having value property ``count`` less than quals to ``10``
-              will be returned.
-            - If user provides ``params={"p.count=gt": "10"}``,
-              Then all features having value of property ``count`` greater than ``10``
-              will be returned.
-            - If user provides ``params={"p.count=lt": "10"}``,
-              Then all features having value of property ``count`` less than ``10``
-              will be returned.
-            - If user provides ``params={"p.name=cs": "bar"}``,
-              Then all features having value of property ``name`` which contains ``bar``
-              wiil be returned.
+            - ``params={"p.name": "foo"}``
+              returns all features with a value of property ``name`` equal to ``foo``.
+            - ``params={"p.name!": "foo"}``
+              returns all features with a value of property ``name`` not qual to ``foo``.
+            - ``params={"p.count=gte": "10"}``
+              returns all features with a value of property ``count`` greater than or
+              equal to ``10``.
+            - ``params={"p.count=lte": "10"}``
+              returns all features with a value of property ``count`` less than or equal
+              to ``10``.
+            - ``params={"p.count=gt": "10"}``
+              returns all features with a value of property ``count`` greater than ``10``.
+            - ``params={"p.count=lt": "10"}``
+              returns all features with a value of property ``count`` less than ``10``.
+            - ``params={"p.name=cs": "bar"}``
+              returns all features with a value of property ``name`` which contains
+              ``bar``.
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
-        :yields: A Feature object.
+        :param geo_dataframe: A boolean if set to ``True`` searched features will be
+            yield as single Geopandas Dataframe.
+        :yields: A Feature object by default. If param ``geo_dataframe`` is True then
+            yields single Geopandas Dataframe.
         """
         features = self.api.get_space_spatial(
             space_id=self._info["id"],
@@ -821,8 +839,11 @@ class Space:
             selection=selection,
             skip_cache=skip_cache,
         )
-        for f in features["features"]:
-            yield f
+        if geo_dataframe is not None:
+            yield gpd.GeoDataFrame.from_features(features=features["features"])
+        else:
+            for f in features["features"]:
+                yield f
 
     def spatial_search_geometry(
         self,
@@ -837,6 +858,7 @@ class Space:
         cell_width: Optional[float] = None,
         units: Optional[str] = "m",
         chunk_size: int = 1,
+        geo_dataframe: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Search features which intersect the provided geometry.
@@ -848,27 +870,23 @@ class Space:
         :param params: A dict to represent additional filter on features to be searched.
             Examples:
 
-            - If user provides ``params={"p.name": "foo"}``,
-              Then all features having value of property ``name`` equals ``foo`` will be
-              returned.
-            - If user provides ``params={"p.name!": "foo"}``,
-              Then all features having value of property ``name`` not quals to ``foo``
-              will be returned.
-            - If user provides ``params={"p.count=gte": "10"}``,
-              Then all features having value property ``count`` greater than quals
-              to ``10`` will be returned.
-            - If user provides ``params={"p.count=lte": "10"}``,
-              Then all features having value property ``count`` less than quals to ``10``
-              will be returned.
-            - If user provides ``params={"p.count=gt": "10"}``,
-              Then all features having value of property ``count`` greater than ``10``
-              will be returned.
-            - If user provides ``params={"p.count=lt": "10"}``,
-              Then all features having value of property ``count`` less than ``10``
-              will be returned.
-            - If user provides ``params={"p.name=cs": "bar"}``,
-              Then all features having value of property ``name`` which contains ``bar``
-              wiil be returned.
+            - ``params={"p.name": "foo"}``
+              returns all features with a value of property ``name`` equal to ``foo``.
+            - ``params={"p.name!": "foo"}``
+              returns all features with a value of property ``name`` not qual to ``foo``.
+            - ``params={"p.count=gte": "10"}``
+              returns all features with a value of property ``count`` greater than or
+              equal to ``10``.
+            - ``params={"p.count=lte": "10"}``
+              returns all features with a value of property ``count`` less than or equal
+              to ``10``.
+            - ``params={"p.count=gt": "10"}``
+              returns all features with a value of property ``count`` greater than ``10``.
+            - ``params={"p.count=lt": "10"}``
+              returns all features with a value of property ``count`` less than ``10``.
+            - ``params={"p.name=cs": "bar"}``
+              returns all features with a value of property ``name`` which contains
+              ``bar``.
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
@@ -880,7 +898,10 @@ class Space:
         :param chunk_size: Number of chunks each process to handle. The default value is
             1, for a large number of features please use `chunk_size` greater than 1
             to get better results in terms of performance.
-        :yields: A Feature object.
+        :param geo_dataframe: A boolean if set to ``True`` searched features will be
+            yield as single Geopandas Dataframe.
+        :yields: A Feature object by default. If param ``geo_dataframe`` is True then
+            yields as single Geopandas Dataframe.
         """
         if not divide:
             features = self.api.post_space_spatial(
@@ -893,8 +914,13 @@ class Space:
                 selection=selection,
                 skip_cache=skip_cache,
             )
-            for f in features["features"]:
-                yield f
+            if geo_dataframe is not None:
+                yield gpd.GeoDataFrame.from_features(
+                    features=features["features"]
+                )
+            else:
+                for f in features["features"]:
+                    yield f
         else:
             divide_features = divide_bbox(
                 Feature(geometry=data), cell_width, units
@@ -926,8 +952,11 @@ class Space:
                 each["id"]: each for each in feature_list
             }.values()
 
-            for f in unique_features:
-                yield f
+            if geo_dataframe is not None:
+                yield gpd.GeoDataFrame.from_features(features=unique_features)
+            else:
+                for f in unique_features:
+                    yield f
 
     def _spatial_search_geometry(
         self,
@@ -989,7 +1018,7 @@ class Space:
                     json.loads(
                         json.dumps(
                             o,
-                            default=lambda o: str(o)
+                            default=lambda o: float(o)
                             if isinstance(o, Decimal)
                             else o,
                         )

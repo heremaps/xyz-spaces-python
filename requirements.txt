@@ -4,4 +4,4 @@ requests
 geopandas
 turfpy>=0.0.3
 geobuf
-ijson
+ijson==3.1.1
