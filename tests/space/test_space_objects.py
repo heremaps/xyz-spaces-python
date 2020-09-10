@@ -243,7 +243,6 @@ def test_space_add_features_from_files_without_altitude(empty_space, tmp_path):
     space.add_features_csv(
         fp_csv, lon_col="longitude", lat_col="latitude", id_col="policyID"
     )
-    breakpoint()
     feature = space.get_feature(feature_id="333743")
     assert feature["type"] == "Feature"
 
@@ -273,8 +272,8 @@ def test_space_add_features_from_files_with_altitude(space_object):
     fp_csv = Path(__file__).parents[1] / "data" / "test_altitude.csv"
     space_object.add_features_csv(
         fp_csv,
-        lon_col="longitude",
         lat_col="latitude",
+        lon_col="longitude",
         id_col="policyID",
         alt_col="altitude",
     )
