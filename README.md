@@ -47,10 +47,10 @@ Before you can install this package, run its test-suite or use the example noteb
 
 This package can be installed with `pip` or `conda` from various sources:
 
-- Install from its source repository on GitHub:
+- Install with conda from the Anaconda [conda-forge channel](https://anaconda.org/conda-forge/xyzspaces):
 
     ```bash
-    pip install -e git+https://github.com/heremaps/xyz-spaces-python#egg=xyzspaces
+    conda install -c conda-forge xyzspaces
     ```
 
 - Install from the [Python Package Index](https://pypi.org/project/xyzspaces/):
@@ -58,10 +58,11 @@ This package can be installed with `pip` or `conda` from various sources:
     ```bash
     pip install xyzspaces
     ```
-- Install with conda from the Anaconda [conda-forge channel](https://anaconda.org/conda-forge/xyzspaces):
+
+- Install from its source repository on GitHub:
 
     ```bash
-    conda install -c conda-forge xyzspaces
+    pip install -e git+https://github.com/heremaps/xyz-spaces-python#egg=xyzspaces
     ```
 
 If you want to run the test suite or experiment with the example notebooks bundled, you need to clone the whole repository:
@@ -112,13 +113,12 @@ bash scripts/build_apiref.sh
 The following is a tiny "Hello World"-like example that you can run to have a successful first XYZ experience right after installation! Just make sure to use your own real XYZ token!
 
 ```python
-import json
 import geojson
-import xyzspaces as xyz
+import xyzspaces
 
-xyz = xyz.XYZ(credentials="MY_XYZ_TOKEN")
+xyz = xyzspaces.XYZ(credentials="MY_XYZ_TOKEN")
 
-# Creating a New Space
+# Create a New Space
 title = "My Demo Space"
 description = "Description as markdown"
 space = xyz.spaces.new(title=title, description=description)
@@ -141,9 +141,9 @@ feature =  {
 
 feature_id = space.add_features(features=geojson.FeatureCollection([feature]))["features"][0]["id"]
 
-# Reading a Feature from a Space
+# Read a Feature from a Space
 feature = space.get_feature(feature_id=feature_id)
-print(json.dumps(feature, indent=4, sort_keys=True))
+print(geojson.dumps(feature, indent=4, sort_keys=True))
 ```
 
 ### Logging Configuration
@@ -156,7 +156,7 @@ from xyzspaces import setup_logging
 
 setup_logging(default_level=logging.DEBUG)
 ```
-Default logging configuration is defined in [file](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json)
+Default logging configuration is defined in a [file](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json).
 
 This ensures that log messages will be written to the file `xyz.log` in your current working directory.
 
