@@ -172,3 +172,22 @@ def large_data_space():
 
     # now teardown (delete temporary space)
     space.delete()
+
+
+@pytest.fixture()
+def schema_validation_space():
+    """Creat a space with schema validation."""
+    schema = (
+        '{"definitions":{},"$schema":"http://json-schema.org/draft-07/schema#",'
+        '"$id":"http://example.com/root.json","type":"object",'
+        '"title":"TheRootSchema","required":["geometry","type","properties"]}'
+    )
+    space = Space.new(
+        title="test schema validation space",
+        description="test schema validation space",
+        schema=schema,
+    )
+    yield space
+
+    # now teardown (delete temporary space)
+    space.delete()
