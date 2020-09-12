@@ -39,7 +39,7 @@ def test_get_spaces(api):
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_get_space(api, space_id):
     """Get single feature from space."""
-    space = api.get_space(space_id=space_id)
+    space = api.get_space(space_id=space_id, params={})
     assert "id" in space
 
 
