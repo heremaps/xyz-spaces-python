@@ -176,7 +176,7 @@ def large_data_space():
 
 @pytest.fixture()
 def schema_validation_space():
-    """Creat a space with schema validation."""
+    """Create a space with schema validation."""
     schema = (
         '{"definitions":{},"$schema":"http://json-schema.org/draft-07/schema#",'
         '"$id":"http://example.com/root.json","type":"object",'
