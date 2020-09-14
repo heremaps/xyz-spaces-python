@@ -21,7 +21,11 @@
 
 Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) or [HERE Data Hub](https://developer.here.com/products/data-hub) spaces from Python.
 
-XYZ is an Open Source, real-time, cloud database system providing access to large geospatial data at scale. An XYZ "Hub" manages "spaces" that contain "features" (geodata "records") with tags and properties, with spaces and features having unique IDs. A RESTful API exists to provide low-level access to interact with a XYZ Hub. This Python package allows to interact with your XYZ spaces and features on a given Hub using a higher level programmatic interface that wraps the RESTful API. Using this package you can:
+## Motivation
+
+XYZ is an Open Source, real-time, cloud database system providing access to large geospatial data at scale. An XYZ "Hub" manages "spaces" that contain "features" (geodata "records") with tags and properties, with spaces and features having unique IDs. A RESTful API exists to provide low-level access to interact with a XYZ Hub.
+
+This Python package allows to interact with your XYZ spaces and features on a given Hub using a higher level programmatic interface that wraps the RESTful API. Using this package you can:
 
 - Create, read, list, update, share, delete spaces (also: get space info and stats).
 - Add, read, update, iterate, search, cluster (hex/quad bins), delete features.
@@ -29,8 +33,8 @@ XYZ is an Open Source, real-time, cloud database system providing access to larg
 
 Based on the XYZ Hub the HERE Data Hub is a commercial service (with a free plan), that offers some additional features (in a pro plan), like clustering, virtual spaces, activity logs, and likely more to come.
 
-The GIF below shows an interaction with the notebook in [docs/notebooks/building_numbers.ipynb](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/building_numbers.ipynb),
-which demonstrates how to use a spatial search on a big public dataset, loaded from the HERE [Data Hub](https://here.xyz).
+The GIF below shows an interaction with an [example notebook](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/building_numbers.ipynb),
+demonstrating how to use a spatial search on a big public dataset, loaded from the HERE [Data Hub](https://here.xyz).
 
 # ![Example from xyzspaces building_numbers.ipynb notebook](https://github.com/heremaps/xyz-spaces-python/raw/master/images/building_numbers.gif)
 
