@@ -349,7 +349,7 @@ class Space:
 
     def add_feature(
         self,
-        data: GeoJSON,
+        data: Union[GeoJSON, Dict],
         feature_id: Optional[str] = None,
         add_tags: Optional[List[str]] = None,
         remove_tags: Optional[List[str]] = None,

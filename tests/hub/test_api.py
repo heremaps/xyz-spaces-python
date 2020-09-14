@@ -35,6 +35,10 @@ def test_get_hub_info(api):
     assert "reporter" in hub
     assert "status" in hub
     assert "schemaVersion" in hub
+    hub = api.get_hub(params={})
+    assert "reporter" in hub
+    assert "status" in hub
+    assert "schemaVersion" in hub
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
