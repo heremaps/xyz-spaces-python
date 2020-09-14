@@ -604,7 +604,7 @@ def test_add_features_shapefile(empty_space):
     """Test uploading shapefile to the space."""
     space = empty_space
     shapefile = Path(__file__).parents[1] / "data" / "stations.zip"
-    space.add_features_shapefile(f"zip://{shapefile}", crs="EPSG:4326")
+    space.add_features_shapefile(f"zip://{shapefile}")
     resp = space.search(params={"p.name": "Van Dorn Street"})
     flist = list(resp)
     assert flist[0]["geometry"]["coordinates"] == [
@@ -721,3 +721,18 @@ def test_add_features_geopandas(empty_space):
     empty_space.add_features_geopandas(data=df)
     stats = empty_space.get_statistics()
     assert stats["count"]["value"] == 292
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_shapefile_diff_projection(empty_space):
+    """Test uploading shapefile to the space with different projection."""
+    space = empty_space
+    shapefile = Path(__file__).parents[1] / "data" / "stations-32633.zip"
+    space.add_features_shapefile(f"zip://{shapefile}")
+    resp = space.search(params={"p.name": "Van Dorn Street"})
+    flist = list(resp)
+    assert flist[0]["geometry"]["coordinates"] == [
+        -77.12911152,
+        38.79930767,
+        0,
+    ]
