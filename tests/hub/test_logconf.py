@@ -17,6 +17,7 @@
 
 """This module tests logging configuration."""
 
+import logging
 import os
 from pathlib import Path
 
@@ -24,6 +25,15 @@ import pytest
 
 from xyzspaces.exceptions import ApiError
 from xyzspaces.logconf import setup_logging
+
+
+def test_setup_logging_file_invalid(caplog):
+    """Test logging setup when logging config file is not present."""
+    setup_logging(default_path="dummy", default_level=logging.INFO)
+    with caplog.at_level(logging.INFO):
+        logger = logging.getLogger(__name__)
+        logger.info("Testing logging on standard output")
+    assert "Testing logging on standard output" in caplog.text
 
 
 def test_setup_logging_json(api):

@@ -101,6 +101,8 @@ def test_add_feature(empty_space):
     del feature["id"]
     resp = space.add_feature(data=feature)
     assert type(resp["features"][0]["id"]) == str
+    with pytest.raises(Exception):
+        space.add_features(data={"features": [], "type": "FeatureCollection"})
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -233,6 +235,11 @@ def test_space_features_search_operations(space_object):
     )
     gdf = next(res)
     assert gdf.shape == (10, 3)
+    res = space_object.features_in_tile(
+        tile_type="here", tile_id="12", limit=10
+    )
+    features = list(res)
+    assert features[0]["id"] == "AFG"
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -554,6 +561,32 @@ def test_schema_validation(space_object):
         assert resp["type"] == "ErrorResponse"
 
 
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_schema_validation_new_space(schema_validation_space):
+    """Test schema validation when creating a new space."""
+    space = schema_validation_space
+    feature_collection = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [15.8319, -2.5913],
+                },
+                "type": "Feature",
+                "properties": {"name": "Audi"},
+            },
+            {"type": "Feature", "properties": {"name": "Tesla"}},
+        ],
+    }
+
+    try:
+        space.add_features(features=feature_collection)
+    except Exception as e:
+        resp = e.args[0].json()
+        assert resp["type"] == "ErrorResponse"
+
+
 @pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_activity_log(activity_log_space):
@@ -624,6 +657,20 @@ def test_add_features_wktfile(empty_space):
     for f in space.iter_feature():
         features.append(f)
     assert len(features) == 6
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_add_features_wktfile_single_feature(empty_space, tmp_path):
+    """Test uploading single feature in WKT file."""
+    space = empty_space
+    temp_file = Path(tmp_path) / "temp.wkt"
+    with open(temp_file, "w") as f:
+        f.write("POLYGON ((-80 25, -65 18, -64 32, -80 25))")
+    space.add_features_wkt(path=temp_file)
+    features = []
+    for f in space.iter_feature():
+        features.append(f)
+    assert len(features) == 1
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -721,6 +768,14 @@ def test_add_features_geopandas(empty_space):
     empty_space.add_features_geopandas(data=df)
     stats = empty_space.get_statistics()
     assert stats["count"]["value"] == 292
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test__gen_id_from_properties_exception():
+    """Test exception is raised when feature has no properties."""
+    space = Space()
+    with pytest.raises(Exception):
+        space._gen_id_from_properties(feature={}, id_properties=[])
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")

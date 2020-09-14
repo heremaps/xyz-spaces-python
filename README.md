@@ -11,15 +11,15 @@
 [![PyPI - License](https://img.shields.io/pypi/l/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![LGTM alerts](https://img.shields.io/lgtm/alerts/g/heremaps/xyz-spaces-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/heremaps/xyz-spaces-python/alerts/)
 [![LGTM context](https://img.shields.io/lgtm/grade/python/g/heremaps/xyz-spaces-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/heremaps/xyz-spaces-python/context:python)
-[![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Fxyz.api.here.com%2Fhub%2Fstatic%2Fopenapi%2Fstable.yaml)](https://xyz.api.here.com/hub/static/openapi/stable.yaml)
+[![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Fxyz.api.here.com%2Fhub%2Fstatic%2Fopenapi%2Fstable.yaml)](https://xyz.api.here.com/hub/static/swagger/)
 [![GitHub contributors](https://img.shields.io/github/contributors/heremaps/xyz-spaces-python)](https://github.com/heremaps/xyz-spaces-python/graphs/contributors)
 [![Codecov](https://codecov.io/gh/heremaps/xyz-spaces-python/branch/master/graph/badge.svg)](https://codecov.io/gh/heremaps/xyz-spaces-python)
 [![Slack](https://img.shields.io/badge/heredev-datahub-00AFAA?logo=slack)](https://heredev.slack.com)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![commits since](https://img.shields.io/github/commits-since/heremaps/xyz-spaces-python/latest.svg)](https://github.com/heremaps/xyz-spaces-python/commits/master)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/heremaps/xyz-spaces-python/master)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/heremaps/xyz-spaces-python/master?urlpath=lab/tree/docs/notebooks)
 
-Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) server or [HERE Data Hub](https://developer.here.com/products/data-hub) from Python.
+Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) or [HERE Data Hub](https://developer.here.com/products/data-hub) spaces from Python.
 
 The GIF below is a short recording of an interaction with the notebook in [docs/notebooks/building_numbers.ipynb](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/building_numbers.ipynb),
 which demonstrates how to use a spatial search on a big public dataset, loaded from the HERE [Data Hub](https://here.xyz).
@@ -47,10 +47,10 @@ Before you can install this package, run its test-suite or use the example noteb
 
 This package can be installed with `pip` or `conda` from various sources:
 
-- Install from its source repository on GitHub:
+- Install with conda from the Anaconda [conda-forge channel](https://anaconda.org/conda-forge/xyzspaces):
 
     ```bash
-    pip install -e git+https://github.com/heremaps/xyz-spaces-python#egg=xyzspaces
+    conda install -c conda-forge xyzspaces
     ```
 
 - Install from the [Python Package Index](https://pypi.org/project/xyzspaces/):
@@ -58,10 +58,11 @@ This package can be installed with `pip` or `conda` from various sources:
     ```bash
     pip install xyzspaces
     ```
-- Install with conda from the Anaconda [conda-forge channel](https://anaconda.org/conda-forge/xyzspaces):
+
+- Install from its source repository on GitHub:
 
     ```bash
-    conda install -c conda-forge xyzspaces
+    pip install -e git+https://github.com/heremaps/xyz-spaces-python#egg=xyzspaces
     ```
 
 If you want to run the test suite or experiment with the example notebooks bundled, you need to clone the whole repository:
@@ -112,18 +113,17 @@ bash scripts/build_apiref.sh
 The following is a tiny "Hello World"-like example that you can run to have a successful first XYZ experience right after installation! Just make sure to use your own real XYZ token!
 
 ```python
-import json
 import geojson
-import xyzspaces as xyz
+import xyzspaces
 
-xyz = xyz.XYZ(credentials="MY_XYZ_TOKEN")
+xyz = xyzspaces.XYZ(credentials="MY_XYZ_TOKEN")
 
-# Creating a New Space
+# Create a New Space
 title = "My Demo Space"
-description = "Description as markdown"
+description = "My Description"
 space = xyz.spaces.new(title=title, description=description)
 
-# Add a Feature to a Space
+# Define a New Feature
 feature =  {
     "type": "Feature",
     "properties": {"party": "Republican"},
@@ -139,11 +139,12 @@ feature =  {
     }
 }
 
+# Save it to a Space and get its ID
 feature_id = space.add_features(features=geojson.FeatureCollection([feature]))["features"][0]["id"]
 
-# Reading a Feature from a Space
+# Read a Feature from a Space
 feature = space.get_feature(feature_id=feature_id)
-print(json.dumps(feature, indent=4, sort_keys=True))
+print(geojson.dumps(feature, indent=4, sort_keys=True))
 ```
 
 ### Logging Configuration
@@ -156,7 +157,7 @@ from xyzspaces import setup_logging
 
 setup_logging(default_level=logging.DEBUG)
 ```
-Default logging configuration is defined in [file](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json)
+Default logging configuration is defined in a [file](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json).
 
 This ensures that log messages will be written to the file `xyz.log` in your current working directory.
 
