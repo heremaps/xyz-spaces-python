@@ -21,6 +21,9 @@
 
 Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) or [HERE Data Hub](https://developer.here.com/products/data-hub) spaces from Python.
 
+<b>FEATURED IN: [Online Python Machine Learning Conference &amp; GeoPython 2020](http://2020.geopython.net/), Sept 21, 2020, see [conference schedule](http://2020.geopython.net/schedule.html).</b>
+
+
 ## Motivation
 
 XYZ is an Open Source, real-time, cloud database system providing access to large geospatial data at scale. An XYZ "Hub" manages "spaces" that contain "features" (geodata "records") with tags and properties, with spaces and features having unique IDs. A RESTful API exists to provide low-level access to interact with a XYZ Hub.
