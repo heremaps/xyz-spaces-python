@@ -1,1 +1,0 @@
-Released v0.3.2 on Anaconda [conda-forge](https://anaconda.org/conda-forge/xyzspaces) channel.

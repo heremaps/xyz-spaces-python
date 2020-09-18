@@ -1,1 +1,0 @@
-Enabled property search while searching features in tile.

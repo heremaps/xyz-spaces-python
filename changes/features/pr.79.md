@@ -1,1 +1,0 @@
-Improvement in the performance of `add_features_geojson`

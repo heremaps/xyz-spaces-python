@@ -1,1 +1,0 @@
-`description` is optional when creating the space.

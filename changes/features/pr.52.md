@@ -1,1 +1,0 @@
-Added `limit` param to method `iter_feature` to control numer of features to iterate in single call.
