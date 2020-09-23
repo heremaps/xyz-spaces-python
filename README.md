@@ -93,34 +93,15 @@ If you want to run the test suite or experiment with the example notebooks bundl
     ```bash
     cd xyzspaces
     ```
-
-See the next section for how to run the test suite.
-
-## Test Suite
-
-You can run the test suite locally:
-
-```bash
-pip install -r requirements_dev.txt
-pytest -v --cov=xyzspaces tests
-```
-
-The test suite provides test coverage of around 90% (but less if the tests cannot find your credentials).
-
+  
 ## Documentation
 
-For now, the documentation consists of a small number of example Jupyter notebooks in the [docs/notebooks](https://github.com/heremaps/xyz-spaces-python/tree/master/docs/notebooks) directory plus an [API reference](https://xyz-spaces-python.readthedocs.io/en/latest/index.html), which is automatically generated from the docstrings in the code.
+Documentation is hosted [here](https://xyz-spaces-python.readthedocs.io/en/latest/index.html).
 
-### Jupyter Notebooks
-
-See [docs/notebooks/README.md](https://github.com/heremaps/xyz-spaces-python/blob/master/docs/notebooks/README.md) to learn how to install and use the example Jupyter notebooks.
-
-### API Reference
-
-To generate the API reference locally in `docs/apiref/_build/html` run this command:
+To build the docs locally run:
 
 ```bash
-bash scripts/build_apiref.sh
+bash scripts/build_docs.sh
 ```
 
 ### Hello World Example
@@ -160,34 +141,6 @@ feature_id = space.add_features(features=geojson.FeatureCollection([feature]))["
 # Read a Feature from a Space
 feature = space.get_feature(feature_id=feature_id)
 print(geojson.dumps(feature, indent=4, sort_keys=True))
-```
-
-### Logging Configuration
-
-By default logging is disabled. To enable logging, use below code snippets in your python code to setup logging at DEBUG level:
-
-```python
-import logging
-from xyzspaces import setup_logging
-
-setup_logging(default_level=logging.DEBUG)
-```
-Default logging configuration is defined in a [file](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json).
-
-This ensures that log messages will be written to the file `xyz.log` in your current working directory.
-
-Here is an example log file (`xyz.log`):
-
-```text
-2020-02-21 17:55:46,132 - apis.py:130 - ERROR - Curl command: curl --request GET https://xyz.api.here.com/hub/spaces/dummy-111 --header "Authorization: Bearer <XYZ_TOKEN>"
-2020-02-21 17:55:46,133 - apis.py:131 - ERROR - Response status code: 404
-2020-02-21 17:55:46,133 - apis.py:132 - ERROR - Response headers: {'Content-Type': 'application/json', 'Content-Length': '150', 'Connection': 'keep-alive', 'Date': 'Fri, 21 Feb 2020 12:25:46 GMT', 'x-amzn-RequestId': '397c8039-79f1-4956-bbe4-46ca78c7ec2d', 'content-encoding': 'gzip', 'Stream-Id': '397c8039-79f1-4956-bbe4-46ca78c7ec2d', 'x-amzn-Remapped-Content-Length': '150', 'x-amzn-Remapped-Connection': 'keep-alive', 'x-amz-apigw-id': 'IPzblGVFjoEF5pg=', 'x-amzn-Remapped-Date': 'Fri, 21 Feb 2020 12:25:46 GMT', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 e25383e25378de918d3b187b3239eb5b.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM51-C2', 'X-Amz-Cf-Id': 'nZAJUB_FBiHdojziSoG3SBcMdf8rNyHuOMSlJljyxDNlx1I0O3t9YQ=='}
-2020-02-21 17:55:46,134 - apis.py:133 - ERROR - Response text: {"type":"ErrorResponse","error":"Exception","errorMessage":"The requested resource does not exist.","streamId":"397c8039-79f1-4956-bbe4-46ca78c7ec2d"}
-```
-To customize the logging configuration, set the variable `XYZ_LOG_CONFIG` to hold the full path of the logging configuration options file [logging_config.json](https://github.com/heremaps/xyz-spaces-python/blob/master/xyzspaces/config/logconfig.json):
-
-```bash
-export XYZ_LOG_CONFIG=~/logging_config.json
 ```
 
 # License

@@ -13,6 +13,7 @@ script:
 - mkdir public
 - pytest -v --durations=10 --cov-report=xml --cov=xyzspaces tests
 - make draft_changelog
+- sh scripts/build_docs.sh
 deploy:
   provider: pypi
   username: __token__

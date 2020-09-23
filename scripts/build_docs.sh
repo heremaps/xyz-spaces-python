@@ -20,8 +20,7 @@
 # If the search path in conf.py is not set-up this will inspect the installed
 # xyzspaces package, not the local code in the xyzspaces subfolder!
 
-export DEST=docs/apiref
-rm -f $DEST/*.rst
+export DEST=docs/source
 rm -rf $DEST/_build
 rm -rf $DEST/_static
 rm -rf $DEST/_templates
