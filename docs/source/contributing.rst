@@ -45,7 +45,7 @@ There are seven basic steps to contributing to *xyzspaces*:
 2) Create a development environment
 3) Install *xyzspaces* dependencies
 4) Make changes to code and add tests
-5) Run liniting
+5) Run linting
 6) Update the documentation
 7) Submit a Pull Request
 
@@ -216,7 +216,7 @@ install *xyzspaces*) by typing::
 
     pytest -v --cov=xyzspaces tests
 
-5) Run liniting
+5) Run linting
 ----------------
 For linting please refer :ref:`contributing style <contributing_style>`
 
@@ -259,7 +259,7 @@ submitting code to run the check yourself. To autoformat the code run::
 
     make black
 
-To check liniting errors run::
+To check linting errors run::
 
     make lint
 
