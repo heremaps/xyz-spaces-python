@@ -5,7 +5,7 @@ black==19.10b0
 mypy
 proclamation
 proxy.py
-pytest>=5.4.3,<=6.0.2 # https://github.com/pytest-dev/pytest-rerunfailures/issues/128
+pytest>=5.4.3
 pytest-cov
 pytest-mypy
 pytest-rerunfailures
