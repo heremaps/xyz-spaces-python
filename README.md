@@ -5,7 +5,6 @@
 [![PyPI - Status](https://img.shields.io/pypi/status/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![PyPI - Python Version](https://img.shields.io/pypi/v/xyzspaces.svg?logo=pypi)](https://pypi.org/project/xyzspaces/)
 [![PyPI - Implementation](https://img.shields.io/pypi/implementation/xyzspaces)](https://pypi.org/project/xyzspaces/)
-[![PyPI](https://img.shields.io/pypi/v/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![Downloads](https://pepy.tech/badge/xyzspaces)](https://pepy.tech/project/xyzspaces)
 [![Conda (channel only)](https://img.shields.io/conda/vn/conda-forge/xyzspaces?logo=conda-forge)](https://anaconda.org/conda-forge/xyzspaces)
 [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/xyzspaces)](https://anaconda.org/conda-forge/xyzspaces)
