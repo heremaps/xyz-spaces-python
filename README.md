@@ -1,7 +1,7 @@
 # XYZ Spaces for Python
 
 [![Documentation Status](https://img.shields.io/readthedocs/xyz-spaces-python?logo=read-the-docs)](https://xyz-spaces-python.readthedocs.io/en/latest/?badge=latest)
-[![Build Status](https://img.shields.io/travis/heremaps/xyz-spaces-python/master.svg?logo=travis)](https://travis-ci.com/github/heremaps/xyz-spaces-python)
+[![Build Status](https://travis-ci.com/heremaps/xyz-spaces-python.svg?branch=master)](https://travis-ci.com/github/heremaps/xyz-spaces-python)
 [![PyPI - Status](https://img.shields.io/pypi/status/xyzspaces)](https://pypi.org/project/xyzspaces/)
 [![PyPI - Python Version](https://img.shields.io/pypi/v/xyzspaces.svg?logo=pypi)](https://pypi.org/project/xyzspaces/)
 [![PyPI - Implementation](https://img.shields.io/pypi/implementation/xyzspaces)](https://pypi.org/project/xyzspaces/)
