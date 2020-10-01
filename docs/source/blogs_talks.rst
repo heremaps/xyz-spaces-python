@@ -1,11 +1,9 @@
 Blogs and Talks
 ===============
-This section showcases various use cases of ``xyzspaces`` presented through blogs and talks at the various python
-conferences.
+Various blog posts and conference presentations about ``xyzspaces``:
 
 Blogs
 -----
-Below are various use cases of ``xyzspaces``:
 
 - `A simple way to build your own 3D map with Coloured LIDAR point clouds using xyzspaces`_.
 
@@ -14,7 +12,6 @@ Below are various use cases of ``xyzspaces``:
 
 Talks
 -----
-Below are conferences in which ``xyzspaxces`` was presented:
 
 - `Online Python Machine Learning Conference & GeoPython 2020`_
 
