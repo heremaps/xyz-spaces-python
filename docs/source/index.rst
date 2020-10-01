@@ -45,6 +45,7 @@ Based on the XYZ Hub the HERE Data Hub is a commercial service (with a free plan
 
   Tests <tests>
   Changelog <changelog>
+  Blogs and Talks <blogs_talks>
 
 .. toctree::
   :maxdepth: 1
