@@ -17,11 +17,16 @@
 
 """Module for testing various endpoints of the XYZ API class."""
 
+import random
+
+import backoff
 import pytest
+import requests
 
 # from fixtures import api, space_id  # noqa
 from xyzspaces.apis import HubApi
 from xyzspaces.datasets import get_countries_data
+from xyzspaces.exceptions import TooManyRequestsException
 from xyzspaces.utils import get_xyz_token
 
 XYZ_TOKEN = get_xyz_token()
@@ -156,3 +161,21 @@ def test_round_trip2(api, space_id):
 
     data = dict(type="FeatureCollection", features=[deu, ita])
     api.post_space_features(space_id=space_id, data=data)
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_backoff():
+    """Test backoff/retry an external (non XYZ-Hub) API call."""
+
+    @backoff.on_exception(backoff.expo, TooManyRequestsException)
+    def backoff_api_call():
+        if random.random() > 0.7:
+            resp = requests.get("http://httpstat.us/200")
+        else:
+            resp = requests.get("http://httpstat.us/429")
+        if resp.status_code == 429:
+            raise TooManyRequestsException(resp)
+        else:
+            return "success"
+
+    assert backoff_api_call() == "success"
