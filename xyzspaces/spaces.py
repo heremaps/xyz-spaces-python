@@ -1327,7 +1327,7 @@ class Space:
                 chunk_size=chunk_size,
             )
 
-    def clone(self, space_id: str = None):
+    def clone(self, space_id: str = None, limit:int =1000):
         """
         To copy current space data into a new space.
 
@@ -1343,9 +1343,9 @@ class Space:
             clone_space = Space.new(title=title, description=desc)
         features = []
         feature_collection: Dict[Any, Any] = {}
-        for f in self.iter_feature(limit=5000):
+        for f in self.iter_feature(limit=limit):
             features.append(f)
-            if len(feature_collection) == 5000:
+            if len(features) == limit:
                 feature_collection = dict(
                     type="FeatureCollection", features=features
                 )
