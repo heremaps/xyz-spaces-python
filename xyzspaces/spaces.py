@@ -1333,7 +1333,8 @@ class Space:
 
         :param space_id: space id into which to copy data,
             if not provided will create a new space and copy the data.
-        :param limit: A max. number of features to read in the result.
+        :param limit: A max. number of features to read in a single iteration
+            while iterating over the space.
         :return: The cloned Space Object
         """
         if space_id:
