@@ -791,3 +791,13 @@ def test_add_features_shapefile_diff_projection(empty_space):
         38.79930767,
         0,
     ]
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_space_clone(space_object, space_id, empty_space):
+    """Test for space clone functionality"""
+    space = space_object.read(id=space_id)
+    clone_space = space.clone()
+    clone_specific_space = space.clone(space_id=empty_space.info["id"])
+    assert clone_space.get_statistics()["count"]["value"] == 180
+    assert clone_specific_space.get_statistics()["count"]["value"] == 180
