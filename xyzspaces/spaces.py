@@ -1327,38 +1327,38 @@ class Space:
                 chunk_size=chunk_size,
             )
 
-    def clone(self, space_id: str = None, limit: int = 1000):
+    def clone(self, space_id: str = None, chuks: int = 1000):
         """
-        Copy current space data into a new space.
+        Copy current space data into a newly created or into an existing space.
 
         :param space_id: space id into which to copy data,
             if not provided will create a new space and copy the data.
-        :param limit: A max. number of features to read in a single iteration
+        :param chuks: A max. number of features to read in a single iteration
             while iterating over the source space.
         :return: The cloned Space Object
         """
         if space_id:
-            clone_space = Space.from_id(space_id=space_id)
+            cloned_space = Space.from_id(space_id=space_id)
         else:
             title = self.info["title"]
             desc = self.info["description"]
-            clone_space = Space.new(title=title, description=desc)
+            cloned_space = Space.new(title=title, description=desc)
         features = []
         feature_collection: Dict[Any, Any] = {}
-        for f in self.iter_feature(limit=limit):
+        for f in self.iter_feature(limit=chuks):
             features.append(f)
-            if len(features) == limit:
+            if len(features) == chuks:
                 feature_collection = dict(
                     type="FeatureCollection", features=features
                 )
-                clone_space.add_features(features=feature_collection)
+                cloned_space.add_features(features=feature_collection)
                 features = []
                 feature_collection = {}
 
-        if len(features) != 0:
+        if len(features) >= 0:
             feature_collection = dict(
                 type="FeatureCollection", features=features
             )
-            clone_space.add_features(features=feature_collection)
+            cloned_space.add_features(features=feature_collection)
 
-        return clone_space
+        return cloned_space
