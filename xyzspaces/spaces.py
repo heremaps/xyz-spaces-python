@@ -1327,14 +1327,14 @@ class Space:
                 chunk_size=chunk_size,
             )
 
-    def clone(self, space_id: str = None, limit:int =1000):
+    def clone(self, space_id: str = None, limit: int = 1000):
         """
         Copy current space data into a new space.
 
         :param space_id: space id into which to copy data,
             if not provided will create a new space and copy the data.
         :param limit: A max. number of features to read in a single iteration
-            while iterating over the space.
+            while iterating over the source space.
         :return: The cloned Space Object
         """
         if space_id:
