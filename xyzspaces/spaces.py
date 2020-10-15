@@ -1326,3 +1326,39 @@ class Space:
                 features_size=features_size,
                 chunk_size=chunk_size,
             )
+
+    def clone(self, space_id: str = None, chunks: int = 1000):
+        """
+        Copy current space data into a newly created or into an existing space.
+
+        :param space_id: space id into which to copy data,
+            if not provided will create a new space and copy the data.
+        :param chunks: A max. number of features to read in a single iteration
+            while iterating over the source space.
+        :return: The cloned Space Object
+        """
+        if space_id:
+            cloned_space = Space.from_id(space_id=space_id)
+        else:
+            title = self.info["title"]
+            desc = self.info["description"]
+            cloned_space = Space.new(title=title, description=desc)
+        features = []
+        feature_collection: Dict[Any, Any] = {}
+        for f in self.iter_feature(limit=chunks):
+            features.append(f)
+            if len(features) == chunks:
+                feature_collection = dict(
+                    type="FeatureCollection", features=features
+                )
+                cloned_space.add_features(features=feature_collection)
+                features = []
+                feature_collection = {}
+
+        if len(features) >= 0:
+            feature_collection = dict(
+                type="FeatureCollection", features=features
+            )
+            cloned_space.add_features(features=feature_collection)
+
+        return cloned_space
