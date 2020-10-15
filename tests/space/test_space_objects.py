@@ -801,3 +801,5 @@ def test_space_clone(space_object, space_id, empty_space):
     cloned_specific_space = space.clone(space_id=empty_space.info["id"])
     assert clone_space.get_statistics()["count"]["value"] == 180
     assert cloned_specific_space.get_statistics()["count"]["value"] == 180
+    assert clone_space.get_feature("IND")["properties"]["name"] == "India"
+    assert cloned_specific_space.get_feature("IND")["properties"]["name"] == "India"
