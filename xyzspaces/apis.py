@@ -16,7 +16,7 @@
 # License-Filename: LICENSE
 
 """
-This module for accessing the APIs of your XYZ Hub server or HERE Data Hub.
+This module does access the APIs of an XYZ Hub server or HERE Data Hub.
 
 It provides classes like :class:`HubApi`, :class:`ProjectApi`, and
 :class:`TokenApi` to interact with the respective XYZ APIs in a programmatic
@@ -28,13 +28,14 @@ import os
 import urllib
 from typing import Any, Dict, Generator, List, Optional, Union
 
+import backoff
 import geojson
 import requests
 
 import xyzspaces.curl as curl
 
 from .auth import get_auth_cookies
-from .exceptions import ApiError
+from .exceptions import ApiError, TooManyRequestsException
 from .utils import join_string_lists
 
 logger = logging.getLogger(__name__)
@@ -75,6 +76,7 @@ class Api:
         self.headers: Dict[str, str] = {}
         self.curl_command: List[str] = []
 
+    @backoff.on_exception(backoff.expo, TooManyRequestsException)
     def __call__(
         self,
         method: str,
@@ -133,7 +135,9 @@ class Api:
             + f"Response headers: {resp.headers} "
             + f"Response text: {resp.text}"
         )
-        if not (200 <= code < 300):
+        if code == 429:
+            raise TooManyRequestsException(resp)
+        elif not (200 <= code < 300):
             logger.error(
                 f"status code: {code}, response: {resp.text}, "
                 f"response headers: {resp.headers}"
