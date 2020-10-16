@@ -522,8 +522,9 @@ class HubApi(Api):
 
         :param space_id: The desired space ID.
         :param feature_ids: A list of feature_ids.
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A feature collection with all features inside the specified
             space.
 
@@ -546,8 +547,9 @@ class HubApi(Api):
 
         :param space_id: The desired space ID.
         :param feature_id: The desired feature ID.
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A feature with the specified feature ID inside the space
             with the specified ID.
 
@@ -606,8 +608,9 @@ class HubApi(Api):
         :param skip_cache: ...
         :param clustering: ...
         :param clusteringParams: ...
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A dict representing a feature collection.
 
         Example:
@@ -679,8 +682,9 @@ class HubApi(Api):
         :param skip_cache: ...
         :param clustering: ...
         :param clusteringParams: ...
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A dict representing a feature collection.
 
         Available tile types are:
@@ -737,8 +741,9 @@ class HubApi(Api):
         :param params: ...
         :param selection: ...
         :param skip_cache: ...
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A dict representing a feature collection.
 
         Example:
@@ -772,8 +777,9 @@ class HubApi(Api):
 
         :param space_id: A string representing desired space ID.
         :param limit: A max. number of features to return in the result.
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :yields: A feature in space.
         """
         path = f"/hub/spaces/{space_id}/iterate"
@@ -1041,8 +1047,9 @@ class HubApi(Api):
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A dict representing a feature collection.
         :raises ValueError: If incorrect params are passed, either ``lat`` and ``lon`` or
              ``ref_space_id`` and ``ref_feature_id`` must have a value.
@@ -1103,8 +1110,9 @@ class HubApi(Api):
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
-        :param force_2d: If set to true the features in the response
-            will have only X's and Y's as coordinates.
+        :param force_2d: If set to True the features in the response
+            will have only X's and Y's as coordinates,by default all
+            x,y,z coordinates will be returned.
         :return: A dict representing a feature collection.
         """
         path = f"/hub/spaces/{space_id}/spatial"
