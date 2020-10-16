@@ -806,3 +806,47 @@ def test_space_clone(space_object, space_id, empty_space):
         cloned_specific_space.get_feature("IND")["properties"]["name"]
         == "India"
     )
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_force_2d(space_object):
+    """Test force2D parameter for all API's used to read feature"""
+    feature = list(
+        space_object.search(params={"p.name": "India"}, force_2d=True)
+    )
+    assert len(feature[0]["geometry"]["coordinates"][0][0]) == 2
+
+    for f in space_object.iter_feature(force_2d=True):
+        feature = f
+        break
+    assert len(feature["geometry"]["coordinates"][0][0]) == 2
+
+    feature = space_object.get_feature(feature_id="FRA", force_2d=True)
+    assert len(feature["geometry"]["coordinates"][0][0][0]) == 2
+
+    data = space_object.get_features(feature_ids=["DEU", "ITA"], force_2d=True)
+    assert len(data["features"][0]["geometry"]["coordinates"][0][0]) == 2
+
+    bbox = list(
+        space_object.features_in_bbox(bbox=[0, 0, 20, 20], force_2d=True)
+    )
+    assert len(bbox[0]["geometry"]["coordinates"][0][0]) == 2
+
+    spatial_search = list(
+        space_object.spatial_search(
+            lat=37.377228699000057, lon=74.512691691000043, force_2d=True
+        )
+    )
+    assert len(spatial_search[0]["geometry"]["coordinates"][0][0]) == 2
+
+    data1 = {"type": "Point", "coordinates": [72.8557, 19.1526]}
+    spatial_search_geom = list(
+        space_object.spatial_search_geometry(data=data1, force_2d=True)
+    )
+    assert len(spatial_search_geom[0]["geometry"]["coordinates"][0][0]) == 2
+
+    res = space_object.features_in_tile(
+        tile_type="here", tile_id="12", limit=10, force_2d=True
+    )
+    features = list(res)
+    assert len(features[0]["geometry"]["coordinates"][0][0]) == 2

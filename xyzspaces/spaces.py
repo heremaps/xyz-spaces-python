@@ -274,6 +274,7 @@ class Space:
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
         geo_dataframe: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Search features for this space object.
@@ -306,6 +307,8 @@ class Space:
             Default is ``False``.
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
         """
@@ -316,34 +319,43 @@ class Space:
             params=params,
             selection=selection,
             skip_cache=skip_cache,
+            force_2d=force_2d,
         )
         if geo_dataframe is not None:
             yield gpd.GeoDataFrame.from_features(features=features["features"])
         for f in features["features"]:
             yield f
 
-    def iter_feature(self, limit: int = 100) -> Generator[Feature, None, None]:
+    def iter_feature(
+        self, limit: int = 100, force_2d: Optional[bool] = None
+    ) -> Generator[Feature, None, None]:
         """
         Iterate over features in this space object.
 
         :param limit: A max. number of features to return in the result.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :yields: A Feature object.
         """
         for feature in self.api.get_space_iterate(
-            space_id=self._info["id"], limit=limit
+            space_id=self._info["id"], limit=limit, force_2d=force_2d
         ):
             yield feature
 
-    def get_feature(self, feature_id: str) -> GeoJSON:
+    def get_feature(
+        self, feature_id: str, force_2d: Optional[bool] = None
+    ) -> GeoJSON:
         """
         Retrieve one GeoJSON feature with given ID from this space.
 
         :param feature_id: Feature id which is to fetched.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A GeoJSON representing a feature with the specified feature
              ID inside the space.
         """
         res = self.api.get_space_feature(
-            space_id=self._info["id"], feature_id=feature_id
+            space_id=self._info["id"], feature_id=feature_id, force_2d=force_2d
         )
         return GeoJSON(res)
 
@@ -413,7 +425,10 @@ class Space:
         )
 
     def get_features(
-        self, feature_ids: List[str], geo_dataframe: Optional[bool] = None
+        self,
+        feature_ids: List[str],
+        geo_dataframe: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> Union[GeoJSON, gpd.GeoDataFrame]:
         """
         Retrieve one GeoJSON feature with given ID from this space.
@@ -421,12 +436,16 @@ class Space:
         :param feature_ids: A list of feature_ids.
         :param geo_dataframe: A boolean if set to ``True`` features will be
             returned as single Geopandas Dataframe.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A feature collection with all features inside the specified
             space. If param ``geo_dataframe`` is set to ``True`` then return features
             in single Geopandas Dataframe.
         """
         res = self.api.get_space_features(
-            space_id=self._info["id"], feature_ids=feature_ids
+            space_id=self._info["id"],
+            feature_ids=feature_ids,
+            force_2d=force_2d,
         )
         if geo_dataframe is not None:
             return gpd.GeoDataFrame.from_features(features=res["features"])
@@ -623,6 +642,7 @@ class Space:
         clustering: Optional[str] = None,
         clustering_params: Optional[dict] = None,
         geo_dataframe: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features inside some given bounding box.
@@ -661,6 +681,8 @@ class Space:
         :param clustering_params: ...
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
         """
@@ -675,6 +697,7 @@ class Space:
             skip_cache=skip_cache,
             clustering=clustering,
             clusteringParams=clustering_params,
+            force_2d=force_2d,
         )
 
         if geo_dataframe is not None:
@@ -697,6 +720,7 @@ class Space:
         margin: Optional[int] = None,
         limit: Optional[int] = None,
         geo_dataframe: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features in tile.
@@ -740,6 +764,8 @@ class Space:
             yield as single Geopandas Dataframe.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :raises ValueError: If `tile_type` is invalid, valid tile_types are
              `quadkeys`, `web`, `tms` and `here`.
         """
@@ -757,6 +783,7 @@ class Space:
                 clusteringParams=clustering_params,
                 margin=margin,
                 limit=limit,
+                force_2d=force_2d,
             )
             if geo_dataframe is not None:
                 yield gpd.GeoDataFrame.from_features(
@@ -781,6 +808,7 @@ class Space:
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
         geo_dataframe: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features with radius search.
@@ -823,6 +851,8 @@ class Space:
             cache.
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
         """
@@ -838,6 +868,7 @@ class Space:
             params=params,
             selection=selection,
             skip_cache=skip_cache,
+            force_2d=force_2d,
         )
         if geo_dataframe is not None:
             yield gpd.GeoDataFrame.from_features(features=features["features"])
@@ -859,6 +890,7 @@ class Space:
         units: Optional[str] = "m",
         chunk_size: int = 1,
         geo_dataframe: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> Generator[Feature, None, None]:
         """
         Search features which intersect the provided geometry.
@@ -900,6 +932,8 @@ class Space:
             to get better results in terms of performance.
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields as single Geopandas Dataframe.
         """
@@ -913,6 +947,7 @@ class Space:
                 params=params,
                 selection=selection,
                 skip_cache=skip_cache,
+                force_2d=force_2d,
             )
             if geo_dataframe is not None:
                 yield gpd.GeoDataFrame.from_features(
@@ -940,6 +975,7 @@ class Space:
                 params=params,
                 selection=selection,
                 skip_cache=skip_cache,
+                force_2d=force_2d,
             )
 
             with concurrent.futures.ProcessPoolExecutor() as executor:
@@ -968,6 +1004,7 @@ class Space:
         params: Optional[dict] = None,
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ):
         features = self.api.post_space_spatial(
             space_id=self._info["id"],
@@ -978,6 +1015,7 @@ class Space:
             params=params,
             selection=selection,
             skip_cache=skip_cache,
+            force_2d=force_2d,
         )
 
         if features["features"]:

@@ -513,12 +513,17 @@ class HubApi(Api):
     # Read Features
 
     def get_space_features(
-        self, space_id: str, feature_ids: List[str]
+        self,
+        space_id: str,
+        feature_ids: List[str],
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Get features by ID.
 
         :param space_id: The desired space ID.
         :param feature_ids: A list of feature_ids.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A feature collection with all features inside the specified
             space.
 
@@ -530,13 +535,19 @@ class HubApi(Api):
         """
         path = f"/hub/spaces/{space_id}/features"
         params = {"id": feature_ids, "clientId": _CLIENT_ID}
+        if force_2d:
+            params["force2D"] = str(force_2d).lower()
         return self.get(path=path, params=params).json()
 
-    def get_space_feature(self, space_id: str, feature_id: str) -> dict:
+    def get_space_feature(
+        self, space_id: str, feature_id: str, force_2d: Optional[bool] = None,
+    ) -> dict:
         """Get a feature by ID.
 
         :param space_id: The desired space ID.
         :param feature_id: The desired feature ID.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A feature with the specified feature ID inside the space
             with the specified ID.
 
@@ -548,6 +559,8 @@ class HubApi(Api):
         """
         path = f"/hub/spaces/{space_id}/features/{feature_id}"
         params = {"clientId": _CLIENT_ID}
+        if force_2d:
+            params["force2D"] = str(force_2d).lower()
         return self.get(path=path, params=params).json()
 
     def get_space_statistics(self, space_id: str) -> dict:
@@ -577,6 +590,7 @@ class HubApi(Api):
         skip_cache: Optional[bool] = None,
         clustering: Optional[str] = None,
         clusteringParams: Optional[dict] = None,
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Get features inside some given bounding box.
 
@@ -592,6 +606,8 @@ class HubApi(Api):
         :param skip_cache: ...
         :param clustering: ...
         :param clusteringParams: ...
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A dict representing a feature collection.
 
         Example:
@@ -626,6 +642,8 @@ class HubApi(Api):
                 (f"clustering.{k}", v) for (k, v) in clusteringParams.items()
             )
             q_params.update(d)
+        if force_2d:
+            q_params["force2D"] = str(force_2d).lower()
         return self.get(path=path, params=q_params).json()
 
     def get_space_tile(
@@ -642,6 +660,7 @@ class HubApi(Api):
         clusteringParams: Optional[dict] = None,
         margin: Optional[int] = None,
         limit: Optional[int] = None,
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Get features in tile.
 
@@ -660,6 +679,8 @@ class HubApi(Api):
         :param skip_cache: ...
         :param clustering: ...
         :param clusteringParams: ...
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A dict representing a feature collection.
 
         Available tile types are:
@@ -694,6 +715,8 @@ class HubApi(Api):
             q_params["margin"] = str(margin)
         if limit:
             q_params["limit"] = str(limit)
+        if force_2d:
+            q_params["force2D"] = str(force_2d).lower()
         return self.get(path=path, params=q_params).json()
 
     def get_space_search(
@@ -704,6 +727,7 @@ class HubApi(Api):
         params: Optional[dict] = None,
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Search for features.
 
@@ -713,6 +737,8 @@ class HubApi(Api):
         :param params: ...
         :param selection: ...
         :param skip_cache: ...
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A dict representing a feature collection.
 
         Example:
@@ -732,19 +758,28 @@ class HubApi(Api):
             q_params["selection"] = ",".join(selection)
         if skip_cache:
             q_params["skipCache"] = str(skip_cache).lower()  # pragma: no cover
+        if force_2d:
+            q_params["force2D"] = str(force_2d).lower()
+
         path = f"/hub/spaces/{space_id}/search"
         return self.get(path=path, params=q_params).json()
 
     # FIXME
-    def get_space_iterate(self, space_id: str, limit: int) -> Generator:
+    def get_space_iterate(
+        self, space_id: str, limit: int, force_2d: Optional[bool] = None,
+    ) -> Generator:
         """Iterate features in the space (yielding them one by one).
 
         :param space_id: A string representing desired space ID.
         :param limit: A max. number of features to return in the result.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :yields: A feature in space.
         """
         path = f"/hub/spaces/{space_id}/iterate"
         params = {"limit": limit, "clientId": _CLIENT_ID}
+        if force_2d:
+            params["force2D"] = str(force_2d).lower()
         while True:
             res: dict = self.get(path=path, params=params).json()
             handle = res.get("handle", None)
@@ -984,6 +1019,7 @@ class HubApi(Api):
         params: Optional[dict] = None,
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Get features with radius search.
 
@@ -1005,6 +1041,8 @@ class HubApi(Api):
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A dict representing a feature collection.
         :raises ValueError: If incorrect params are passed, either ``lat`` and ``lon`` or
              ``ref_space_id`` and ``ref_feature_id`` must have a value.
@@ -1038,6 +1076,8 @@ class HubApi(Api):
             q_params["skipCache"] = str(skip_cache).lower()  # pragma: no cover
         if params:
             q_params.update(params)
+        if force_2d:
+            q_params["force2D"] = str(force_2d).lower()
         return self.get(path=path, params=q_params).json()
 
     def post_space_spatial(
@@ -1050,6 +1090,7 @@ class HubApi(Api):
         params: Optional[dict] = None,
         selection: Optional[List[str]] = None,
         skip_cache: Optional[bool] = None,
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Post features which intersect the provided geometry.
 
@@ -1062,6 +1103,8 @@ class HubApi(Api):
         :param selection: A list of strings holding properties values.
         :param skip_cache: A Boolean if set to ``True`` the response is not returned from
             cache.
+        :param force_2d: If set to true the features in the response
+            will have only X's and Y's as coordinates.
         :return: A dict representing a feature collection.
         """
         path = f"/hub/spaces/{space_id}/spatial"
@@ -1081,6 +1124,8 @@ class HubApi(Api):
             q_params["skipCache"] = str(skip_cache).lower()  # pragma: no cover
         if params:
             q_params.update(params)
+        if force_2d:
+            q_params["force2D"] = str(force_2d).lower()
 
         return self.post(
             path=path, params=q_params, json=data, headers=headers
