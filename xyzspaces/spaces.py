@@ -308,7 +308,7 @@ class Space:
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
@@ -335,7 +335,7 @@ class Space:
 
         :param limit: A max. number of features to return in the result.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :yields: A Feature object.
         """
@@ -352,7 +352,7 @@ class Space:
 
         :param feature_id: Feature id which is to fetched.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :return: A GeoJSON representing a feature with the specified feature
              ID inside the space.
@@ -440,7 +440,7 @@ class Space:
         :param geo_dataframe: A boolean if set to ``True`` features will be
             returned as single Geopandas Dataframe.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :return: A feature collection with all features inside the specified
             space. If param ``geo_dataframe`` is set to ``True`` then return features
@@ -686,7 +686,7 @@ class Space:
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
@@ -770,7 +770,7 @@ class Space:
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :raises ValueError: If `tile_type` is invalid, valid tile_types are
              `quadkeys`, `web`, `tms` and `here`.
@@ -858,7 +858,7 @@ class Space:
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields single Geopandas Dataframe.
@@ -940,7 +940,7 @@ class Space:
         :param geo_dataframe: A boolean if set to ``True`` searched features will be
             yield as single Geopandas Dataframe.
         :param force_2d: If set to True the features in the response
-            will have only X's and Y's as coordinates,by default all
+            will have only X and Y components, by default all
             x,y,z coordinates will be returned.
         :yields: A Feature object by default. If param ``geo_dataframe`` is True then
             yields as single Geopandas Dataframe.
