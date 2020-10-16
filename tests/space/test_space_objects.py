@@ -816,9 +816,7 @@ def test_force_2d(space_object):
     )
     assert len(feature[0]["geometry"]["coordinates"][0][0]) == 2
 
-    for f in space_object.iter_feature(force_2d=True):
-        feature = f
-        break
+    feature = next(space_object.iter_feature(force_2d=True))
     assert len(feature["geometry"]["coordinates"][0][0]) == 2
 
     feature = space_object.get_feature(feature_id="FRA", force_2d=True)
