@@ -1,5 +1,5 @@
 # Core dependencies
-backoff
+backoff>=1.10.0
 geojson
 requests
 geopandas
