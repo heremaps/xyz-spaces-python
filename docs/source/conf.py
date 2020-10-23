@@ -33,7 +33,8 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
     'sphinx.ext.autodoc.typehints',
-    'sphinx_rtd_theme'
+    'sphinx_rtd_theme',
+    'sphinx_thebe'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -51,6 +52,15 @@ language = 'en'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+# -- Options for Sphinx-Thebe ------------------------------------------------
+
+thebe_config = {
+    "repository_url": "https://github.com/heremaps/xyz-spaces-python",
+    "repository_branch": "master",
+    "selector": ".thebe",
+    # "selector_input": "<selector-for-cell-input>",
+    # "selector_output": "<selector-for-cell-output>",
+}
 
 # -- Options for HTML output -------------------------------------------------
 

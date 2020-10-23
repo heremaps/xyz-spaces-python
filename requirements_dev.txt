@@ -11,6 +11,7 @@ pytest-mypy
 pytest-rerunfailures
 Sphinx>=2.4.0
 sphinx-rtd-theme
+sphinx-thebe
 twine
 pytest-flake8
 isort
