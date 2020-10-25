@@ -2,7 +2,6 @@
 black==19.10b0
 codecov
 coverage
-docutils
 mypy
 proclamation
 proxy.py
