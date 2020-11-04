@@ -668,6 +668,8 @@ class HubApi(Api):
         margin: Optional[int] = None,
         limit: Optional[int] = None,
         force_2d: Optional[bool] = None,
+        mode: Optional[str] = None,
+        viz_sampling: Optional[str] = None,
     ) -> dict:
         """Get features in tile.
 
@@ -689,6 +691,11 @@ class HubApi(Api):
         :param force_2d: If set to True the features in the response
             will have only X and Y components, by default all
             x,y,z coordinates will be returned.
+        :param mode: A string to indicate how to optimize the resultset and
+            geometries for display. Allowed values are ``raw`` and ``viz``.
+        :param viz_sampling: A string to indicate the sampling strength in
+            case of ``mode=viz``. Allowed values are: ``low``, ``med``,
+            ``high``, and ``off``, default: ``med``.
         :return: A dict representing a feature collection.
 
         Available tile types are:
@@ -725,6 +732,10 @@ class HubApi(Api):
             q_params["limit"] = str(limit)
         if force_2d:
             q_params["force2D"] = str(force_2d).lower()
+        if mode:
+            q_params["mode"] = str(mode).lower()
+        if viz_sampling:
+            q_params["vizSampling"] = str(viz_sampling).lower()
         return self.get(path=path, params=q_params).json()
 
     def get_space_search(
