@@ -23,6 +23,7 @@ These tests should be spread over other modules, soon...
 
 import pytest
 
+from xyzspaces.datasets import MICROSOFT_BUILDINGS_SPACE_ID
 from xyzspaces.exceptions import ApiError
 from xyzspaces.utils import get_xyz_token
 
@@ -152,6 +153,31 @@ def test_get_space_tile(api, space_id, point_space_id):
     )
     # just checking that if margin param has any effect on response
     assert tile1 == tile2
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_get_space_tile_sampling(api):
+    """Get space tile and compare all available sampling rates."""
+    params = dict(
+        space_id=MICROSOFT_BUILDINGS_SPACE_ID,
+        tile_type="web",
+        tile_id="11_585_783",
+    )
+
+    get_tile = api.get_space_tile
+    tile_raw = get_tile(mode="raw", **params)
+    tile_viz_off = get_tile(mode="viz", viz_sampling="off", **params)
+    tile_viz_low = get_tile(mode="viz", viz_sampling="low", **params)
+    tile_viz_med = get_tile(mode="viz", viz_sampling="med", **params)
+    tile_viz_high = get_tile(mode="viz", viz_sampling="high", **params)
+
+    len_raw = len(tile_raw["features"])
+    len_viz_off = len(tile_viz_off["features"])
+    len_viz_low = len(tile_viz_low["features"])
+    len_viz_med = len(tile_viz_med["features"])
+    len_viz_high = len(tile_viz_high["features"])
+
+    assert len_raw > len_viz_off > len_viz_low > len_viz_med > len_viz_high
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
