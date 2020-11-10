@@ -129,7 +129,7 @@ def test_space_search(space_object):
     feats = list(
         space_object.search(selection=["p.color"], params={"f.id": "IND"})
     )
-    assert "properties" not in feats[0].keys()
+    assert feats[0]["properties"] == {}
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")

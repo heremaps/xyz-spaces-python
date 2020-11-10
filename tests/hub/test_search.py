@@ -52,4 +52,4 @@ def test_get_space_search(api, space_id):
     feats = api.get_space_search(
         space_id=space_id, selection=["p.color"], params={"f.id": "IND"}
     )
-    assert "properties" not in feats["features"][0].keys()
+    assert feats["features"][0]["properties"] == {}
