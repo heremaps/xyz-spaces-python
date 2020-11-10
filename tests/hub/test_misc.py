@@ -131,7 +131,7 @@ def test_get_space_tile(api, space_id, point_space_id):
         tile_id="12",
         selection=["p.color"],
     )
-    assert "properties" not in tile["features"][0]
+    assert tile["features"][0]["properties"] == {}
 
     tile1 = api.get_space_tile(
         space_id=point_space_id,
@@ -176,8 +176,7 @@ def test_get_space_tile_sampling(api):
     len_viz_low = len(tile_viz_low["features"])
     len_viz_med = len(tile_viz_med["features"])
     len_viz_high = len(tile_viz_high["features"])
-
-    assert len_raw > len_viz_off > len_viz_low > len_viz_med > len_viz_high
+    assert len_raw > len_viz_off > len_viz_low > len_viz_med >= len_viz_high
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
