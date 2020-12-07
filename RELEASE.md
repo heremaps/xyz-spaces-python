@@ -1,16 +1,29 @@
-Documentation for the release process of xyzspaces.
+# Release process
 
-## To release on PyPI
+This document describes the release process of xyzspaces, and is mostly intended for package maintainers.
 
-- Increment `__version__` in [file](xyzspaces/__version__.py).
-- Create a CHANGELOG by running `make build_changelog` This will read the proclamation changes from the `changes` directory and will automatically update `CHANGELOG.md`. Verify the changes and manually update the `CHANGELOG.md` if required and then commit the changes.
-- Create a new release by clicking on this [link](https://github.com/heremaps/xyz-spaces-python/releases/new).
-  update tag version and release description and click on `Publish release` this will release package on PyPI.
+
+## Preparation
+
+The following are mandatory pre-release steps to bring the repository into a proper shape:
+
+- Increment `__version__` variable in [xyzspaces/__version__.py](xyzspaces/__version__.py) as desired.
+- Make sure all tests listed in `CONTRIBUTING.md` pass successfully.
+- Make sure badges appear as expected in the [README.md on GitHub](https://github.com/heremaps/xyz-spaces-python/blob/master/README.md).
+- Run `make build_changelog` to collect changes and prepend them to `CHANGELOG.md`, then edit this file manually if needed and commit these changes.
+
+
+## Release on PyPI
+
+- Create a new release in the GitHub UI by clicking on [Draft a new release](https://github.com/heremaps/xyz-spaces-python/releases/new) button, then update the tag version and release description.
+- Click on the `Publish release` button to release the [package on PyPI](https://pypi.org/project/xyzspaces).
+- Once released verify that `pip install xyzspaces` does indeed install the latest release.
+
   
-  
-## To release on Anaconda's conda-forge channel
+## Release on Anaconda's conda-forge channel
 
-- Go to [xyzspaces-feedstock](https://github.com/conda-forge/xyzspaces-feedstock)
-- Create a new release branch and update `version`, `url`, `sha256` hash of released tar and dependencies in [meta.yml](https://github.com/conda-forge/xyzspaces-feedstock/blob/master/recipe/meta.yaml)
-  raise the PR for this and merge the changes in master.
-- It takes some time for a new release to appear on the conda-forge channel post changes are merged in to master branch.  
+- Go to the [xyzspaces-feedstock](https://github.com/conda-forge/xyzspaces-feedstock) repository.
+- Create a new release branch and update `version`, `url`, `sha256` hash of the released tar and dependencies in [meta.yml](https://github.com/conda-forge/xyzspaces-feedstock/blob/master/recipe/meta.yaml)
+- Raise a PR for this release branch and merge the changes in master.
+- It can take hours for a new release to [appear on Anaconda.org)[https://anaconda.org/conda-forge/xyzspaces].
+- Once available verify that `conda install -c conda-forge xyzspaces` does indeed install the latest release.
