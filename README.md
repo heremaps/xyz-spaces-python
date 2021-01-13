@@ -145,6 +145,6 @@ print(geojson.dumps(feature, indent=4, sort_keys=True))
 
 # License
 
-Copyright (C) 2019-2020 HERE Europe B.V.
+Copyright (C) 2019-2021 HERE Europe B.V.
 
 Unless otherwise noted in `LICENSE` files for specific directories, the [LICENSE](https://github.com/heremaps/xyz-spaces-python/blob/master/LICENSE) in the root applies to all content in this repository.
