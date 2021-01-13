@@ -19,7 +19,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'xyzspaces'
-copyright = '2019-2020, HERE Europe B.V.'
+copyright = '2019-2021, HERE Europe B.V.'
 author = 'HERE Europe B.V.'
 
 
