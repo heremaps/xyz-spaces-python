@@ -1,0 +1,13 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+  - backoff>=1.10.0
+  - geojson
+  - requests
+  - geopandas
+  - turfpy>=0.0.3
+  - geobuf
+  - ijson==3.1.1
+  - pip:
+    - "-r ../../requirements_dev.txt"

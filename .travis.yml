@@ -1,19 +1,8 @@
 language: python
 python:
-- '3.6'
-- '3.7'
 - '3.8'
-install:
-- pip install -r requirements.txt
-- pip install -e .[dev]
 script:
 - make clean
-- make lint
-- make typing
-- mkdir public
-- pytest -v --durations=10 --cov-report=xml --cov=xyzspaces tests
-- make draft_changelog
-- sh scripts/build_docs.sh
 deploy:
   provider: pypi
   username: __token__
@@ -22,12 +11,5 @@ deploy:
   on:
     tags: true
     branch: master
-    python: 3.7
+    python: 3.8
     condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+
-env:
-  global:
-  - secure: YQckDoW0WS3qdcYWw+9ojTW3FAuw8j0o5FpGn+0nhiACnnsV+hvWidX45DL8AT2NnRHGdEbZdIrr7Sv/yrXhyuOEb1XtTjD6c0VDJ8HkQ9omcZVTngflUJ6x9W0R7i5d93btNg74+2K7e73vCG8/rmS4+vxlXy13lIPvK3F/E3RhmUeniL7dizFNmQuBmzZ/m/4rgQwYjoLO3W8dlv0mklErHCN77l+mCcN63pwY6uR2dwYhcYcizMGb9DkpCpI03q68CnYaXYLT4CkDeaAwK63Byv2FvEvY5HA6POsiXcoTwOMw9YgKxSqgTEgGo03faRioXcFLWrbbBHY38dlBMAfAolVKYjIQT1akY3gRD5lJLx7LxnQ/aTEptJTXjPlo14hV/ijhZ/CE3YP+FagHcmaTcC7n2lu/mtbcI8LSTHTvCocsy0s22obmDlD8NAjFG2CqTbikxGq2x5MXzTqLC4ajerg/mD9C+yBOcvXwKYinFTxuxdp4JZSeYZGCOeVO6lX8ZycwPvBL2HHNjzwpO0ugxtq+Smfm5Nb3Sb5TY+psq8r9T1Jy2HHfjNKci57uS3s0Uvq2JoLkJSReuGTWR5AyXvx3DFtTE4sSe0zCUZlhH7vsCpmpudngG21zaiAe4tEMshHeeKjp0Xaxor8iHcOitw4rEGTfFoKTAfZJPZw=
-  - secure: O9IrTIEi/EIBl8bm+YGPxpPoee1YmUZBuod3cEjMSpW7tQdJrr03fNF/niRXV9XV885g2fqRfxCPrBPgpz3C1hdiI0bblPlVM1/DFsr9fhFjnm2of41Q/x18tJBPMr06Ch/WDV6FICtG0aH58RAxMsbCR/voVi2YEtbdlJlgyoFDVUV+nTW/XKl0BvK1M0fWQY87Y0rIgxsdMDpiznumbpKlgX+Ym2e5u+Gr/wmI+Uv7MWFAbEX9ui9z6eGbrtIpq7P2a0ja+zolExI6Bw1p9F+bu7DXeuru1zQdmVZOFOXBGE6QuvBlQ9aRmyQCXyCTqih47a6XNb6ta3E5wddq9ADrrU343ZJWzKzqV5Hn06lpKrxJnUNDFD1XVrGuOj7IkPXsRiQs5TIUfW/dAvPbYXuhrvQDrhgyDmGmqgMTjXOPVX1NSwpdiY2Q9MCym44ZSfhNT+vs33dgvfHkbweCgDT1QdYhC4EiQ4PEqFvLBa0SjG5AvMTYRFnfv9vU/RutHRXo08UZ/TJ20IhHfaMyqu/pDbg/d6ov6EwMXykusiM5XyKhCVGnsttWIy+xuFWW4stWgJVFTNbyntK5BeF0h9Psn3a8gfqIs4/tTIxwsuKyFd+CzMegAGI0QF6LCl/PJQiVXpmrZknIJL70AF2zImFCLnkofHPJau+XfAAMz/8=
-  - secure: EXC8q1JbylYU/64TBH3vjMQWCC+wtG3w5opK8cyy6C8peJbAb2fX+jFxHu6ZSH3saxJF6GPb4+QoEPnNIV1r+JH4mnWj7Cmp9QLRFYbfD9Mc/E4rDXsP//d8M14NfDNpuO7XipGpsLqg77GUGRBiHMSGZKUzvaPRtThlS8vq8JSdn5urxo0qnTDu33GXLoSdnsU9GE2W5Gxl9dl6pqmG2ae4zssQqN7nVTP9fXDjohJNpFK7mNtfT02sqpuUTfkuxue4+KEbnm8lwp0xVK63UV/7zA+8Wk5wDY0Jfdbg8S6JorZGKjsMKz7shs5QwViI10kCihnfwh8fCZMwwUdIKwuRMrMTMEb2HWVm0W5Hhies+7khDO0MXvKJ7dSIWssA6/f6Fr46054OCnbW5laJVBkzt8CAnOBXvauQu7DzqNjNAA7fyvBBpWHhvlOL0WWyV+wmzwDcGoCfL6+fCVIDzMMpUwu7RS21bROLdak+/3RpnLKDNf6im9IZ72S0L2ya2ojtZwjENbtWMLh2eIW78MaLjl8BvKHKC5Yi8RL/WsHVXRkrvrCIoCTKLXLa4NOfS9p2sgy8jyUOQG5BHMNjfaBa8Ol4FHfatjFzwvfU+LwOliu/0Gcj4Lp37xUlRjp+asNYHoWX1tXXgM3CatS1yiMIDB4zYmdFD3bTBlu37n8=
-after_success:
-  - codecov
