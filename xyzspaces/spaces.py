@@ -726,6 +726,8 @@ class Space:
         limit: Optional[int] = None,
         geo_dataframe: Optional[bool] = None,
         force_2d: Optional[bool] = None,
+        mode: Optional[str] = None,
+        viz_sampling: Optional[str] = None,
     ) -> Generator[Feature, None, None]:
         """
         Get features in tile.
@@ -772,6 +774,11 @@ class Space:
         :param force_2d: If set to True the features in the response
             will have only X and Y components, by default all
             x,y,z coordinates will be returned.
+        :param mode: A string to indicate how to optimize the resultset and
+            geometries for display. Allowed values are ``raw`` and ``viz``.
+        :param viz_sampling: A string to indicate the sampling strength in
+            case of ``mode=viz``. Allowed values are: ``low``, ``med``,
+            ``high``, and ``off``, default: ``med``.
         :raises ValueError: If `tile_type` is invalid, valid tile_types are
              `quadkeys`, `web`, `tms` and `here`.
         """
@@ -790,6 +797,8 @@ class Space:
                 margin=margin,
                 limit=limit,
                 force_2d=force_2d,
+                mode=mode,
+                viz_sampling=viz_sampling,
             )
             if geo_dataframe is not None:
                 yield gpd.GeoDataFrame.from_features(

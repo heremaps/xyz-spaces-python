@@ -12,3 +12,4 @@ _build/
 .debug.env
 xyz.log
 .coverage.*
+xyzspaces.egg-info/
