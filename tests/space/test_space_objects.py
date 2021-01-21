@@ -27,6 +27,7 @@ from geojson import GeoJSON
 
 from xyzspaces import XYZ
 from xyzspaces.datasets import (
+    MICROSOFT_BUILDINGS_SPACE_ID,
     get_chicago_parks_data,
     get_countries_data,
     get_microsoft_buildings_space,
@@ -848,3 +849,30 @@ def test_force_2d(space_object):
     )
     features = list(res)
     assert len(features[0]["geometry"]["coordinates"][0][0]) == 2
+
+
+@pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
+def test_get_space_tile_sampling(api):
+    """Get space tile and compare all available sampling rates."""
+    space = Space.from_id(MICROSOFT_BUILDINGS_SPACE_ID)
+    params = dict(tile_type="web", tile_id="11_585_783",)
+    tile_raw = list(space.features_in_tile(mode="raw", **params))
+    tile_viz_off = list(
+        space.features_in_tile(mode="viz", viz_sampling="off", **params)
+    )
+    tile_viz_low = list(
+        space.features_in_tile(mode="viz", viz_sampling="low", **params)
+    )
+    tile_viz_med = list(
+        space.features_in_tile(mode="viz", viz_sampling="med", **params)
+    )
+    tile_viz_high = list(
+        space.features_in_tile(mode="viz", viz_sampling="high", **params)
+    )
+
+    len_raw = len(tile_raw)
+    len_viz_off = len(tile_viz_off)
+    len_viz_low = len(tile_viz_low)
+    len_viz_med = len(tile_viz_med)
+    len_viz_high = len(tile_viz_high)
+    assert len_raw > len_viz_off > len_viz_low > len_viz_med >= len_viz_high
