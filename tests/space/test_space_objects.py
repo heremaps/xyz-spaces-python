@@ -425,6 +425,7 @@ def test_clustering(space_object, empty_space):
         empty_space.cluster(clustering="hexbin")
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_coordinates_with_altitude(empty_space):
     """Test geojson data having altitude information."""
@@ -517,6 +518,7 @@ def test_bulk_upload(space_object):
     assert ft["properties"]["segment"] == "1158230457T"
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_file_bulk_upload(space_object):
     geo_file = (
@@ -588,7 +590,6 @@ def test_schema_validation_new_space(schema_validation_space):
         assert resp["type"] == "ErrorResponse"
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_activity_log(activity_log_space):
     """Test activity log."""

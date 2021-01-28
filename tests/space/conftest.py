@@ -143,13 +143,8 @@ def activity_log_space():
     sleep(0.5)
     yield space
 
-    # now teardown (delete temporary space and activity log space)
-    activity_log_spaceid = space.info["listeners"]["activity-log-writer"][0][
-        "params"
-    ]["spaceId"]
-    space2 = Space.from_id(activity_log_spaceid)
+    # now teardown (delete temporary space)
     space.delete()
-    space2.delete()
 
 
 @pytest.fixture()
