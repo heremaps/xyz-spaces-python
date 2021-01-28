@@ -53,7 +53,13 @@ jobs:
         HERE_PASSWORD: ${{ secrets.HERE_PASSWORD }}
       run: |
         pytest -v --durations=10 --cov-report=xml --cov=xyzspaces tests
-        codecov
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
 
     - name: Build Docs and Changelog (Only on Linux for saving time)
       if: matrix.os == 'ubuntu-latest'
