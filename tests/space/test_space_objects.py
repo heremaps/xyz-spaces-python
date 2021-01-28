@@ -590,7 +590,6 @@ def test_schema_validation_new_space(schema_validation_space):
         assert resp["type"] == "ErrorResponse"
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_activity_log(activity_log_space):
     """Test activity log."""
