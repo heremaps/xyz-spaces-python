@@ -60,6 +60,7 @@ jobs:
       with:
         file: ./coverage.xml
         flags: unittests
+        verbose: true
 
     - name: Build Docs and Changelog (Only on Linux for saving time)
       if: matrix.os == 'ubuntu-latest'

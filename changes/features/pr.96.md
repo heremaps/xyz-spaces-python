@@ -1,1 +1,0 @@
-support the new `force2D` parameter for all the APIs used to read features.

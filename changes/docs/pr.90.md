@@ -1,1 +1,0 @@
-Start collecting/documenting architecture decision records (ADRs). 

@@ -1,1 +1,0 @@
-Add support for new mode and vizSampling params in HubApi.get_space_tile. 

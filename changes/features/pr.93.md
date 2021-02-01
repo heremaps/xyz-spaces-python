@@ -1,1 +1,0 @@
-Added functionality to `clone` Space 
