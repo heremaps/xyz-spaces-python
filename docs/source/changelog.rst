@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+xyzspaces 0.5.0 (2021-02-01)
+----------------------------
+
+* **Features**
+
+  * Added functionality to ``clone`` Space. (`#93 <https://github.com/heremaps/xyz-spaces-python/pull/93>`_)
+  * Handle HTTP 429 responses with ``backoff`` package. (`#95 <https://github.com/heremaps/xyz-spaces-python/pull/95>`_)
+  * support the new ``force2D`` parameter for all the APIs used to read features. (`#96 <https://github.com/heremaps/xyz-spaces-python/pull/96>`_)
+  * Add support for new mode and vizSampling params in HubApi.get_space_tile. (`#101 <https://github.com/heremaps/xyz-spaces-python/pull/101>`_)
+
+* **Documentation**
+
+  * Start collecting/documenting architecture decision records (ADRs). (`#90 <https://github.com/heremaps/xyz-spaces-python/pull/90>`_)
+  * Add support for executable code in Sphinx documentation. (`#99 <https://github.com/heremaps/xyz-spaces-python/pull/99>`_)
+
+* **Misc**
+
+  * Migrated CI from Travis to GitHub Actions. (`#111 <https://github.com/heremaps/xyz-spaces-python/pull/111>`_)
+
 xyzspaces 0.4.0 (2020-09-18)
 ----------------------------
 
