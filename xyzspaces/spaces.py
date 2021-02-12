@@ -66,7 +66,7 @@ class Space:
     """
 
     @classmethod
-    def from_id(cls, space_id: str, server: str = XYZ_BASE_URL,) -> "Space":
+    def from_id(cls, space_id: str, server: str = XYZ_BASE_URL) -> "Space":
         """Instantiate a space object for an existing space ID.
 
         :param space_id: A string to represent the id of the space.
