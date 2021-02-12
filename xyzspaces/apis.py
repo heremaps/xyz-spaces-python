@@ -35,6 +35,7 @@ import requests
 import xyzspaces.curl as curl
 
 from .auth import get_auth_cookies
+from .constants import XYZ_BASE_URL
 from .exceptions import ApiError, TooManyRequestsException
 from .utils import join_string_lists
 
@@ -200,7 +201,7 @@ class ProjectApi(Api):
 
     def __init__(
         self,
-        server: Optional[str] = "https://xyz.api.here.com",
+        server: Optional[str] = XYZ_BASE_URL,
         credentials: Optional[str] = None,
     ):
         """Instantiate a :class:`ProjectApi` object.
@@ -214,7 +215,7 @@ class ProjectApi(Api):
 
         if self.credentials is None:
             self.credentials = os.getenv("XYZ_TOKEN")
-        if self.credentials:
+        if self.credentials and server == XYZ_BASE_URL:
             self.headers["Authorization"] = f"Bearer {self.credentials}"
 
     # Read projects
@@ -322,7 +323,7 @@ class TokenApi(Api):
 
     def __init__(
         self,
-        server: Optional[str] = "https://xyz.api.here.com",
+        server: Optional[str] = XYZ_BASE_URL,
         credentials: Optional[Dict[str, str]] = None,
     ):
         """Instantiate a :class:`TokenApi` object.
@@ -423,7 +424,7 @@ class HubApi(Api):
 
     def __init__(
         self,
-        server: Optional[str] = "https://xyz.api.here.com",
+        server: Optional[str] = XYZ_BASE_URL,
         credentials: Optional[str] = None,
     ):
         """Instantiate an :class:`HubApi` object.
@@ -437,7 +438,7 @@ class HubApi(Api):
 
         if self.credentials is None:
             self.credentials = os.getenv("XYZ_TOKEN")
-        if self.credentials:
+        if self.credentials and server == XYZ_BASE_URL:
             self.headers["Authorization"] = f"Bearer {self.credentials}"
 
     # Undocumented endpoints

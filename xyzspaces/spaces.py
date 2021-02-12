@@ -44,6 +44,7 @@ import pandas
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
+from .constants import XYZ_BASE_URL
 from .utils import divide_bbox, flatten_geometry, grouper, wkt_to_geojson
 
 logger = logging.getLogger(__name__)
@@ -65,9 +66,15 @@ class Space:
     """
 
     @classmethod
-    def from_id(cls, space_id: str) -> "Space":
-        """Instantiate a space object for an existing space ID."""
-        api = HubApi()
+    def from_id(cls, space_id: str, server: str = XYZ_BASE_URL,) -> "Space":
+        """Instantiate a space object for an existing space ID.
+
+        :param space_id: A string to represent the id of the space.
+        :param server: A string as base URL for Data Hub APIs. Required only
+            if Data Hub APIs are self-hosted.
+        :return: An object of :class:`Space`.
+        """
+        api = HubApi(server=server)
         obj = cls(api)
         obj._info = api.get_space(space_id=space_id)
         return obj
@@ -82,6 +89,7 @@ class Space:
         enable_uuid: Optional[bool] = None,
         listeners: Optional[Dict[str, Union[str, int]]] = None,
         shared: Optional[bool] = None,
+        server: str = XYZ_BASE_URL,
     ) -> "Space":
         """Create new space object with given title and description.
 
@@ -98,9 +106,11 @@ class Space:
         :param shared: A boolean, if set to ``True``, space will be shared with
             other users having XYZ account, they will be able to read from the
             space using their own token. By default space will not be a shared space.
+        :param server: A string as base URL for Data Hub APIs. Required only if Data
+            Hub APIs are self-hosted.
         :return: A object of :class:`Space`.
         """
-        api = HubApi()
+        api = HubApi(server=server)
         obj = cls(api)
         data: Dict[Any, Any] = {"title": title}
 
@@ -125,6 +135,7 @@ class Space:
         cls,
         title: str,
         description: Optional[str] = None,
+        server: str = XYZ_BASE_URL,
         **kwargs: Dict[str, Dict],
     ) -> "Space":
         """Create a new virtual-space.
@@ -140,10 +151,12 @@ class Space:
 
         :param title: A string representing the title of the virtual-space.
         :param description: A string representing a description of the virtual-space.
+        :param server: A string as base URL for Data Hub APIs. Required only if Data
+            Hub APIs are self-hosted.
         :param kwargs: A dict for the operation to perform on upstream spaces.
         :return: An object of :class:`Space`.
         """
-        api = HubApi()
+        api = HubApi(server=server)
         obj = cls(api)
         data: Dict[str, Any] = {"title": title}
         if description is not None:
@@ -154,9 +167,13 @@ class Space:
         obj._info = api.post_space(data=data)
         return obj
 
-    def __init__(self, api: Optional[HubApi] = None):
-        """Instantiate a space object, optionally with authenticated api instance."""
-        self.api = api or HubApi()
+    def __init__(
+        self, api: Optional[HubApi] = None, server: str = XYZ_BASE_URL
+    ):
+        """Instantiate a space object, optionally with authenticated api instance and
+           custom base URL as ``server``, ``server`` is required only for self-hosted
+           Data Hub instances."""
+        self.api = api or HubApi(server=server)
         self._info: dict = {}
 
     def __repr__(self):
