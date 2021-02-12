@@ -37,16 +37,28 @@ from xyzspaces.logconf import setup_logging  # noqa: F401
 from xyzspaces.spaces import Space
 
 from .apis import HubApi
+from .constants import XYZ_BASE_URL
 
 
 class XYZ:
     """A single interface to interact with your XYZ Hub server or HERE Data Hub."""
 
-    def __init__(self, credentials: Optional[str] = None):
-        """Instantiate an XYZ object, optionally with access credentials."""
+    def __init__(
+        self, credentials: Optional[str] = None, server: str = XYZ_BASE_URL
+    ):
+        """Instantiate an XYZ object, optionally with access credentials
+         and custom base URL.
+
+        :param credentials: A string to serve as authentication
+            (a bearer token). Will be looked up in environment variable
+            ``XYZ_TOKEN`` if not provided.
+        :param server: A string as base URL for Data Hub APIs. Required
+            only if Data Hub APIs are self-hosted. For self-hosted Data
+            Hub instances ``credentials`` is not required.
+        """
         if credentials:
             os.environ["XYZ_TOKEN"] = str(credentials)
-            self.hub_api = HubApi(credentials=credentials)
+            self.hub_api = HubApi(credentials=credentials, server=server)
         else:
-            self.hub_api = HubApi()
-        self.spaces = Space(api=self.hub_api)
+            self.hub_api = HubApi(server=server)
+        self.spaces = Space(api=self.hub_api, server=server)
