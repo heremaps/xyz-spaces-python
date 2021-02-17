@@ -34,10 +34,6 @@ jobs:
       run: |
         conda env update --file ci/env/environment.yml --name test
 
-    - name: Install xyzspaces
-      shell: bash -l {0}
-      run: pip install .[dev]
-
     - name: Lint check
       shell: bash -l {0}
       run: |
@@ -52,7 +48,7 @@ jobs:
         HERE_USER: ${{ secrets.HERE_USER }}
         HERE_PASSWORD: ${{ secrets.HERE_PASSWORD }}
       run: |
-        pytest -v --durations=10 --cov-report=xml --cov=xyzspaces tests
+        pytest -v --durations=10 --cov=xyzspaces tests --cov-report=xml
 
     - name: Upload coverage to Codecov
       if: github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.8'
@@ -68,3 +64,7 @@ jobs:
       run: |
         make draft_changelog
         sh scripts/build_docs.sh
+
+    - name: Install xyzspaces
+      shell: bash -l {0}
+      run: pip install .[dev]
