@@ -30,7 +30,9 @@ import copy
 import hashlib
 import json
 import logging
+import os
 import tempfile
+import webbrowser
 from decimal import Decimal
 from functools import partial
 from multiprocessing import Manager
@@ -1434,3 +1436,15 @@ class Space:
             cloned_space.add_features(features=feature_collection)
 
         return cloned_space
+
+    def browse(self):
+        """Inspect and analyze space using Data Hub Space Invader.
+        More information about Data Hub Space Invader can be found
+        `here <https://www.here.xyz/cli/space-invader/>`_.
+        """
+        token = self.api.credentials or os.environ.get("XYZ_TOKEN")
+        url = (
+            f"https://xyz-demo.s3.amazonaws.com/datahub/space-invader/index.html?mode=1&"
+            f"space={self._info['id']}&token={token}"
+        )
+        webbrowser.open(url, new=2)
