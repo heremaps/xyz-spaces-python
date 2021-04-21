@@ -13,3 +13,5 @@ _build/
 xyz.log
 .coverage.*
 xyzspaces.egg-info/
+build/
+dist/

@@ -202,7 +202,7 @@ def test_space_features_search_operations(space_object):
     gdf = next(
         space_object.features_in_bbox(bbox=[0, 0, 20, 20], geo_dataframe=True)
     )
-    assert gdf.shape == (15, 3)
+    assert gdf.shape == (15, 4)
 
     spatial_search = list(
         space_object.spatial_search(
@@ -217,7 +217,7 @@ def test_space_features_search_operations(space_object):
             lat=37.377228699000057, lon=74.512691691000043, geo_dataframe=True
         )
     )
-    assert ss_gdf.shape == (1, 3)
+    assert ss_gdf.shape == (1, 4)
 
     data1 = {"type": "Point", "coordinates": [72.8557, 19.1526]}
     spatial_search_geom = list(
@@ -228,14 +228,14 @@ def test_space_features_search_operations(space_object):
     ss_gdf = next(
         space_object.spatial_search_geometry(data=data1, geo_dataframe=True)
     )
-    assert ss_gdf.shape == (1, 3)
+    assert ss_gdf.shape == (1, 4)
     with pytest.raises(ValueError):
         list(space_object.features_in_tile(tile_type="dummy", tile_id="12"))
     res = space_object.features_in_tile(
         tile_type="here", tile_id="12", limit=10, geo_dataframe=True
     )
     gdf = next(res)
-    assert gdf.shape == (10, 3)
+    assert gdf.shape == (10, 4)
     res = space_object.features_in_tile(
         tile_type="here", tile_id="12", limit=10
     )

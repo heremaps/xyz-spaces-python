@@ -28,6 +28,7 @@ dictionaries, like the "statistics" of some given XYZ space.
 import concurrent.futures
 import copy
 import hashlib
+import io
 import json
 import logging
 import os
@@ -341,8 +342,9 @@ class Space:
             skip_cache=skip_cache,
             force_2d=force_2d,
         )
-        if geo_dataframe is not None:
-            yield gpd.GeoDataFrame.from_features(features=features["features"])
+        if geo_dataframe is True:
+            fbytes = json.dumps(features).encode("utf-8")
+            yield gpd.read_file(io.BytesIO(fbytes))
         for f in features["features"]:
             yield f
 
@@ -470,8 +472,9 @@ class Space:
             feature_ids=feature_ids,
             force_2d=force_2d,
         )
-        if geo_dataframe is not None:
-            return gpd.GeoDataFrame.from_features(features=res["features"])
+        if geo_dataframe is True:
+            fbytes = json.dumps(res).encode("utf-8")
+            return gpd.read_file(io.BytesIO(fbytes))
         return GeoJSON(res)
 
     def add_features(
@@ -724,8 +727,9 @@ class Space:
             force_2d=force_2d,
         )
 
-        if geo_dataframe is not None:
-            yield gpd.GeoDataFrame.from_features(features=features["features"])
+        if geo_dataframe is True:
+            fbytes = json.dumps(features).encode("utf-8")
+            yield gpd.read_file(io.BytesIO(fbytes))
         else:
             for f in features["features"]:
                 yield f
@@ -819,10 +823,9 @@ class Space:
                 mode=mode,
                 viz_sampling=viz_sampling,
             )
-            if geo_dataframe is not None:
-                yield gpd.GeoDataFrame.from_features(
-                    features=features["features"]
-                )
+            if geo_dataframe is True:
+                fbytes = json.dumps(features).encode("utf-8")
+                yield gpd.read_file(io.BytesIO(fbytes))
             else:
                 for f in features["features"]:
                     yield f
@@ -905,8 +908,9 @@ class Space:
             skip_cache=skip_cache,
             force_2d=force_2d,
         )
-        if geo_dataframe is not None:
-            yield gpd.GeoDataFrame.from_features(features=features["features"])
+        if geo_dataframe is True:
+            fbytes = json.dumps(features).encode("utf-8")
+            yield gpd.read_file(io.BytesIO(fbytes))
         else:
             for f in features["features"]:
                 yield f
@@ -985,10 +989,9 @@ class Space:
                 skip_cache=skip_cache,
                 force_2d=force_2d,
             )
-            if geo_dataframe is not None:
-                yield gpd.GeoDataFrame.from_features(
-                    features=features["features"]
-                )
+            if geo_dataframe is True:
+                fbytes = json.dumps(features).encode("utf-8")
+                yield gpd.read_file(io.BytesIO(fbytes))
             else:
                 for f in features["features"]:
                     yield f
@@ -1024,8 +1027,9 @@ class Space:
                 each["id"]: each for each in feature_list
             }.values()
 
-            if geo_dataframe is not None:
-                yield gpd.GeoDataFrame.from_features(features=unique_features)
+            if geo_dataframe is True:
+                fbytes = json.dumps(unique_features).encode("utf-8")
+                yield gpd.read_file(io.BytesIO(fbytes))
             else:
                 for f in unique_features:
                     yield f
