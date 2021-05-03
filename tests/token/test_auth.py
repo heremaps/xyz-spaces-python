@@ -48,7 +48,6 @@ def test_get_access_cookie():
         "here_auth",
         "here_ca_access",
     ]
-    breakpoint()
     assert set(cookies.keys()) == set(exp)
 
 
@@ -61,6 +60,7 @@ def test_get_tokens_cookies(api):
     # url = "http://xyz.api.here.com/token-api/tokens"
     cookies = get_auth_cookies(HERE_USER, HERE_PASSWORD)
     # tokens = requests.get(url, cookies=cookies).json()
+    api.headers = {}
     tokens = api.get(path="/token-api/tokens", cookies=cookies).json()
     assert type(tokens) == list
 
