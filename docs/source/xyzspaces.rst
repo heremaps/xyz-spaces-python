@@ -24,10 +24,10 @@ Submodules
    xyzspaces.__version__
    xyzspaces.apis
    xyzspaces.auth
-   xyzspaces.constants
    xyzspaces.curl
    xyzspaces.exceptions
    xyzspaces.logconf
    xyzspaces.spaces
    xyzspaces.tools
    xyzspaces.utils
+   xyzspaces.config.default_config

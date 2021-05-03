@@ -22,6 +22,7 @@ from time import sleep
 import pytest
 
 from xyzspaces.apis import HubApi
+from xyzspaces.config.default_config import XYZConfig
 from xyzspaces.datasets import get_chicago_parks_data, get_countries_data
 from xyzspaces.utils import get_xyz_token
 
@@ -31,14 +32,14 @@ XYZ_TOKEN = get_xyz_token()
 @pytest.fixture()
 def api():
     """Create shared XYZ Hub Api instance as a pytest fixture."""
-    api = HubApi(credentials=XYZ_TOKEN)
+    api = HubApi(config=XYZConfig.from_default())
     return api
 
 
 @pytest.fixture()
 def space_id():
     """Create shared XYZ space with countries data as a pytest fixture."""
-    api = HubApi(credentials=XYZ_TOKEN)
+    api = HubApi(config=XYZConfig.from_default())
 
     # setup, create temporary space
     res = api.post_space(
@@ -63,7 +64,7 @@ def space_id():
 @pytest.fixture()
 def point_space_id():
     """Create shared XYZ space with Chicago Parks data."""
-    api = HubApi(credentials=XYZ_TOKEN)
+    api = HubApi(config=XYZConfig.from_default())
     # setup, create temporary space
     res = api.post_space(
         data={

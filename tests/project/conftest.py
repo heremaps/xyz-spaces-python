@@ -22,6 +22,7 @@ import uuid
 import pytest
 
 from xyzspaces.apis import ProjectApi
+from xyzspaces.config.default_config import XYZConfig
 from xyzspaces.utils import get_xyz_token
 
 XYZ_TOKEN = get_xyz_token()
@@ -30,14 +31,14 @@ XYZ_TOKEN = get_xyz_token()
 @pytest.fixture()
 def api():
     """Create shared XYZ Project Api instance as a pytest fixture."""
-    api = ProjectApi(credentials=XYZ_TOKEN)
+    api = ProjectApi(config=XYZConfig.from_default())
     return api
 
 
 @pytest.fixture()
 def project_id():
     """Create shared XYZ project as a pytest fixture."""
-    api = ProjectApi(credentials=XYZ_TOKEN)
+    api = ProjectApi()
 
     # setup, create temporary project
     project = api.post_project(

@@ -27,7 +27,7 @@ from xyzspaces.exceptions import ApiError
 def test_exception_requests_inalid(api):
     """Raise exception via requests as response for invalid endpoint."""
     with pytest.raises(ApiError) as execinfo:
-        url = f"{api.server}/hub/invalid"
+        url = f"{api.xyzconfig.config['url']}/hub/invalid"
         resp = requests.get(url)
         raise ApiError(resp)
     resp = execinfo.value.args[0]
@@ -38,7 +38,7 @@ def test_exception_requests_inalid(api):
 def test_exception_requests_inalid_str(api):
     """Test raised exception as string follow expected pattern."""
     with pytest.raises(ApiError) as execinfo:
-        url = f"{api.server}/hub/invalid"
+        url = f"{api.xyzconfig.config['url']}/hub/invalid"
         resp = requests.get(url)
         raise ApiError(resp)
     assert str(execinfo.value).startswith('404, Not Found, {"type":"error",')
