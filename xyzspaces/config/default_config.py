@@ -12,7 +12,7 @@ DEFAULT_CONFIG = {
         "HERE_PASSWORD": os.environ.get("HERE_PASSWORD"),
     },
     "http_headers": {
-        "Authorization": f"bearer {os.environ.get('XYZ_TOKEN')}",
+        "Authorization": f"Bearer {os.environ.get('XYZ_TOKEN')}",
         "Content-Type": "application/geo+json",
     },
     "url": "https://xyz.api.here.com",
