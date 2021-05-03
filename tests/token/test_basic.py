@@ -71,6 +71,7 @@ HERE_PASSWORD = os.environ.get("HERE_PASSWORD")
 )
 def test_get_tokens(api):
     """Get a list of tokens."""
+    api.headers = {}
     tokens = api.get_tokens()
     assert type(tokens) == list
     exp = [
@@ -127,6 +128,7 @@ def _test_delete_not_authorized_token(api):
 )
 def test_delete_non_existing_token(api):
     """Delete a non-existing token."""
+    api.headers = {}
     with pytest.raises(ApiError) as execinfo:
         api.delete_token("INVALID")
     resp = execinfo.value.args[0]
