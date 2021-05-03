@@ -17,24 +17,20 @@
 
 """Module for providing test fixtures for the Token API tests."""
 
-import os
 import warnings
 
 import pytest
 
 from xyzspaces.apis import TokenApi
+from xyzspaces.config.default_config import XYZConfig
 from xyzspaces.exceptions import AuthenticationError
-
-HERE_USER = os.environ.get("HERE_USER")
-HERE_PASSWORD = os.environ.get("HERE_PASSWORD")
 
 
 @pytest.fixture()
 def api():
     """Create shared XYZ Token API instance as a pytest fixture."""
-    credentials = {"username": HERE_USER, "password": HERE_PASSWORD}
     try:
-        api = TokenApi(credentials=credentials)
+        api = TokenApi(config=XYZConfig.from_default())
     except AuthenticationError:
         api = TokenApi()
         warnings.warn(

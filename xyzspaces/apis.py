@@ -23,9 +23,10 @@ It provides classes like :class:`HubApi`, :class:`ProjectApi`, and
 way.
 """
 
+import copy
 import logging
-import os
 import urllib
+import urllib.request
 from typing import Any, Dict, Generator, List, Optional, Union
 
 import backoff
@@ -35,7 +36,7 @@ import requests
 import xyzspaces.curl as curl
 
 from .auth import get_auth_cookies
-from .constants import XYZ_BASE_URL
+from .config.default_config import XYZConfig
 from .exceptions import ApiError, TooManyRequestsException
 from .utils import join_string_lists
 
@@ -61,20 +62,18 @@ class Api:
     with slight changes regarding authentication.
     """
 
-    def __init__(
-        self, server: Optional[str], credentials: Optional[Any] = None
-    ):
+    def __init__(self, config: Optional[XYZConfig] = None):
         """Instantiate an :class:`Api` object.
 
-        :param server: The URL of the server implementing the API.
-        :param credentials: Any object to serve as authentication (not
-            used in this class).
+        :param config:
         """
-        self.server = server
-        self.credentials = credentials
+        if config:
+            self.xyzconfig = config
+        else:
+            self.xyzconfig = XYZConfig.from_default()
 
         self.cookies: Dict[str, str] = {}
-        self.headers: Dict[str, str] = {}
+        self.headers = self.xyzconfig.config["http_headers"]
         self.curl_command: List[str] = []
 
     @backoff.on_exception(backoff.expo, TooManyRequestsException)
@@ -105,7 +104,7 @@ class Api:
         :raises ApiError: If the status code of the HTTP response is not in the
              interval [200, 300).
         """
-        url = f"{self.server}{path}"
+        url = f"{self.xyzconfig.config['url']}{path}"
         curl_method = getattr(curl, method.lower())
         req_method = getattr(requests, method.lower())
         env_proxies = urllib.request.getproxies()
@@ -199,24 +198,18 @@ class ProjectApi(Api):
     provided as a ``credentials`` parameter when initialising an instance.
     """
 
-    def __init__(
-        self,
-        server: Optional[str] = XYZ_BASE_URL,
-        credentials: Optional[str] = None,
-    ):
+    def __init__(self, config: Optional[XYZConfig] = None):
         """Instantiate a :class:`ProjectApi` object.
 
-        :param server: The URL of the server implementing the API.
-        :param credentials: A string to serve as authentication (a bearer
-            token). Will be looked up in environment variable ``XYZ_TOKEN``
-            if not provided.
+        :param config:
         """
-        super().__init__(server=server, credentials=credentials)
+        if config:
+            super().__init__(config)
+        else:
+            super().__init__(XYZConfig.from_default())
 
-        if self.credentials is None:
-            self.credentials = os.getenv("XYZ_TOKEN")
-        if self.credentials and server == XYZ_BASE_URL:
-            self.headers["Authorization"] = f"Bearer {self.credentials}"
+        self.headers = copy.deepcopy(self.xyzconfig.config["http_headers"])
+        self.headers.pop("Content-Type")
 
     # Read projects
 
@@ -316,38 +309,33 @@ class TokenApi(Api):
     Example:
 
     >>> from xyzspaces.apis import TokenApi
-    >>> api = TokenApi(credentials=dict(username="foo", password="bar"))
+    >>> from xyzspaces.config.default_config import XYZConfig
+    >>> config = XYZConfig.from_default()
+    >>> api = TokenApi(config=config)
     >>> api.get_tokens()
     [...]
     """
 
     def __init__(
-        self,
-        server: Optional[str] = XYZ_BASE_URL,
-        credentials: Optional[Dict[str, str]] = None,
+        self, config: Optional[XYZConfig] = None,
     ):
         """Instantiate a :class:`TokenApi` object.
 
-        :param server: The URL of the server implementing the API.
-        :param credentials: A dict to hold the authentication details (the
-            fields ``username`` and ``password`` with valid values for the
-            user's existing HERE developer account). Will be looked up in
-            environment variables ``HERE_USER`` and ``HERE_PASSWORD`` if not
-            provided.
+        :param config:
         """
-        super().__init__(server=server, credentials=credentials)
+        xyzconfig = config
+        if xyzconfig:
+            super().__init__(xyzconfig)
+        else:
+            super().__init__(XYZConfig.from_default())
 
-        if credentials is None:
-            username = os.getenv("HERE_USER")
-            password = os.getenv("HERE_PASSWORD")
-            if username and password:
-                credentials = dict(username=username, password=password)
-        if credentials:
-            username = credentials["username"]
-            password = credentials["password"]
-            self.cookies.update(
-                get_auth_cookies(username=username, password=password)
-            )
+        self.headers = copy.deepcopy(self.xyzconfig.config["http_headers"])
+        self.headers.pop("Content-Type")
+        username = self.xyzconfig.config["credentials"]["HERE_USER"]
+        password = self.xyzconfig.config["credentials"]["HERE_PASSWORD"]
+        self.cookies.update(
+            get_auth_cookies(username=username, password=password)
+        )
 
     # Public requests
 
@@ -423,23 +411,18 @@ class HubApi(Api):
     """
 
     def __init__(
-        self,
-        server: Optional[str] = XYZ_BASE_URL,
-        credentials: Optional[str] = None,
+        self, config: Optional[XYZConfig] = None,
     ):
         """Instantiate an :class:`HubApi` object.
 
-        :param server: The URL of the server implementing the API.
-        :param credentials: A string to serve as authentication (a bearer
-            token). Will be looked up in environment variable ``XYZ_TOKEN``
-            if not provided.
+        :param config: An object of `class:XYZConfig`, If not provied
+            ``XYZ_TOKEN`` will be used from environment variable and
+            other configurations will be used as defined in :py:mod:`default_config`
         """
-        super().__init__(server=server, credentials=credentials)
-
-        if self.credentials is None:
-            self.credentials = os.getenv("XYZ_TOKEN")
-        if self.credentials and server == XYZ_BASE_URL:
-            self.headers["Authorization"] = f"Bearer {self.credentials}"
+        if config:
+            super().__init__(config=config)
+        else:
+            super().__init__(config=XYZConfig.from_default())
 
     # Undocumented endpoints
 
@@ -878,12 +861,10 @@ class HubApi(Api):
         >>> print(features)
         """
         path = f"/hub/spaces/{space_id}/features"
-        headers = dict(self.headers)
-        headers["Content-Type"] = "application/geo+json"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
         return self.put(
-            path=path, params=params, json=data, headers=headers
+            path=path, params=params, json=data, headers=self.headers
         ).json()
 
     def post_space_features(
@@ -912,12 +893,10 @@ class HubApi(Api):
         >>> print(space_features)
         """
         path = f"/hub/spaces/{space_id}/features"
-        headers = dict(self.headers)
-        headers["Content-Type"] = "application/geo+json"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
         return self.post(
-            path=path, params=params, json=data, headers=headers
+            path=path, params=params, json=data, headers=self.headers
         ).json()
 
     def delete_space_features(
@@ -942,8 +921,6 @@ class HubApi(Api):
         ...     space_id=space_id, id=["DEU", "ITA"])  # noqa: E501
         """
         path = f"/hub/spaces/{space_id}/features"
-        headers = dict(self.headers)
-        headers["Content-Type"] = "application/geo+json"
         params = {"clientId": _CLIENT_ID}
         if id:
             # TODO: The wildcard sign(*) could be used to delete all features
@@ -951,7 +928,7 @@ class HubApi(Api):
             params["id"] = ",".join(id)
         if tags:
             params["tags"] = ",".join(tags)
-        return self.delete(path=path, params=params, headers=headers).text
+        return self.delete(path=path, params=params, headers=self.headers).text
 
     def put_space_feature(
         self,
@@ -981,12 +958,10 @@ class HubApi(Api):
             path = f"/hub/spaces/{space_id}/features/{feature_id}"
         else:
             path = f"/hub/spaces/{space_id}/features/"
-        headers = dict(self.headers)
-        headers["Content-Type"] = "application/geo+json"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
         return self.put(
-            path=path, params=params, json=data, headers=headers
+            path=path, params=params, json=data, headers=self.headers
         ).json()
 
     def patch_space_feature(
@@ -1009,12 +984,10 @@ class HubApi(Api):
         :return: A dict representing a feature.
         """
         path = f"/hub/spaces/{space_id}/features/{feature_id}"
-        headers = dict(self.headers)
-        headers["Content-Type"] = "application/geo+json"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
         return self.patch(
-            path=path, params=params, json=data, headers=headers
+            path=path, params=params, json=data, headers=self.headers
         ).json()
 
     def delete_space_feature(self, space_id: str, feature_id: str) -> str:
@@ -1132,8 +1105,6 @@ class HubApi(Api):
         :return: A dict representing a feature collection.
         """
         path = f"/hub/spaces/{space_id}/spatial"
-        headers = dict(self.headers)
-        headers["Content-Type"] = "application/geo+json"
 
         q_params: Dict[str, str] = {"clientId": _CLIENT_ID}
         if radius:
@@ -1152,5 +1123,5 @@ class HubApi(Api):
             q_params["force2D"] = str(force_2d).lower()
 
         return self.post(
-            path=path, params=q_params, json=data, headers=headers
+            path=path, params=q_params, json=data, headers=self.headers
         ).json()

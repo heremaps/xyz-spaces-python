@@ -72,7 +72,7 @@ def test_new_space():
 def test_create_delete_1(api):
     """Test create and delete a new space."""
     # create space
-    space = Space.new(title="Foo")
+    space = Space.new(title="Foo", description="Bar")
     sleep(0.5)
     assert space.info["title"] == "Foo"
     assert "id" in space.info
@@ -383,7 +383,7 @@ def test_spaces_list(space_id):
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_update_space(space_id, empty_space):
     """Test update space title and description."""
-    obj = XYZ(credentials=XYZ_TOKEN)
+    obj = XYZ()
     space = obj.spaces.from_id(space_id=space_id)
     title = "New Title"
     res1 = space.update(title=title)

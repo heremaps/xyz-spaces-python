@@ -31,7 +31,6 @@ import hashlib
 import io
 import json
 import logging
-import os
 import tempfile
 import webbrowser
 from decimal import Decimal
@@ -47,7 +46,7 @@ import pandas
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
-from .constants import XYZ_BASE_URL
+from .config.default_config import XYZConfig
 from .utils import divide_bbox, flatten_geometry, grouper, wkt_to_geojson
 
 logger = logging.getLogger(__name__)
@@ -69,15 +68,21 @@ class Space:
     """
 
     @classmethod
-    def from_id(cls, space_id: str, server: str = XYZ_BASE_URL) -> "Space":
+    def from_id(
+        cls, space_id: str, config: Optional[XYZConfig] = None
+    ) -> "Space":
         """Instantiate a space object for an existing space ID.
 
         :param space_id: A string to represent the id of the space.
-        :param server: A string as base URL for Data Hub APIs. Required only
-            if Data Hub APIs are self-hosted.
+        :param config: An object of class:`XYZConfig`, If not provied
+            ``XYZ_TOKEN`` will be used from environment variable and
+            other configurations will be used as defined in :py:mod:`default_config`.
         :return: An object of :class:`Space`.
         """
-        api = HubApi(server=server)
+        if config:
+            api = HubApi(config=config)
+        else:
+            api = HubApi(config=XYZConfig.from_default())
         obj = cls(api)
         obj._info = api.get_space(space_id=space_id)
         return obj
@@ -86,13 +91,13 @@ class Space:
     def new(
         cls,
         title: str,
-        description: Optional[str] = None,
+        description: str,
         space_id: Optional[str] = None,
         schema: str = None,
         enable_uuid: Optional[bool] = None,
         listeners: Optional[Dict[str, Union[str, int]]] = None,
         shared: Optional[bool] = None,
-        server: str = XYZ_BASE_URL,
+        config: Optional[XYZConfig] = None,
     ) -> "Space":
         """Create new space object with given title and description.
 
@@ -109,11 +114,12 @@ class Space:
         :param shared: A boolean, if set to ``True``, space will be shared with
             other users having XYZ account, they will be able to read from the
             space using their own token. By default space will not be a shared space.
-        :param server: A string as base URL for Data Hub APIs. Required only if Data
-            Hub APIs are self-hosted.
+        :param config: An object of class:`XYZConfig`, If not provied
+            ``XYZ_TOKEN`` will be used from environment variable and
+            other configurations will be used as defined in :py:mod:`default_config`.
         :return: A object of :class:`Space`.
         """
-        api = HubApi(server=server)
+        api = HubApi(config=config)
         obj = cls(api)
         data: Dict[Any, Any] = {"title": title}
 
@@ -138,7 +144,7 @@ class Space:
         cls,
         title: str,
         description: Optional[str] = None,
-        server: str = XYZ_BASE_URL,
+        config: Optional[XYZConfig] = None,
         **kwargs: Dict[str, Dict],
     ) -> "Space":
         """Create a new virtual-space.
@@ -154,12 +160,13 @@ class Space:
 
         :param title: A string representing the title of the virtual-space.
         :param description: A string representing a description of the virtual-space.
-        :param server: A string as base URL for Data Hub APIs. Required only if Data
-            Hub APIs are self-hosted.
+        :param config: An object of class:`XYZConfig`, If not provied
+            ``XYZ_TOKEN`` will be used from environment variable and
+            other configurations will be used as defined in :py:mod:`default_config`.
         :param kwargs: A dict for the operation to perform on upstream spaces.
         :return: An object of :class:`Space`.
         """
-        api = HubApi(server=server)
+        api = HubApi(config=config if config else XYZConfig.from_default())
         obj = cls(api)
         data: Dict[str, Any] = {"title": title}
         if description is not None:
@@ -171,12 +178,14 @@ class Space:
         return obj
 
     def __init__(
-        self, api: Optional[HubApi] = None, server: str = XYZ_BASE_URL
+        self, api: Optional[HubApi] = None, config: Optional[XYZConfig] = None,
     ):
         """Instantiate a space object, optionally with authenticated api instance and
            custom base URL as ``server``, ``server`` is required only for self-hosted
            Data Hub instances."""
-        self.api = api or HubApi(server=server)
+        self.api = api or HubApi(
+            config=config if config else XYZConfig.from_default()
+        )
         self._info: dict = {}
 
     def __repr__(self):
@@ -1446,7 +1455,7 @@ class Space:
         More information about Data Hub Space Invader can be found
         `here <https://www.here.xyz/cli/space-invader/>`_.
         """
-        token = self.api.credentials or os.environ.get("XYZ_TOKEN")
+        token = self.api.xyzconfig.config["credentials"]["XYZ_TOKEN"]
         url = (
             f"https://xyz-demo.s3.amazonaws.com/datahub/space-invader/index.html?mode=1&"
             f"space={self._info['id']}&token={token}"

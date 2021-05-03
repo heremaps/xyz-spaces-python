@@ -86,7 +86,7 @@ def test_round_trip(api):
     """Put and delete a feature."""
     # create space
     res = api.post_space(
-        data={"title": "Testing xyzspaces", "description": "Temporary space.",}
+        data={"title": "Testing xyzspaces", "description": "Temporary space."}
     )
     space_id = res["id"]
 

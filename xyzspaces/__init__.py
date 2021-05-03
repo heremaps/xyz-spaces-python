@@ -29,7 +29,6 @@ See also:
 - HERE Data Hub: https://developer.here.com/products/data-hub
 """
 
-import os
 from typing import Optional
 
 from xyzspaces.__version__ import __version__  # noqa: F401
@@ -37,28 +36,24 @@ from xyzspaces.logconf import setup_logging  # noqa: F401
 from xyzspaces.spaces import Space
 
 from .apis import HubApi
-from .constants import XYZ_BASE_URL
+from .config.default_config import XYZConfig
 
 
 class XYZ:
     """A single interface to interact with your XYZ Hub server or HERE Data Hub."""
 
-    def __init__(
-        self, credentials: Optional[str] = None, server: str = XYZ_BASE_URL
-    ):
+    def __init__(self, config: Optional[XYZConfig] = None):
         """Instantiate an XYZ object, optionally with access credentials
          and custom base URL.
 
-        :param credentials: A string to serve as authentication
-            (a bearer token). Will be looked up in environment variable
-            ``XYZ_TOKEN`` if not provided.
-        :param server: A string as base URL for Data Hub APIs. Required
-            only if Data Hub APIs are self-hosted. For self-hosted Data
-            Hub instances ``credentials`` is not required.
+        :param config: An object of `class:XYZConfig`, If not provied
+            ``XYZ_TOKEN`` will be used from environment variable and other
+            configurations will be used as defined in module :py:mod:`default_config`
         """
-        if credentials:
-            os.environ["XYZ_TOKEN"] = str(credentials)
-            self.hub_api = HubApi(credentials=credentials, server=server)
+        if config:
+            self.hub_api = HubApi(config)
         else:
-            self.hub_api = HubApi(server=server)
-        self.spaces = Space(api=self.hub_api, server=server)
+            config = XYZConfig.from_default()
+            self.hub_api = HubApi(config)
+
+        self.spaces = Space(api=self.hub_api)

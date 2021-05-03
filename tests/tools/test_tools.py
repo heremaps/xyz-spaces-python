@@ -23,6 +23,7 @@ Here we don't generate any temporary spaces.
 
 import pytest
 
+from xyzspaces.config.default_config import XYZConfig
 from xyzspaces.datasets import get_countries_data
 from xyzspaces.tools import subset_geojson
 from xyzspaces.utils import feature_to_bbox, get_xyz_token
@@ -35,7 +36,10 @@ gj_countries = get_countries_data()
 def test_subset_bbox_is_empty():
     """Test subset GeoJSON by tile returns empty list of features."""
     subset = subset_geojson(
-        token=XYZ_TOKEN, gj=gj_countries, bbox=[0, 0, 0, 0], clip=False
+        config=XYZConfig.from_default(),
+        gj=gj_countries,
+        bbox=[0, 0, 0, 0],
+        clip=False,
     )
     assert subset["features"] == []
 
@@ -44,7 +48,7 @@ def test_subset_bbox_is_empty():
 def test_subset_bbox_is_empty_2():
     """Test subset GeoJSON by tile returns only one feature for Germany."""
     subset = subset_geojson(
-        token=XYZ_TOKEN,
+        config=XYZConfig.from_default(),
         gj=gj_countries,
         bbox=[13, 51, 14, 52],  # w, s, e, n
         clip=False,
@@ -57,7 +61,7 @@ def test_subset_bbox_is_empty_2():
 def test_subset_bbox_is_empty_3():
     """Test subset GeoJSON by tile returns only one feature for Germany."""
     subset = subset_geojson(
-        token=XYZ_TOKEN,
+        config=XYZConfig.from_default(),
         gj=gj_countries,
         bbox=[13, 51, 14, 52],
         clip=True,  # w, s, e, n
@@ -72,10 +76,7 @@ def test_subset_bbox_is_empty_3():
 def test_subset_bbox_bbox_feature():
     """Test subset GeoJSON by tile."""
     subset = subset_geojson(
-        token=XYZ_TOKEN,
-        gj=gj_countries,
-        bbox=[13, 51, 14, 52],  # w, s, e, n
-        clip=False,
+        config=XYZConfig.from_default(), gj=gj_countries, bbox=[13, 51, 14, 52]
     )
     assert feature_to_bbox(subset["features"][0]) == [
         5.988658,
@@ -90,7 +91,7 @@ def test_subset_bbox_raises1():
     """Test subset GeoJSON raises ValueError for bbox and tile_type."""
     with pytest.raises(ValueError):
         subset_geojson(
-            token=XYZ_TOKEN,
+            config=XYZConfig.from_default(),
             gj=gj_countries,
             bbox=[13, 51, 14, 52],  # w, s, e, n
             tile_type="dummy",
@@ -104,7 +105,10 @@ def test_subset_bbox_raises2():
     """Test subset GeoJSON raises AssertionError w/o bbox and only tile_type."""
     with pytest.raises(AssertionError):
         subset_geojson(
-            token=XYZ_TOKEN, gj=gj_countries, tile_type="dummy", clip=False
+            config=XYZConfig.from_default(),
+            gj=gj_countries,
+            tile_type="dummy",
+            clip=False,
         )
 
 
@@ -112,7 +116,7 @@ def test_subset_bbox_raises2():
 def test_subset_bbox_raises3():
     """Test subset GeoJSON with tile type and ID returns a FeatureCollection."""
     subset = subset_geojson(
-        token=XYZ_TOKEN,
+        config=XYZConfig.from_default(),
         gj=gj_countries,
         tile_type="here",
         tile_id="123",
@@ -131,7 +135,7 @@ def test_superset_bbox():
 def test_subset_spatial_search():
     """Test subset GeoJSON with lat/lon/radius returns a FeatureCollection."""
     subset = subset_geojson(
-        token=XYZ_TOKEN,
+        config=XYZConfig.from_default(),
         gj=gj_countries,
         lat=37.377228699000057,
         lon=74.512691691000043,
@@ -145,7 +149,7 @@ def test_subset_spatial_raises():
     """Test subset GeoJSON raises ``ValueError`` with lat, lon and bbox."""
     with pytest.raises(ValueError):
         subset_geojson(
-            token=XYZ_TOKEN,
+            config=XYZConfig.from_default(),
             gj=gj_countries,
             bbox=[13, 51, 14, 52],  # w, s, e, n
             lat=37.377228699000057,
@@ -158,7 +162,7 @@ def test_subset_spatial_raises2():
     """Test subset GeoJSON raises ``ValueError`` with lat, lon and tile_id, tile_type."""
     with pytest.raises(ValueError):
         subset_geojson(
-            token=XYZ_TOKEN,
+            config=XYZConfig.from_default(),
             gj=gj_countries,
             tile_type="here",
             tile_id="123",
@@ -168,7 +172,7 @@ def test_subset_spatial_raises2():
 
     with pytest.raises(ValueError):
         subset_geojson(
-            token=XYZ_TOKEN,
+            config=XYZConfig.from_default(),
             gj=gj_countries,
             tile_id="123",
             lat=37.377228699000057,

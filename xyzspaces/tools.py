@@ -20,11 +20,12 @@
 from typing import List, Optional
 
 from .apis import HubApi
+from .config.default_config import XYZConfig
 
 
 def subset_geojson(
-    token: str,
     gj: dict,
+    config: Optional[XYZConfig] = None,
     bbox: Optional[List[float]] = None,
     tile_type: Optional[str] = None,
     tile_id: Optional[str] = None,
@@ -39,7 +40,9 @@ def subset_geojson(
     perform the bbox or tile subsetting and return the resulting GeoJSON
     object after deleting the temporary space again.
 
-    :param token: A string containing the XYZ API token.
+    :param config: An object of `class:XYZConfig`, If not provied
+            ``XYZ_TOKEN`` will be used from environment variable and
+            other configurations will be used as defined in :py:mod:`default_config`.
     :param gj: The GeoJSON data object.
     :param bbox: The bounding box described as a list of four numbers (its
         West, South, East, and North margins).
@@ -77,7 +80,7 @@ def subset_geojson(
     if bbox:
         assert len(bbox) == 4
 
-    api = HubApi(credentials=token)
+    api = HubApi(config=config if config else XYZConfig.from_default())
 
     # Create space.
     res = api.post_space(
