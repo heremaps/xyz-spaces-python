@@ -402,7 +402,9 @@ class HubApi(Api):
     Example:
 
     >>> from xyzspaces.apis import HubApi
-    >>> api = HubApi(credentials="MY_XYZ_TOKEN")
+    >>> from xyzspaces.config.default_config import XYZConfig
+    >>> config = XYZConfig.from_default()
+    >>> api = HubApi(config=config)
     >>> api.get_spaces()
     [...]
 
