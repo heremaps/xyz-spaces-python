@@ -23,9 +23,6 @@ import pytest
 
 from xyzspaces.apis import ProjectApi
 from xyzspaces.config.default_config import XYZConfig
-from xyzspaces.utils import get_xyz_token
-
-XYZ_TOKEN = get_xyz_token()
 
 
 @pytest.fixture()

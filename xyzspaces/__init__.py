@@ -43,8 +43,8 @@ class XYZ:
     """A single interface to interact with your XYZ Hub server or HERE Data Hub."""
 
     def __init__(self, config: Optional[XYZConfig] = None):
-        """Instantiate an XYZ object, optionally with access credentials
-         and custom base URL.
+        """Instantiate an XYZ object, optionally with custom configuration for
+           your credentials and base URL.
 
         :param config: An object of `class:XYZConfig`, If not provied
             ``XYZ_TOKEN`` will be used from environment variable and other

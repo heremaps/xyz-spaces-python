@@ -30,4 +30,4 @@ Submodules
    xyzspaces.spaces
    xyzspaces.tools
    xyzspaces.utils
-   xyzspaces.config.default_config
+   xyzspaces.config

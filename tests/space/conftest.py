@@ -27,9 +27,6 @@ from xyzspaces.apis import HubApi
 from xyzspaces.config.default_config import XYZConfig
 from xyzspaces.datasets import get_chicago_parks_data, get_countries_data
 from xyzspaces.spaces import Space
-from xyzspaces.utils import get_xyz_token
-
-XYZ_TOKEN = get_xyz_token()
 
 
 @pytest.fixture()

@@ -112,9 +112,11 @@ The following is a tiny "Hello World"-like example that you can run to have a su
 
 ```python
 import geojson
+import os
 import xyzspaces
 
-xyz = xyzspaces.XYZ(credentials="MY_XYZ_TOKEN")
+os.environ["XYZ_TOKEN"] = "MY_XYZ_TOKEN"
+xyz = xyzspaces.XYZ()
 
 # Create a New Space
 title = "My Demo Space"
