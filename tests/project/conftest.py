@@ -22,7 +22,7 @@ import uuid
 import pytest
 
 from xyzspaces.apis import ProjectApi
-from xyzspaces.config.default_config import XYZConfig
+from xyzspaces.config.default import XYZConfig
 
 
 @pytest.fixture()

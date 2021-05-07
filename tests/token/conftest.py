@@ -22,7 +22,7 @@ import warnings
 import pytest
 
 from xyzspaces.apis import TokenApi
-from xyzspaces.config.default_config import XYZConfig
+from xyzspaces.config.default import XYZConfig
 from xyzspaces.exceptions import AuthenticationError
 
 

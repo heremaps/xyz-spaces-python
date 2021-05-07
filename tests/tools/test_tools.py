@@ -23,7 +23,7 @@ Here we don't generate any temporary spaces.
 
 import pytest
 
-from xyzspaces.config.default_config import XYZConfig
+from xyzspaces.config.default import XYZConfig
 from xyzspaces.datasets import get_countries_data
 from xyzspaces.tools import subset_geojson
 from xyzspaces.utils import feature_to_bbox, get_xyz_token

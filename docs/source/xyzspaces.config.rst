@@ -13,4 +13,4 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   xyzspaces.config.default_config
+   xyzspaces.config.default
