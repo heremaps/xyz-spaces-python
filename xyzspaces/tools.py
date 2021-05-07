@@ -20,7 +20,7 @@
 from typing import List, Optional
 
 from .apis import HubApi
-from .config.default_config import XYZConfig
+from .config.default import XYZConfig
 
 
 def subset_geojson(

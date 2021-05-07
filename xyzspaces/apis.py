@@ -36,7 +36,7 @@ import requests
 import xyzspaces.curl as curl
 
 from .auth import get_auth_cookies
-from .config.default_config import XYZConfig
+from .config.default import XYZConfig
 from .exceptions import ApiError, TooManyRequestsException
 from .utils import join_string_lists
 
@@ -310,7 +310,7 @@ class TokenApi(Api):
     Example:
 
     >>> from xyzspaces.apis import TokenApi
-    >>> from xyzspaces.config.default_config import XYZConfig
+    >>> from xyzspaces.config.default import XYZConfig
     >>> config = XYZConfig.from_default()
     >>> api = TokenApi(config=config)
     >>> api.get_tokens()
@@ -403,7 +403,7 @@ class HubApi(Api):
     Example:
 
     >>> from xyzspaces.apis import HubApi
-    >>> from xyzspaces.config.default_config import XYZConfig
+    >>> from xyzspaces.config.default import XYZConfig
     >>> config = XYZConfig.from_default()
     >>> api = HubApi(config=config)
     >>> api.get_spaces()

@@ -46,7 +46,7 @@ import pandas
 from geojson import Feature, GeoJSON
 
 from .apis import HubApi
-from .config.default_config import XYZConfig
+from .config.default import XYZConfig
 from .utils import divide_bbox, flatten_geometry, grouper, wkt_to_geojson
 
 logger = logging.getLogger(__name__)

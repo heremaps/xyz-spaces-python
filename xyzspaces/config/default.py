@@ -1,7 +1,10 @@
 """This module defines classes for default configuration for the project."""
 
-import json
 import os
+from pathlib import Path
+from typing import Union
+
+from pyhocon import ConfigFactory
 
 # : This config dictionary is used by default to create object of XYZConfig class
 # : if user does not provide config object for project level configurations.
@@ -31,8 +34,7 @@ class XYZConfig:
         return cls(**DEFAULT_CONFIG)
 
     @classmethod
-    def from_file(cls, path: str) -> "XYZConfig":
+    def from_file(cls, path: Union[str, Path]) -> "XYZConfig":
         """Return the config from file path provided."""
-        with open(path) as fh:
-            config_data = json.load(fh)
+        config_data = ConfigFactory.parse_file(path)
         return cls(**config_data)

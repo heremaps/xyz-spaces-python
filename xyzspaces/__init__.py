@@ -36,7 +36,7 @@ from xyzspaces.logconf import setup_logging  # noqa: F401
 from xyzspaces.spaces import Space
 
 from .apis import HubApi
-from .config.default_config import XYZConfig
+from .config.default import XYZConfig
 
 
 class XYZ:

@@ -24,7 +24,7 @@ from time import sleep
 import pytest
 
 from xyzspaces.apis import HubApi
-from xyzspaces.config.default_config import XYZConfig
+from xyzspaces.config.default import XYZConfig
 from xyzspaces.datasets import get_chicago_parks_data, get_countries_data
 from xyzspaces.spaces import Space
 
