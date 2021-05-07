@@ -195,7 +195,8 @@ class ProjectApi(Api):
     Instances of this class allow to manage XYZ Hub projects.
 
     API calls must be authenticated via a bearer token which needs to be
-    provided as a ``credentials`` parameter when initialising an instance.
+    provided in env variable called as ``XYZ_TOKEN`` or in config object
+    when initialising an instance.
     """
 
     def __init__(self, config: Optional[XYZConfig] = None):

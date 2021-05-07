@@ -34,7 +34,9 @@ class ApiError(Exception):
     Example:
 
     >>> try:
-    >>>     api = HubApi(credentials="MY-XYZ-TOKEN")
+    >>>     import os
+    >>>     os.environ["XYZ_TOKEN"] = "MY-XYZ-TOKEN"
+    >>>     api = HubApi()
     >>>     api.get("/hub/nope").json()
     >>> except ApiError as e:
     >>>     resp = e.value.args[0]

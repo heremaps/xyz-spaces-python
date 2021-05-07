@@ -249,8 +249,10 @@ class Space:
 
         Example:
 
+        >>> import os
         >>> from xyzspaces import XYZ
-        >>> xyz = XYZ(credentials="XYZ_TOKEN")
+        >>> os.environ["XYZ_TOKEN"] = "XYZ_TOKEN"
+        >>> xyz = XYZ()
         >>> space = xyz.spaces.new(title="new space", description="new space")
         >>> tagging_rules = {"large": "$.features[?(@.properties.area>=500)]"}
         >>> space.update(title="updated title",
@@ -1243,8 +1245,10 @@ class Space:
 
         Example:
 
+        >>> import os
         >>> from xyzspaces import XYZ
-        >>> xyz = XYZ(credentials="XYZ_TOKEN")
+        >>> os.environ["XYZ_TOKEN"] = "MY-XYZ-TOKEN"
+        >>> xyz = XYZ()
         >>> space = xyz.spaces.from_id(space_id="existing-space-id")
         >>> space.cluster(clustering="hexbin")
         """
@@ -1284,8 +1288,11 @@ class Space:
         :param encoding: A string to represent the type of encoding.
 
         Example:
+
+        >>> import os
         >>> from xyzspaces import XYZ
-        >>> xyz = XYZ(credentials="XYZ_TOKEN")
+        >>> os.environ["XYZ_TOKEN"] = "MY-XYZ-TOKEN"
+        >>> xyz = XYZ()
         >>> space = xyz.spaces.from_id(space_id="existing-space-id")
         >>> space.add_features_shapefile(path="shapefile.shp")
         """
