@@ -16,3 +16,5 @@ twine
 pytest-flake8
 isort
 darglint
+# mypy new version requires below
+types-requests

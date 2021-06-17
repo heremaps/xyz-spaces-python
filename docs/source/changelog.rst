@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+xyzspaces 0.6.0 (2021-06-17)
+----------------------------
+
+* **Features**
+
+  * Added support custom base URL of Data Hub APIs for self-hosted Data Hub. (`#113 <https://github.com/heremaps/xyz-spaces-python/pull/113>`_)
+
+  * Added support for launch datahub space invader. (`commit <https://github.com/heremaps/xyz-spaces-python/commit/6863eb479355ce659a2cab3c8aa5442868c3070e>`_)
+
+  * Fixed feature_id gettting skipped from GeoPandas data.(`commit <https://github.com/heremaps/xyz-spaces-python/commit/52117691084c41e5aea27ae77a69a91148d178c3>`_)
+
 xyzspaces 0.5.0 (2021-02-01)
 ----------------------------
 
