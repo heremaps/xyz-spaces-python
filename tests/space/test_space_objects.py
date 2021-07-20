@@ -127,9 +127,7 @@ def test_space_search(space_object):
     feats = list(space_object.search(params={"f.id": "IND"}))
     assert feats[0]["id"] == "IND"
 
-    feats = list(
-        space_object.search(selection=["p.color"], params={"f.id": "IND"})
-    )
+    feats = list(space_object.search(selection=["p.color"], params={"f.id": "IND"}))
     assert feats[0]["properties"] == {}
 
 
@@ -158,7 +156,9 @@ def test_space_feature_operations(space_object):
     assert isinstance(res, GeoJSON)
 
     res = space_object.update_feature(
-        feature_id=feature_id, data=fra, add_tags=["foo", "bar"],
+        feature_id=feature_id,
+        data=fra,
+        add_tags=["foo", "bar"],
     )
     assert isinstance(res, GeoJSON)
 
@@ -172,9 +172,7 @@ def test_space_feature_operations(space_object):
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_space_features_operations(space_object):
     """Test for get, add, update and delete features operations."""
-    gdf = space_object.get_features(
-        feature_ids=["DEU", "ITA"], geo_dataframe=True
-    )
+    gdf = space_object.get_features(feature_ids=["DEU", "ITA"], geo_dataframe=True)
     assert isinstance(gdf, gpd.GeoDataFrame)
     # get two features
     data = space_object.get_features(feature_ids=["DEU", "ITA"])
@@ -199,15 +197,11 @@ def test_space_features_search_operations(space_object):
     assert len(bbox) == 15
     assert bbox[0]["type"] == "Feature"
 
-    gdf = next(
-        space_object.features_in_bbox(bbox=[0, 0, 20, 20], geo_dataframe=True)
-    )
+    gdf = next(space_object.features_in_bbox(bbox=[0, 0, 20, 20], geo_dataframe=True))
     assert gdf.shape == (15, 4)
 
     spatial_search = list(
-        space_object.spatial_search(
-            lat=37.377228699000057, lon=74.512691691000043
-        )
+        space_object.spatial_search(lat=37.377228699000057, lon=74.512691691000043)
     )
     assert spatial_search[0]["type"] == "Feature"
     assert spatial_search[0]["id"] == "AFG"
@@ -220,14 +214,10 @@ def test_space_features_search_operations(space_object):
     assert ss_gdf.shape == (1, 4)
 
     data1 = {"type": "Point", "coordinates": [72.8557, 19.1526]}
-    spatial_search_geom = list(
-        space_object.spatial_search_geometry(data=data1)
-    )
+    spatial_search_geom = list(space_object.spatial_search_geometry(data=data1))
     assert spatial_search_geom[0]["type"] == "Feature"
     assert spatial_search_geom[0]["id"] == "IND"
-    ss_gdf = next(
-        space_object.spatial_search_geometry(data=data1, geo_dataframe=True)
-    )
+    ss_gdf = next(space_object.spatial_search_geometry(data=data1, geo_dataframe=True))
     assert ss_gdf.shape == (1, 4)
     with pytest.raises(ValueError):
         list(space_object.features_in_tile(tile_type="dummy", tile_id="12"))
@@ -236,9 +226,7 @@ def test_space_features_search_operations(space_object):
     )
     gdf = next(res)
     assert gdf.shape == (10, 4)
-    res = space_object.features_in_tile(
-        tile_type="here", tile_id="12", limit=10
-    )
+    res = space_object.features_in_tile(tile_type="here", tile_id="12", limit=10)
     features = list(res)
     assert features[0]["id"] == "AFG"
 
@@ -310,15 +298,9 @@ def test_virtual_space_group(upstream_spaces):
     }
     assert vpace_stats["count"]["value"] == 189
     feature1 = vspace.get_feature(feature_id="FRA")
-    assert (
-        feature1["properties"]["@ns:com:here:xyz"]["space"]
-        == upstream_spaces[0]
-    )
+    assert feature1["properties"]["@ns:com:here:xyz"]["space"] == upstream_spaces[0]
     feature2 = vspace.get_feature(feature_id="LP")
-    assert (
-        feature2["properties"]["@ns:com:here:xyz"]["space"]
-        == upstream_spaces[1]
-    )
+    assert feature2["properties"]["@ns:com:here:xyz"]["space"] == upstream_spaces[1]
     vspace.delete_feature(feature_id="FRA")
     with pytest.raises(ApiError):
         vspace.get_feature("FRA")
@@ -352,10 +334,7 @@ def test_virtual_space_override(space_id, empty_space):
     kwargs = {"virtualspace": {"override": [space_id, empty_space.info["id"]]}}
     vspace = Space.virtual(title=title, description=description, **kwargs)
     feature = vspace.get_feature(feature_id="FRA")
-    assert (
-        feature["properties"]["@ns:com:here:xyz"]["space"]
-        == empty_space.info["id"]
-    )
+    assert feature["properties"]["@ns:com:here:xyz"]["space"] == empty_space.info["id"]
     vspace.delete()
 
 
@@ -430,10 +409,7 @@ def test_clustering(space_object, empty_space):
 def test_coordinates_with_altitude(empty_space):
     """Test geojson data having altitude information."""
     fp_geojson = (
-        Path(__file__).parents[2]
-        / "xyzspaces"
-        / "datasets"
-        / "chicago_parks.geo.json"
+        Path(__file__).parents[2] / "xyzspaces" / "datasets" / "chicago_parks.geo.json"
     )
     space = empty_space
     space.add_features_geojson(fp_geojson, encoding="utf-8-sig")
@@ -460,10 +436,7 @@ def test_read(space_object, space_id):
     """Test read space."""
     space = space_object.read(id=space_id)
     assert space.info["title"] == "Testing xyzspaces"
-    assert (
-        space.info["description"]
-        == "Temporary space containing countries data."
-    )
+    assert space.info["description"] == "Temporary space containing countries data."
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -503,9 +476,7 @@ def test_add_features_csv_exception(space_object, tmp_path):
         )
 
 
-@pytest.mark.skipif(
-    True, reason="Already getting covered in test_file_bulk_upload."
-)
+@pytest.mark.skipif(True, reason="Already getting covered in test_file_bulk_upload.")
 def test_bulk_upload(space_object):
     geo_file = Path(__file__).parents[1] / "data" / "road_traffic.geo.json"
 
@@ -521,12 +492,7 @@ def test_bulk_upload(space_object):
 @pytest.mark.flaky(reruns=3, reruns_delay=2)
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_file_bulk_upload(space_object):
-    geo_file = (
-        Path(__file__).parents[2]
-        / "xyzspaces"
-        / "datasets"
-        / "countries.geo.json"
-    )
+    geo_file = Path(__file__).parents[2] / "xyzspaces" / "datasets" / "countries.geo.json"
     space_object.add_features_geojson(geo_file, features_size=50)
     ft = space_object.get_feature("IND")
     assert ft["type"] == "Feature"
@@ -740,14 +706,10 @@ def test_add_features_duplicate_properties(empty_space):
     for f in geojson["features"]:
         f.pop("id", None)
         f["properties"]["test"] = "test"
-    empty_space.add_features(
-        geojson, features_size=100, id_properties=["name", "test"]
-    )
+    empty_space.add_features(geojson, features_size=100, id_properties=["name", "test"])
     stats = empty_space.get_statistics()
     assert stats["count"]["value"] == 180
-    assert (
-        empty_space.get_feature(feature_id="India-test")["type"] == "Feature"
-    )
+    assert empty_space.get_feature(feature_id="India-test")["type"] == "Feature"
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=2)
@@ -804,18 +766,13 @@ def test_space_clone(space_object, space_id, empty_space):
     assert cloned_space.get_statistics()["count"]["value"] == 180
     assert cloned_specific_space.get_statistics()["count"]["value"] == 180
     assert cloned_space.get_feature("IND")["properties"]["name"] == "India"
-    assert (
-        cloned_specific_space.get_feature("IND")["properties"]["name"]
-        == "India"
-    )
+    assert cloned_specific_space.get_feature("IND")["properties"]["name"] == "India"
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_force_2d(space_object):
     """Test force2D parameter for all API's used to read feature"""
-    feature = list(
-        space_object.search(params={"p.name": "India"}, force_2d=True)
-    )
+    feature = list(space_object.search(params={"p.name": "India"}, force_2d=True))
     assert len(feature[0]["geometry"]["coordinates"][0][0]) == 2
 
     feature = next(space_object.iter_feature(force_2d=True))
@@ -827,9 +784,7 @@ def test_force_2d(space_object):
     data = space_object.get_features(feature_ids=["DEU", "ITA"], force_2d=True)
     assert len(data["features"][0]["geometry"]["coordinates"][0][0]) == 2
 
-    bbox = list(
-        space_object.features_in_bbox(bbox=[0, 0, 20, 20], force_2d=True)
-    )
+    bbox = list(space_object.features_in_bbox(bbox=[0, 0, 20, 20], force_2d=True))
     assert len(bbox[0]["geometry"]["coordinates"][0][0]) == 2
 
     spatial_search = list(
@@ -856,17 +811,14 @@ def test_force_2d(space_object):
 def test_get_space_tile_sampling(api):
     """Get space tile and compare all available sampling rates."""
     space = Space.from_id(MICROSOFT_BUILDINGS_SPACE_ID)
-    params = dict(tile_type="web", tile_id="11_585_783",)
+    params = dict(
+        tile_type="web",
+        tile_id="11_585_783",
+    )
     tile_raw = list(space.features_in_tile(mode="raw", **params))
-    tile_viz_off = list(
-        space.features_in_tile(mode="viz", viz_sampling="off", **params)
-    )
-    tile_viz_low = list(
-        space.features_in_tile(mode="viz", viz_sampling="low", **params)
-    )
-    tile_viz_med = list(
-        space.features_in_tile(mode="viz", viz_sampling="med", **params)
-    )
+    tile_viz_off = list(space.features_in_tile(mode="viz", viz_sampling="off", **params))
+    tile_viz_low = list(space.features_in_tile(mode="viz", viz_sampling="low", **params))
+    tile_viz_med = list(space.features_in_tile(mode="viz", viz_sampling="med", **params))
     tile_viz_high = list(
         space.features_in_tile(mode="viz", viz_sampling="high", **params)
     )

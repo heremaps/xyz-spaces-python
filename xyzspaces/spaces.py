@@ -68,9 +68,7 @@ class Space:
     """
 
     @classmethod
-    def from_id(
-        cls, space_id: str, config: Optional[XYZConfig] = None
-    ) -> "Space":
+    def from_id(cls, space_id: str, config: Optional[XYZConfig] = None) -> "Space":
         """Instantiate a space object for an existing space ID.
 
         :param space_id: A string to represent the id of the space.
@@ -178,14 +176,14 @@ class Space:
         return obj
 
     def __init__(
-        self, api: Optional[HubApi] = None, config: Optional[XYZConfig] = None,
+        self,
+        api: Optional[HubApi] = None,
+        config: Optional[XYZConfig] = None,
     ):
         """Instantiate a space object, optionally with authenticated api instance and
-           custom base URL as ``server``, ``server`` is required only for self-hosted
-           Data Hub instances."""
-        self.api = api or HubApi(
-            config=config if config else XYZConfig.from_default()
-        )
+        custom base URL as ``server``, ``server`` is required only for self-hosted
+        Data Hub instances."""
+        self.api = api or HubApi(config=config if config else XYZConfig.from_default())
         self._info: dict = {}
 
     def __repr__(self):
@@ -376,9 +374,7 @@ class Space:
         ):
             yield feature
 
-    def get_feature(
-        self, feature_id: str, force_2d: Optional[bool] = None
-    ) -> GeoJSON:
+    def get_feature(self, feature_id: str, force_2d: Optional[bool] = None) -> GeoJSON:
         """
         Retrieve one GeoJSON feature with given ID from this space.
 
@@ -544,22 +540,16 @@ class Space:
                     id_properties=id_properties,
                 )
                 with concurrent.futures.ProcessPoolExecutor() as executor:
-                    for ft in executor.map(
-                        part_func, groups, chunksize=chunk_size
-                    ):
+                    for ft in executor.map(part_func, groups, chunksize=chunk_size):
                         logger.info(f"features processed: {ft}")
                         total += ft
-                logger.info(
-                    f"{total} features are uploaded on space: {space_id}"
-                )
+                logger.info(f"{total} features are uploaded on space: {space_id}")
             else:
 
                 features = self._process_features(
                     features["features"], id_properties, ids_map
                 )
-                feature_collection = dict(
-                    type="FeatureCollection", features=features
-                )
+                feature_collection = dict(type="FeatureCollection", features=features)
                 res = self.api.put_space_features(
                     space_id=space_id,
                     data=feature_collection,
@@ -580,12 +570,8 @@ class Space:
         remove_tags: Optional[List[str]] = None,
         id_properties: Optional[List[str]] = None,
     ):
-        features_list = self._process_features(
-            features, id_properties, ids_map
-        )
-        feature_collection = dict(
-            type="FeatureCollection", features=features_list
-        )
+        features_list = self._process_features(features, id_properties, ids_map)
+        feature_collection = dict(type="FeatureCollection", features=features_list)
         self.api.put_space_features(
             space_id=self._info["id"],
             data=feature_collection,
@@ -600,9 +586,7 @@ class Space:
             if f:
                 if "id" not in f:
                     if id_properties:
-                        f["id"] = self._gen_id_from_properties(
-                            f, id_properties
-                        )
+                        f["id"] = self._gen_id_from_properties(f, id_properties)
                     else:
                         f["id"] = hashlib.md5(
                             json.dumps(f, sort_keys=True).encode("utf-8")
@@ -651,9 +635,7 @@ class Space:
         )
         return GeoJSON(res)
 
-    def delete_features(
-        self, feature_ids: List[str], tags: Optional[List[str]] = None
-    ):
+    def delete_features(self, feature_ids: List[str], tags: Optional[List[str]] = None):
         """
         Delete GeoJSON features in this space.
 
@@ -1007,15 +989,11 @@ class Space:
                 for f in features["features"]:
                     yield f
         else:
-            divide_features = divide_bbox(
-                Feature(geometry=data), cell_width, units
-            )
+            divide_features = divide_bbox(Feature(geometry=data), cell_width, units)
             manager = Manager()
             feature_list: List[dict] = manager.list()
 
-            logger.info(
-                f"Total number of features after division {len(divide_features)}"
-            )
+            logger.info(f"Total number of features after division {len(divide_features)}")
             part_func = partial(
                 self._spatial_search_geometry,
                 feature_list=feature_list,
@@ -1029,14 +1007,10 @@ class Space:
             )
 
             with concurrent.futures.ProcessPoolExecutor() as executor:
-                for _ in executor.map(
-                    part_func, divide_features, chunksize=chunk_size
-                ):
+                for _ in executor.map(part_func, divide_features, chunksize=chunk_size):
                     pass
 
-            unique_features = {
-                each["id"]: each for each in feature_list
-            }.values()
+            unique_features = {each["id"]: each for each in feature_list}.values()
 
             if geo_dataframe is True:
                 fbytes = json.dumps(unique_features).encode("utf-8")
@@ -1107,9 +1081,7 @@ class Space:
                     json.loads(
                         json.dumps(
                             o,
-                            default=lambda o: float(o)
-                            if isinstance(o, Decimal)
-                            else o,
+                            default=lambda o: float(o) if isinstance(o, Decimal) else o,
                         )
                     )
                 )
@@ -1127,9 +1099,7 @@ class Space:
                     feature_list = []
 
             if len(feature_list) != 0:
-                feature_collection = dict(
-                    type="FeatureCollection", features=feature_list
-                )
+                feature_collection = dict(type="FeatureCollection", features=feature_list)
                 self.add_features(
                     feature_collection,
                     features_size=features_size,
@@ -1213,9 +1183,7 @@ class Space:
                         record[alt_col] if alt_col else 0.0,
                     ],
                 },
-                "properties": {
-                    k: v for k, v in record.items() if k not in key_columns
-                },
+                "properties": {k: v for k, v in record.items() if k not in key_columns},
             }
             if id_col:
                 feature["id"] = record[id_col]
@@ -1231,7 +1199,9 @@ class Space:
         )
 
     def cluster(
-        self, clustering: str, clustering_params: Optional[dict] = None,
+        self,
+        clustering: str,
+        clustering_params: Optional[dict] = None,
     ) -> dict:
         """
         Apply clustering algorithm for the space data.
@@ -1321,9 +1291,7 @@ class Space:
             else:
                 self.add_feature(data=geojson_data)
 
-    def add_features_gpx(
-        self, path: str, features_size: int = 2000, chunk_size: int = 1
-    ):
+    def add_features_gpx(self, path: str, features_size: int = 2000, chunk_size: int = 1):
         """Upload data from gpx file to the space.
 
         :param path: A string representing full path of the gpx file.
@@ -1347,9 +1315,7 @@ class Space:
                         chunk_size=chunk_size,
                     )
 
-    def add_features_kml(
-        self, path: str, features_size: int = 2000, chunk_size: int = 1
-    ):
+    def add_features_kml(self, path: str, features_size: int = 2000, chunk_size: int = 1):
         """
         To upload data from kml file to a space
 
@@ -1442,17 +1408,13 @@ class Space:
         for f in self.iter_feature(limit=chunks):
             features.append(f)
             if len(features) == chunks:
-                feature_collection = dict(
-                    type="FeatureCollection", features=features
-                )
+                feature_collection = dict(type="FeatureCollection", features=features)
                 cloned_space.add_features(features=feature_collection)
                 features = []
                 feature_collection = {}
 
         if len(features) >= 0:
-            feature_collection = dict(
-                type="FeatureCollection", features=features
-            )
+            feature_collection = dict(type="FeatureCollection", features=features)
             cloned_space.add_features(features=feature_collection)
 
         return cloned_space

@@ -62,9 +62,7 @@ def test_get_project(api, project_id):
 def _test_get_my_project(api, project_id):
     """Test get single project."""
     # https://xyz.here.com/studio/project/5c54716d-f900-4b89-80ac-b21518e94b30
-    project = api.get_project(
-        project_id="5c54716d-f900-4b89-80ac-b21518e94b30"
-    )
+    project = api.get_project(project_id="5c54716d-f900-4b89-80ac-b21518e94b30")
     print(project)
 
 

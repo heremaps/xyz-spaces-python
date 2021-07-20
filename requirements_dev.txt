@@ -1,5 +1,5 @@
 # Development dependencies, use pip install -e .[dev]
-black==19.10b0
+black
 codecov
 coverage
 mypy

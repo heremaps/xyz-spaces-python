@@ -54,9 +54,7 @@ def test_new_curl_command_list():
 def test_curl_command_str():
     """Test building curl command as string."""
     cmd = curl.get(url="https://xkcd.com/552/info.0.json")
-    assert (
-        " ".join(cmd) == "curl --request GET https://xkcd.com/552/info.0.json"
-    )
+    assert " ".join(cmd) == "curl --request GET https://xkcd.com/552/info.0.json"
 
 
 def test_curl_command_list():
@@ -76,9 +74,7 @@ def test_curl_command_data_params():
         url="https://xkcd.com/552/info.0.json",
         data={"dummy": 2, "type": "test"},
         headers={"Date": datetime.datetime.today().strftime("%Y-%m-%d")},
-        proxies={
-            "proxy1": "http://user:password@example.proxy.here.com" ":8888"
-        },
+        proxies={"proxy1": "http://user:password@example.proxy.here.com" ":8888"},
     )
     assert cmd == [
         "curl",

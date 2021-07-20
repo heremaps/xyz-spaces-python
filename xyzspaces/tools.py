@@ -61,17 +61,12 @@ def subset_geojson(
         and ``tile_id``, ``lat`` and ``lon`` was provided.
     """
     if bbox and (tile_type or tile_id):
-        raise ValueError(
-            "The bbox cannot be provided together with tile ID/type."
-        )
+        raise ValueError("The bbox cannot be provided together with tile ID/type.")
     elif bbox and (lat or lon):
-        raise ValueError(
-            "The bbox cannot be provided together with lat and lon."
-        )
+        raise ValueError("The bbox cannot be provided together with lat and lon.")
     elif (tile_type or tile_id) and (lat or lon):
         raise ValueError(
-            "The tile_id and tile_type cannot be provided together with "
-            "lat and lon."
+            "The tile_id and tile_type cannot be provided together with " "lat and lon."
         )
     if not bbox:
         assert (tile_type and tile_id) or (
@@ -83,9 +78,7 @@ def subset_geojson(
     api = HubApi(config=config if config else XYZConfig.from_default())
 
     # Create space.
-    res = api.post_space(
-        data=dict(title="Tile GeoJSON", description="Temporary space.")
-    )
+    res = api.post_space(data=dict(title="Tile GeoJSON", description="Temporary space."))
     space_id = res["id"]
 
     # Add features.
@@ -98,9 +91,7 @@ def subset_geojson(
             space_id=space_id, tile_type=tile_type, tile_id=tile_id, clip=True
         )
     elif lat and lon:
-        tiled = api.get_space_spatial(
-            space_id=space_id, lat=lat, lon=lon, radius=radius
-        )
+        tiled = api.get_space_spatial(space_id=space_id, lat=lat, lon=lon, radius=radius)
 
     # Delete space.
     api.delete_space(space_id=space_id)

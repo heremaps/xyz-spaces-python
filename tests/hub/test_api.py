@@ -110,14 +110,15 @@ def test_round_trip1(api):
     """Put and delete a feature with a tag."""
     # create space
     res = api.post_space(
-        data={"title": "Testing xyzspaces", "description": "Temporary space.",}
+        data={
+            "title": "Testing xyzspaces",
+            "description": "Temporary space.",
+        }
     )
     space_id = res["id"]
 
     # add features
-    api.put_space_features(
-        space_id=space_id, data=gj_countries, add_tags=["foo", "bar"]
-    )
+    api.put_space_features(space_id=space_id, data=gj_countries, add_tags=["foo", "bar"])
 
     # delete one features with given tag
     res = api.delete_space_features(space_id=space_id, tags=["foo"])
