@@ -47,9 +47,7 @@ def test_get_space(api, space_id):
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
 def test_get_space_features(api, space_id):
     """Get single feature from space."""
-    feats = api.get_space_features(
-        space_id=space_id, feature_ids=["GER", "BRA"]
-    )
+    feats = api.get_space_features(space_id=space_id, feature_ids=["GER", "BRA"])
     assert feats["type"] == "FeatureCollection"
 
 
@@ -73,9 +71,7 @@ def test_delete_space_feature(api, space_id):
     resp = execinfo.value.args[0]
     assert resp.status_code == 404
     assert resp.reason == "Not Found"
-    assert (
-        resp.json()["errorMessage"] == "The requested resource does not exist."
-    )
+    assert resp.json()["errorMessage"] == "The requested resource does not exist."
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -92,10 +88,7 @@ def test_delete_space_features(api, space_id):
         resp = execinfo.value.args[0]
         assert resp.status_code == 404
         assert resp.reason == "Not Found"
-        assert (
-            resp.json()["errorMessage"]
-            == "The requested resource does not exist."
-        )
+        assert resp.json()["errorMessage"] == "The requested resource does not exist."
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")
@@ -110,9 +103,7 @@ def test_get_space_tile(api, space_id, point_space_id):
     assert len(tile["features"]) == 97
     assert tile["type"] == "FeatureCollection"
 
-    tile = api.get_space_tile(
-        space_id=space_id, tile_type="here", tile_id="12", limit=10
-    )
+    tile = api.get_space_tile(space_id=space_id, tile_type="here", tile_id="12", limit=10)
     assert len(tile["features"]) <= 10
     assert tile["type"] == "FeatureCollection"
 
@@ -195,9 +186,7 @@ def test_get_space_bbox(api, space_id):
     assert len(bbox["features"]) == 0
     assert bbox["type"] == "FeatureCollection"
 
-    resp = api.get_space_bbox(
-        space_id=space_id, bbox=bb, params={"p.name": "Ghana"}
-    )
+    resp = api.get_space_bbox(space_id=space_id, bbox=bb, params={"p.name": "Ghana"})
     assert len(resp["features"]) == 1
     assert resp["type"] == "FeatureCollection"
 
@@ -300,9 +289,7 @@ def test_post_spatial(api, space_id, point_space_id):
         "coordinates": [74.512691691000043, 37.377228699000057],
     }
 
-    sp_resp2 = api.post_space_spatial(
-        space_id=space_id, data=data2, radius=100000
-    )
+    sp_resp2 = api.post_space_spatial(space_id=space_id, data=data2, radius=100000)
     assert sp_resp2["type"] == "FeatureCollection"
     assert sp_resp2["features"][0]["id"] == "AFG"
     assert sp_resp2["features"][1]["id"] == "CHN"

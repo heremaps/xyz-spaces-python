@@ -158,9 +158,7 @@ def command(
 
     cookies = kwargs.get("cookies")
     if cookies:
-        command += ' --cookie "%s"' % ";".join(
-            f"{k}={v}" for k, v in cookies.items()
-        )
+        command += ' --cookie "%s"' % ";".join(f"{k}={v}" for k, v in cookies.items())
 
     headers = kwargs.get("headers")
     if headers:
@@ -215,11 +213,7 @@ def execute(command: List[str]) -> Response:
     CurlResponse = type(
         "CurlResponse",
         (Response,),
-        {
-            "setcontent": lambda self, content: setattr(
-                self, "_content", content
-            )
-        },
+        {"setcontent": lambda self, content: setattr(self, "_content", content)},
     )
     response = CurlResponse()
     try:

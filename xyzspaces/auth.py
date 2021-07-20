@@ -39,9 +39,7 @@ URL = (
 SIGN_IN_URL = "https://account.here.com/api/account/sign-in-with-password"
 
 
-def filter_cookies(
-    cookies: requests.cookies.RequestsCookieJar, prefix: str
-) -> dict:
+def filter_cookies(cookies: requests.cookies.RequestsCookieJar, prefix: str) -> dict:
     """
     Filter :mod:`requests` cookies with some given name prefix into a new dict.
 
@@ -63,11 +61,7 @@ def filter_cookies(
 
         {'here_account': 'foobar', 'here_account.sig': 'barfoo'}
     """
-    return {
-        k: v.split(";")[0]
-        for (k, v) in cookies.items()
-        if k.startswith(prefix)
-    }
+    return {k: v.split(";")[0] for (k, v) in cookies.items() if k.startswith(prefix)}
 
 
 def get_auth_cookies(username: str, password: str) -> dict:
@@ -82,9 +76,7 @@ def get_auth_cookies(username: str, password: str) -> dict:
     resp1 = requests.get(URL)
     body = resp1.text
     csrf_token = body[body.find("csrf") :]
-    csrf_token = csrf_token[
-        csrf_token.find(":") + 3 : csrf_token.find(",") - 1
-    ]
+    csrf_token = csrf_token[csrf_token.find(":") + 3 : csrf_token.find(",") - 1]
     headers = {"x-csrf-token": csrf_token}
     request_body = {
         "realm": "here",
@@ -98,8 +90,7 @@ def get_auth_cookies(username: str, password: str) -> dict:
     )
     if resp2.status_code != 200:
         raise AuthenticationError(
-            "Error while authenticating. "
-            "Please check credentials and try again."
+            "Error while authenticating. " "Please check credentials and try again."
         )
     here_cookies = filter_cookies(resp2.cookies, prefix="here")
     return here_cookies

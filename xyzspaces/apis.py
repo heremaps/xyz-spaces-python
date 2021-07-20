@@ -318,7 +318,8 @@ class TokenApi(Api):
     """
 
     def __init__(
-        self, config: Optional[XYZConfig] = None,
+        self,
+        config: Optional[XYZConfig] = None,
     ):
         """Instantiate a :class:`TokenApi` object.
 
@@ -334,9 +335,7 @@ class TokenApi(Api):
         self.headers.pop("Content-Type")
         username = self.xyzconfig.config["credentials"]["HERE_USER"]
         password = self.xyzconfig.config["credentials"]["HERE_PASSWORD"]
-        self.cookies.update(
-            get_auth_cookies(username=username, password=password)
-        )
+        self.cookies.update(get_auth_cookies(username=username, password=password))
 
     # Public requests
 
@@ -414,7 +413,8 @@ class HubApi(Api):
     """
 
     def __init__(
-        self, config: Optional[XYZConfig] = None,
+        self,
+        config: Optional[XYZConfig] = None,
     ):
         """Instantiate an :class:`HubApi` object.
 
@@ -532,7 +532,10 @@ class HubApi(Api):
         return self.get(path=path, params=params).json()
 
     def get_space_feature(
-        self, space_id: str, feature_id: str, force_2d: Optional[bool] = None,
+        self,
+        space_id: str,
+        feature_id: str,
+        force_2d: Optional[bool] = None,
     ) -> dict:
         """Get a feature by ID.
 
@@ -632,9 +635,7 @@ class HubApi(Api):
         if selection:
             q_params["selection"] = ",".join(selection)
         if clusteringParams:
-            d = dict(
-                (f"clustering.{k}", v) for (k, v) in clusteringParams.items()
-            )
+            d = dict((f"clustering.{k}", v) for (k, v) in clusteringParams.items())
             q_params.update(d)
         if force_2d:
             q_params["force2D"] = str(force_2d).lower()
@@ -709,9 +710,7 @@ class HubApi(Api):
         if clustering:
             q_params["clustering"] = clustering
         if clusteringParams:
-            d = dict(
-                (f"clustering.{k}", v) for (k, v) in clusteringParams.items()
-            )
+            d = dict((f"clustering.{k}", v) for (k, v) in clusteringParams.items())
             q_params.update(d)
         if margin:
             q_params["margin"] = str(margin)
@@ -773,7 +772,10 @@ class HubApi(Api):
 
     # FIXME
     def get_space_iterate(
-        self, space_id: str, limit: int, force_2d: Optional[bool] = None,
+        self,
+        space_id: str,
+        limit: int,
+        force_2d: Optional[bool] = None,
     ) -> Generator:
         """Iterate features in the space (yielding them one by one).
 
@@ -866,9 +868,7 @@ class HubApi(Api):
         path = f"/hub/spaces/{space_id}/features"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
-        return self.put(
-            path=path, params=params, json=data, headers=self.headers
-        ).json()
+        return self.put(path=path, params=params, json=data, headers=self.headers).json()
 
     def post_space_features(
         self,
@@ -898,9 +898,7 @@ class HubApi(Api):
         path = f"/hub/spaces/{space_id}/features"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
-        return self.post(
-            path=path, params=params, json=data, headers=self.headers
-        ).json()
+        return self.post(path=path, params=params, json=data, headers=self.headers).json()
 
     def delete_space_features(
         self,
@@ -963,9 +961,7 @@ class HubApi(Api):
             path = f"/hub/spaces/{space_id}/features/"
         params = join_string_lists(addTags=add_tags, removeTags=remove_tags)
         params.update({"clientId": _CLIENT_ID})
-        return self.put(
-            path=path, params=params, json=data, headers=self.headers
-        ).json()
+        return self.put(path=path, params=params, json=data, headers=self.headers).json()
 
     def patch_space_feature(
         self,
@@ -1046,9 +1042,7 @@ class HubApi(Api):
         :raises ValueError: If incorrect params are passed, either ``lat`` and ``lon`` or
              ``ref_space_id`` and ``ref_feature_id`` must have a value.
         """
-        if [lat, lon].count(None) and [ref_space_id, ref_feature_id].count(
-            None
-        ):
+        if [lat, lon].count(None) and [ref_space_id, ref_feature_id].count(None):
             raise ValueError(
                 "Incorrect params are passed: Either lat and lon "
                 "or ref_space_id and ref_feature_id should have value."

@@ -7,3 +7,4 @@ turfpy>=0.0.3
 geobuf
 ijson==3.1.1
 pyhocon
+requests_oauthlib
