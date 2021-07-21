@@ -1,3 +1,19 @@
+# Copyright (C) 2019-2021 HERE Europe B.V.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+# License-Filename: LICENSE
 """
 This module implements base class for low level api client.
 """
@@ -7,7 +23,12 @@ from typing import Dict, Optional, Union
 import requests
 from requests import Response
 
-from xyzspaces.iml.exceptions import AuthenticationException, TooManyRequestsException
+from xyzspaces.iml.exceptions import (
+    AuthenticationException,
+    PayloadTooLargeException,
+    RequestEntityTooLargeException,
+    TooManyRequestsException,
+)
 
 
 class Api:
@@ -52,14 +73,9 @@ class Api:
 
         headers = headers or self.headers
         headers["User-Agent"] = self._user_agent
-        resp = requests.get(
+        return requests.get(
             url, headers=headers, params=params, proxies=self.proxies, **kwargs
         )
-        if resp.status_code == 429:
-            raise TooManyRequestsException(resp)
-        elif resp.status_code in [401, 403]:
-            raise AuthenticationException(resp)
-        return resp.json() if as_json else resp
 
     def head(
         self,
@@ -221,3 +237,26 @@ class Api:
         return requests.delete(
             url, headers=headers, params=params, proxies=self.proxies, **kwargs
         )
+
+    @staticmethod
+    def raise_response_exception(resp: Response) -> None:
+        """
+        Parse HTTP errors status code and raise necessary exceptions.
+
+        :param resp: An HTTP response to parse.
+        :raises TooManyRequestsException: If platform responds with HTTP 429.
+        :raises AuthenticationException: If platform responds with HTTP 401 or 403.
+        :raises RequestEntityTooLargeException: If platform responds with HTTP 413.
+        :raises PayloadTooLargeException: If platform responds with HTTP 513.
+        :raises Exception: If client responds with any other exception.
+        """
+        if resp.status_code == 429:
+            raise TooManyRequestsException(resp)
+        elif resp.status_code in [401, 403]:
+            raise AuthenticationException(resp)
+        elif resp.status_code == 413:
+            raise RequestEntityTooLargeException(resp)
+        elif resp.status_code == 513:
+            raise PayloadTooLargeException(resp)
+        else:
+            raise Exception(resp)
