@@ -32,6 +32,7 @@ See also:
 from typing import Optional
 
 from xyzspaces.__version__ import __version__  # noqa: F401
+from xyzspaces.iml import IML  # noqa: F401
 from xyzspaces.logconf import setup_logging  # noqa: F401
 from xyzspaces.spaces import Space
 
