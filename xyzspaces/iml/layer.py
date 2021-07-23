@@ -18,12 +18,14 @@
 
 import copy
 import hashlib
+import io
 import json
 import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
+import geopandas as gpd
 from geojson import Feature, FeatureCollection
 from geojson.geometry import Geometry
 from geojson.mapping import GEO_INTERFACE_MARKER
@@ -62,8 +64,42 @@ class QuadbinClustering:
     countmode: Optional[str] = None
 
 
+class InteractiveMapApiResponse:
+    """This class defines response returned from Interactive Map APIs."""
+
+    def __init__(self, resp):
+        self.response = resp
+
+    def to_geojson(self) -> Union[Feature, FeatureCollection]:
+        """Return response from API as :class:`geojson.Feature` or
+        :class:`geojson.FeatureCollection`
+
+        :return: Either GeoJSON Feature or FeatureCollection.
+        :raises NotImplementedError: Response is incorrect.
+        """
+        if self.response["type"] == "Feature":
+            return Feature(
+                id=self.response["id"],
+                geometry=self.response["geometry"],
+                properties=self.response["properties"],
+            )
+        elif self.response["type"] == "FeatureCollection":
+            return FeatureCollection(features=self.response["features"])
+        else:
+            raise NotImplementedError(
+                "Response should be either Feature or FeatureCollection."
+            )
+
+    def to_geopandas(self) -> gpd.GeoDataFrame:
+        """Return response from API as geopandas dataframe."""
+        if self.response["type"] != "FeatureCollection":
+            raise NotImplementedError("Response should be FeatureCollection.")
+        fbytes = json.dumps(self.response).encode("utf-8")
+        return gpd.read_file(io.BytesIO(fbytes))
+
+
 class InteractiveMapLayer:
-    """This base class provides access to data stored in Interactive Map layers."""
+    """This class provides access to data stored in Interactive Map layers."""
 
     def __init__(self, layer_id: str, catalog: "Catalog"):
         """Initialize layer instance.
@@ -90,7 +126,7 @@ class InteractiveMapLayer:
         feature_id: str,
         selection: Optional[List[str]] = None,
         force_2d: bool = False,
-    ) -> Feature:
+    ) -> InteractiveMapApiResponse:
         """
         Return GeoJSON feature for the provided ``feature_id``.
 
@@ -104,18 +140,14 @@ class InteractiveMapLayer:
         feature = self._data_interactive_api.get_feature(
             layer_id=self.id, feature_id=feature_id, selection=selection, force2d=force_2d
         )
-        return Feature(
-            id=feature["id"],
-            geometry=feature["geometry"],
-            properties=feature["properties"],
-        )
+        return InteractiveMapApiResponse(feature)
 
     def get_features(
         self,
         feature_ids: List[str],
         selection: Optional[List[str]] = None,
         force_2d: bool = False,
-    ) -> FeatureCollection:
+    ) -> InteractiveMapApiResponse:
         """
         Return GeoJSON FeatureCollection for the provided feature_ids.
 
@@ -135,7 +167,7 @@ class InteractiveMapLayer:
             selection=selection,
             force2d=force_2d,
         )
-        return FeatureCollection(features=result["features"])
+        return InteractiveMapApiResponse(result)
 
     def search_features(
         self,
@@ -144,7 +176,7 @@ class InteractiveMapLayer:
         selection: Optional[List[str]] = None,
         skip_cache: bool = False,
         force_2d: bool = False,
-    ) -> FeatureCollection:
+    ) -> InteractiveMapApiResponse:
         """
         Search for features in the layer based on the properties.
 
@@ -186,7 +218,7 @@ class InteractiveMapLayer:
             skip_cache=skip_cache,
             force2d=force_2d,
         )
-        return FeatureCollection(features=result["features"])
+        return InteractiveMapApiResponse(result)
 
     def iter_features(
         self,
@@ -236,7 +268,7 @@ class InteractiveMapLayer:
         skip_cache: bool = False,
         clustering: Optional[Union[HexbinClustering, QuadbinClustering]] = None,
         force_2d: bool = False,
-    ) -> FeatureCollection:
+    ) -> InteractiveMapApiResponse:
         """
         Return the features which are inside a bounding box stipulated by ``bounds``
         parameter.
@@ -304,7 +336,7 @@ class InteractiveMapLayer:
             clustering_params=clustering_params if clustering_params else None,
             force2d=force_2d,
         )
-        return FeatureCollection(features=result["features"])
+        return InteractiveMapApiResponse(result)
 
     def spatial_search(
         self,
@@ -316,7 +348,7 @@ class InteractiveMapLayer:
         selection: Optional[List[str]] = None,
         skip_cache: bool = False,
         force_2d: bool = False,
-    ) -> FeatureCollection:
+    ) -> InteractiveMapApiResponse:
         """
         Return the features which are inside the specified radius.
 
@@ -366,7 +398,7 @@ class InteractiveMapLayer:
             skip_cache=skip_cache,
             force2d=force_2d,
         )
-        return FeatureCollection(features=result["features"])
+        return InteractiveMapApiResponse(result)
 
     def spatial_search_geometry(
         self,
@@ -377,7 +409,7 @@ class InteractiveMapLayer:
         selection: Optional[List[str]] = None,
         skip_cache: bool = False,
         force_2d: bool = False,
-    ) -> FeatureCollection:
+    ) -> InteractiveMapApiResponse:
         """
         Return the features which are inside the specified radius and geometry.
 
@@ -431,7 +463,7 @@ class InteractiveMapLayer:
             skip_cache=skip_cache,
             force2d=force_2d,
         )
-        return FeatureCollection(features=result["features"])
+        return InteractiveMapApiResponse(result)
 
     def write_feature(self, feature_id: str, data: Union[Feature, dict]) -> None:
         """

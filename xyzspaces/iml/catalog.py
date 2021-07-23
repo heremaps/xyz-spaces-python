@@ -16,9 +16,10 @@
 # License-Filename: LICENSE
 """This module defines Catalog class."""
 
-from typing import Optional
+from typing import Dict, Optional
 
 from xyzspaces.iml.apis.aaa_oauth2_api import AAAOauth2Api
+from xyzspaces.iml.apis.data_config_api import DataConfigApi
 from xyzspaces.iml.apis.data_interactive_api import DataInteractiveApi
 from xyzspaces.iml.apis.lookup_api import LookupApi
 from xyzspaces.iml.auth import Auth
@@ -52,3 +53,12 @@ class Catalog:
             auth=self.auth,
             proxies=proxies,
         )
+        self._data_config_api = DataConfigApi(auth=self.auth, proxies=proxies)
+
+    def get_details(self) -> Dict:
+        """
+        Get catalog details.
+        :return: Dict
+        """
+        cat_config = self._data_config_api.get_catalog_details(catalog_hrn=self.hrn)
+        return cat_config

@@ -54,7 +54,6 @@ class Api:
         url: str,
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
-        as_json: bool = True,
         **kwargs,
     ) -> Union[Dict, Response]:
         """
@@ -63,12 +62,8 @@ class Api:
         :param url: URL of the API.
         :param params: Parameters to pass to the API.
         :param headers: Request headers. Defaults to the Api headers property.
-        :param as_json: A boolean to indicate type of response. If `True` then response
-            will be returned in json format.
         :param kwargs: Optional arguments that request takes.
         :return: response from the API.
-        :raises TooManyRequestsException: If the status code of the HTTP response is 429
-        :raises AuthenticationException: If platform responds with HTTP 401 or 403.
         """
 
         headers = headers or self.headers
