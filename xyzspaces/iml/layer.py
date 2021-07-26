@@ -111,6 +111,10 @@ class InteractiveMapLayer:
         self.catalog = catalog
         self._data_interactive_api: DataInteractiveApi = catalog._data_interactive_api
 
+    def __repr__(self):
+        """Return string representation of this instance."""
+        return f"layer_id: {self.id}"
+
     @property
     def statistics(self) -> dict:
         """

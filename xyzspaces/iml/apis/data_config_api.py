@@ -58,7 +58,7 @@ class DataConfigApi(Api):
         """
         path = "/catalogs"
         url = "{}{}".format(self.base_url, path)
-        params = {"billingTag": billing_tag}
+        params = {"billingTag": billing_tag} if billing_tag else {}
         resp = self.post(url, data, params)
         if resp.status_code == 202:
             return resp.json()
@@ -97,6 +97,43 @@ class DataConfigApi(Api):
         url = "{}{}".format(self.base_url, path)
         resp = self.get(url, params=params)
         if resp.status_code == 200:
+            return resp.json()
+        else:
+            self.raise_response_exception(resp)
+
+    def update_catalog(  # type: ignore[return]
+        self, catalog_hrn: str, data: Dict[str, Any], billing_tag: Optional[str] = None
+    ) -> dict:
+        """
+        Update a catalog.
+
+        :param catalog_hrn: a HERE Resource Name.
+        :param data: body of the update catalog request.
+        :param billing_tag: A string which is used for grouping billing records.
+        :return: a dict with catalog update status.
+        """
+        path = f"/catalogs/{catalog_hrn}"
+        url = "{}{}".format(self.base_url, path)
+        params = {"billingTag": billing_tag}
+        resp = self.put(url=url, data=data, params=params)
+        if resp.status_code == 202:
+            return resp.json()
+        else:
+            self.raise_response_exception(resp)
+
+    def delete_catalog(self, catalog_hrn: str, billing_tag: Optional[str] = None) -> dict:  # type: ignore[return] # noqa: E501
+        """
+        Delete a catalog.
+
+        :param catalog_hrn: a HERE Resource Name.
+        :param billing_tag: a string which is used for grouping billing records.
+        :return: a dict with catalog deletion status.
+        """
+        path = f"/catalogs/{catalog_hrn}"
+        url = "{}{}".format(self.base_url, path)
+        params = {"billingTag": billing_tag}
+        resp = self.delete(url, params)
+        if resp.status_code == 202:
             return resp.json()
         else:
             self.raise_response_exception(resp)

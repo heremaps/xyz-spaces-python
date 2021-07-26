@@ -2,8 +2,6 @@ name: Tests
 
 on:
   push:
-    branches:
-    - master
   pull_request:
     branches:
       - master
@@ -47,6 +45,11 @@ jobs:
         XYZ_TOKEN: ${{ secrets.XYZ_TOKEN }}
         HERE_USER: ${{ secrets.HERE_USER }}
         HERE_PASSWORD: ${{ secrets.HERE_PASSWORD }}
+        HERE_USER_ID: ${{ secrets.HERE_USER_ID }}
+        HERE_CLIENT_ID: ${{ secrets.HERE_CLIENT_ID }}
+        HERE_ACCESS_KEY_ID: ${{ secrets.HERE_ACCESS_KEY_ID }}
+        HERE_ACCESS_KEY_SECRET: ${{ secrets.HERE_ACCESS_KEY_SECRET }}
+        HERE_TOKEN_ENDPOINT_URL: ${{ secrets.HERE_TOKEN_ENDPOINT_URL }}
       run: |
         pytest -v --durations=10 --cov=xyzspaces tests --cov-report=xml
 
