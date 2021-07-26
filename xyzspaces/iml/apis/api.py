@@ -254,4 +254,4 @@ class Api:
         elif resp.status_code == 513:
             raise PayloadTooLargeException(resp)
         else:
-            raise Exception(resp)
+            raise Exception(resp.text)
