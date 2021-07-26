@@ -319,7 +319,7 @@ def test_virtual_space_merge(space_id, empty_space):
     kwargs = {"virtualspace": {"merge": [space_id, empty_space.info["id"]]}}
     vspace = Space.virtual(title=title, **kwargs)
     feature = vspace.get_feature(feature_id="FRA")
-    assert feature["properties"]["@ns:com:here:xyz"]["space"] is None
+    assert feature["properties"]["@ns:com:here:xyz"].get("space") is None
     vspace.delete()
 
 
