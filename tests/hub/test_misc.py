@@ -156,18 +156,16 @@ def test_get_space_tile_sampling(api):
     )
 
     get_tile = api.get_space_tile
-    tile_raw = get_tile(mode="raw", **params)
     tile_viz_off = get_tile(mode="viz", viz_sampling="off", **params)
     tile_viz_low = get_tile(mode="viz", viz_sampling="low", **params)
     tile_viz_med = get_tile(mode="viz", viz_sampling="med", **params)
     tile_viz_high = get_tile(mode="viz", viz_sampling="high", **params)
 
-    len_raw = len(tile_raw["features"])
     len_viz_off = len(tile_viz_off["features"])
     len_viz_low = len(tile_viz_low["features"])
     len_viz_med = len(tile_viz_med["features"])
     len_viz_high = len(tile_viz_high["features"])
-    assert len_raw > len_viz_off >= len_viz_low > len_viz_med >= len_viz_high
+    assert len_viz_off >= len_viz_low > len_viz_med >= len_viz_high
 
 
 @pytest.mark.skipif(not XYZ_TOKEN, reason="No token found.")

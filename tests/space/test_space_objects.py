@@ -815,7 +815,6 @@ def test_get_space_tile_sampling(api):
         tile_type="web",
         tile_id="11_585_783",
     )
-    tile_raw = list(space.features_in_tile(mode="raw", **params))
     tile_viz_off = list(space.features_in_tile(mode="viz", viz_sampling="off", **params))
     tile_viz_low = list(space.features_in_tile(mode="viz", viz_sampling="low", **params))
     tile_viz_med = list(space.features_in_tile(mode="viz", viz_sampling="med", **params))
@@ -823,9 +822,8 @@ def test_get_space_tile_sampling(api):
         space.features_in_tile(mode="viz", viz_sampling="high", **params)
     )
 
-    len_raw = len(tile_raw)
     len_viz_off = len(tile_viz_off)
     len_viz_low = len(tile_viz_low)
     len_viz_med = len(tile_viz_med)
     len_viz_high = len(tile_viz_high)
-    assert len_raw > len_viz_off >= len_viz_low > len_viz_med >= len_viz_high
+    assert len_viz_off >= len_viz_low > len_viz_med >= len_viz_high
