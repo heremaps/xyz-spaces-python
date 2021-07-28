@@ -54,7 +54,7 @@ jobs:
         pytest -v --durations=10 --cov=xyzspaces tests --cov-report=xml
 
     - name: Upload coverage to Codecov
-      if: github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.8'
+      if: github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
       uses: codecov/codecov-action@v1
       with:
         file: ./coverage.xml
