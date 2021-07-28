@@ -18,6 +18,7 @@
 """Module for providing test fixtures for the IML tests."""
 
 import os
+from collections import namedtuple
 
 import pytest
 
@@ -50,3 +51,17 @@ def env_setup_done():
         ]
     )
     return env_vars_present
+
+
+def get_mock_response(status_code: int, reason: str, text: str):
+    """
+    Return mock response.
+
+    :param status_code: An int representing status_code.
+    :param reason: A string to represent reason.
+    :param text: A string to represent text.
+    :return: MockResponse object.
+    """
+    MockResponse = namedtuple("MockResponse", ["status_code", "reason", "text"])
+    mock_response = MockResponse(status_code, reason, text)
+    return mock_response

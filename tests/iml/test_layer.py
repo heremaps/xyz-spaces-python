@@ -33,7 +33,7 @@ def test_statistics(read_layer):
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
 def test_get_feature(read_layer):
     """Test get single feature from interactive map layer."""
-    int_resp = read_layer.get_feature(feature_id="IND")
+    int_resp = read_layer.get_feature(feature_id="IND", selection=["name"])
     feature = int_resp.to_geojson()
     assert isinstance(feature, Feature)
     assert feature["id"] == "IND"
@@ -43,7 +43,9 @@ def test_get_feature(read_layer):
 def test_get_features(read_layer):
     """Test get multiple features from interactive map layer."""
     feature_ids = ["IND", "DEU", "USA"]
-    int_resp = read_layer.get_features(feature_ids=feature_ids, force_2d=True)
+    int_resp = read_layer.get_features(
+        feature_ids=feature_ids, selection=["name"], force_2d=True
+    )
     fc = int_resp.to_geojson()
     assert isinstance(fc, FeatureCollection)
     for f in fc["features"]:
