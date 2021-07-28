@@ -15,6 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # License-Filename: LICENSE
 """Tests for layer module."""
+import geopandas
 import pytest
 from geojson import Feature, FeatureCollection, Point
 
@@ -37,6 +38,8 @@ def test_get_feature(read_layer):
     feature = int_resp.to_geojson()
     assert isinstance(feature, Feature)
     assert feature["id"] == "IND"
+    with pytest.raises(NotImplementedError):
+        int_resp.to_geopandas()
 
 
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
@@ -50,6 +53,10 @@ def test_get_features(read_layer):
     assert isinstance(fc, FeatureCollection)
     for f in fc["features"]:
         assert f["id"] in feature_ids
+    gdf = int_resp.to_geopandas()
+    assert isinstance(gdf, geopandas.GeoDataFrame)
+    with pytest.raises(ValueError):
+        read_layer.get_features(feature_ids=[])
 
 
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
