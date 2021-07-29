@@ -20,6 +20,7 @@ import pytest
 from geojson import Feature, FeatureCollection, Point
 
 from tests.iml.conftest import env_setup_done
+from xyzspaces.iml.layer import HexbinClustering
 
 # Read operation on layer.
 
@@ -29,6 +30,7 @@ def test_statistics(read_layer):
     """Test statistics of interactive map layer."""
     stats = read_layer.statistics
     assert stats["count"]["value"] == 179
+    assert str(read_layer) == "layer_id: countries"
 
 
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
@@ -62,7 +64,10 @@ def test_get_features(read_layer):
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
 def test_search_features(read_layer):
     """Test search features."""
-    int_resp = read_layer.search_features(params={"p.name": "India"})
+    int_resp = read_layer.search_features(
+        params={"p.name": "India"},
+        selection=["name"],
+    )
     fc = int_resp.to_geojson()
     assert isinstance(fc, FeatureCollection)
     assert fc["features"][0]["id"] == "IND"
@@ -71,7 +76,7 @@ def test_search_features(read_layer):
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
 def test_iter_feature(read_layer):
     """Test iter features"""
-    itr = read_layer.iter_features()
+    itr = read_layer.iter_features(selection=["name"])
     feature = next(itr)
     assert isinstance(feature, Feature)
 
@@ -79,8 +84,11 @@ def test_iter_feature(read_layer):
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
 def test_get_features_in_bounding_box(read_layer):
     """Test features in bounding box."""
+    clustering = HexbinClustering()
     int_resp = read_layer.get_features_in_bounding_box(
-        bounds=(68.1766451354, 7.96553477623, 97.4025614766, 35.4940095078)
+        bounds=(68.1766451354, 7.96553477623, 97.4025614766, 35.4940095078),
+        clustering=clustering,
+        selection=["name"],
     )
     fc = int_resp.to_geojson()
     assert isinstance(fc, FeatureCollection)
@@ -89,7 +97,7 @@ def test_get_features_in_bounding_box(read_layer):
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
 def test_spatial_search(read_layer):
     """Test spatial search."""
-    int_resp = read_layer.spatial_search(lng=73, lat=19, radius=1000)
+    int_resp = read_layer.spatial_search(lng=73, lat=19, radius=1000, selection=["name"])
     fc = int_resp.to_geojson()
     assert fc["features"][0]["id"] == "IND"
 
@@ -99,6 +107,8 @@ def test_spatial_search_geometry(read_layer):
     """Test spatial search using geometry."""
     pt = Point((73, 19))
     feature = Feature(geometry=pt)
-    int_resp = read_layer.spatial_search_geometry(geometry=feature, radius=1000)
+    int_resp = read_layer.spatial_search_geometry(
+        geometry=feature, radius=1000, selection=["name"]
+    )
     fc = int_resp.to_geojson()
     assert fc["features"][0]["id"] == "IND"

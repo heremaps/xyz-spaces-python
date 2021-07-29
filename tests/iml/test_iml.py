@@ -16,6 +16,7 @@
 # License-Filename: LICENSE
 """This module will test functionality in IML class."""
 
+import json
 from pathlib import Path
 from time import sleep
 
@@ -96,3 +97,24 @@ def test_catalog_lifecycle():
     iml.layer.update_feature(feature_id="test-delete", data=feature)
     sleep(1)
     iml.layer.delete_feature(feature_id="test-delete")
+    # Add new layer to the catalog.
+    layer2 = {
+        "id": "countries-test2",
+        "name": "countries-test2",
+        "summary": "Borders of world countries second layer.",
+        "description": "Borders of world countries.",
+        "layerType": "interactivemap",
+        "interactiveMapProperties": {},
+    }
+    iml.add_interactive_map_layer(
+        catalog_hrn="hrn:here:data::olp-here:test-catalog-iml-remove",
+        layer_details=layer2,
+        credentials=cred,
+    )
+    assert iml.layer.id == "countries-test2"
+    with open(file_path) as fh:
+        countries_data = json.load(fh)
+    iml.layer.write_features(features=countries_data)
+    assert iml.layer.statistics["count"]["value"] == 179
+    iml.layer.delete_features(feature_ids=["IND", "USA", "DEU"])
+    assert iml.layer.statistics["count"]["value"] == 176
