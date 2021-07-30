@@ -21,7 +21,6 @@ import urllib.request
 from typing import Dict, Optional, Union
 
 import requests
-from requests import Response
 
 from xyzspaces.iml.exceptions import (
     AuthenticationException,
@@ -55,7 +54,7 @@ class Api:
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Union[Dict, Response]:
+    ) -> Union[Dict, requests.Response]:
         """
         Perform a get request of an API at a specified URL with backoff.
 
@@ -78,7 +77,7 @@ class Api:
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Response:
+    ) -> requests.Response:
         """
         Perform a head request of an API at specified URL.
 
@@ -101,7 +100,7 @@ class Api:
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Response:
+    ) -> requests.Response:
         """
         Perform a post request of an API at a specified URL with backoff.
 
@@ -140,7 +139,7 @@ class Api:
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Response:
+    ) -> requests.Response:
         """
         Perform a put request of an API at a specified URL with backoff.
 
@@ -179,7 +178,7 @@ class Api:
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Response:
+    ) -> requests.Response:
         """
         Perform a patch request of an API at a specified URL with backoff.
 
@@ -217,7 +216,7 @@ class Api:
         params: Optional[Dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Response:
+    ) -> requests.Response:
         """
         Perform a delete request of an API at a specified URL with backoff.
 
@@ -234,7 +233,7 @@ class Api:
         )
 
     @staticmethod
-    def raise_response_exception(resp: Response) -> None:
+    def raise_response_exception(resp: requests.Response) -> None:
         """
         Parse HTTP errors status code and raise necessary exceptions.
 
