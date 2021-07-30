@@ -48,7 +48,7 @@ demonstrating how to use a spatial search on a big public dataset, loaded from t
 
 Before you can install this package, run its test-suite or use the example notebooks to make sure your system meets the following prerequisities:
 
-- A Python installation, 3.6+ recommended, with the `pip` command available to install dependencies
+- A Python installation, 3.7+ recommended, with the `pip` command available to install dependencies
 - A HERE developer account, free and available under [HERE Developer Portal](https://developer.here.com)
 - An XYZ API access token from your XYZ Hub server or the [XYZ portal](https://www.here.xyz) (see also its [Getting
   Started](https://www.here.xyz/getting-started/) section) in an environment variable named `XYZ_TOKEN` which you can
@@ -96,6 +96,35 @@ If you want to run the test suite or experiment with the example notebooks bundl
     cd xyzspaces
     ```
   
+## Interactive Map Layer
+The `xyzspaces` package also supports Interactive Map Layer(IML) which is Data Hub on [HERE Platform](https://platform.here.com/).
+Using `xyzspaces` you can interact with your Interactive Map Layer using higher level pythonic interface that wraps the RESTful API. Using this package you can:
+
+- Create, read, update, Interactive Map Layer (also: get Interactive Map Layer info and stats).
+- Add, read, update, iterate, search, cluster (hex/quad bins), delete features.
+- Search features by ID, tag, property, bbox, tile, radius, geometry.
+
+### Credentials
+To interact with Interactive Map Layer you will need an account on the HERE Platform.
+To get more details on the HERE Platform account please check [this](https://developer.here.com/documentation/identity-access-management/dev_guide/topics/obtain-user-credentials.html).
+Once you have the account follow the below steps to get credentials:
+- Go to [HERE Platform Applications and Keys](https://platform.here.com/profile/apps-and-keys) and register a new app.
+- Create a key for the app and download the generated `credentials.properties` file.
+- Place the credentials file into:
+  
+  For Linux/MacOS: $HOME/.here/credentials.properties
+
+  For Windows: %USERPROFILE%\.here\credentials.properties
+
+The HERE platform generated app credentials should look similar to the example below:
+```bash
+here.user.id = <example_here>
+here.client.id = <example_here>
+here.access.key.id = <example_here>
+here.access.key.secret = <example_here>
+here.token.endpoint.url = <example_here>
+```
+  
 ## Documentation
 
 Documentation is hosted [here](https://xyz-spaces-python.readthedocs.io/en/latest/index.html).
@@ -110,6 +139,7 @@ bash scripts/build_docs.sh
 
 The following is a tiny "Hello World"-like example that you can run to have a successful first XYZ experience right after installation! Just make sure to use your own real XYZ token!
 
+#### Data Hub
 ```python
 import geojson
 import os
@@ -146,6 +176,57 @@ feature_id = space.add_features(features=geojson.FeatureCollection([feature]))["
 feature = space.get_feature(feature_id=feature_id)
 print(geojson.dumps(feature, indent=4, sort_keys=True))
 ```
+### Interactive Map Layer
+```python
+import geojson
+from xyzspaces import IML
+from xyzspaces.iml.credentials import Credentials
+
+credentials = Credentials.from_credentials_file("~/.here/credentials.properties")
+
+layer_details = {
+    "id": "demo-interactive-layer",
+    "name": "Demo Interactive Layer",
+    "summary": "Demo Interactive Layer",
+    "description": "Demo Interactive Layer",
+    "layerType": "interactivemap",
+    "interactiveMapProperties": {},
+}
+
+iml = IML.new(
+    catalog_id="demo-catalog1",
+    catalog_name="demo-catalog",
+    catalog_summary="Demo catalog",
+    catalog_description="Demo catalog",
+    layer_details=layer_details,
+    credentials=credentials,
+)
+
+# Define a New Feature
+feature = {
+    "type": "Feature",
+    "properties": {"party": "Republican"},
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [-104.05, 48.99],
+                [-97.22, 48.98],
+                [-96.58, 45.94],
+                [-104.03, 45.94],
+                [-104.05, 48.99],
+            ]
+        ],
+    },
+}
+# Save feature to interactive map layer
+iml.layer.write_feature(feature_id="demo_feature", data=feature)
+
+# Read feature from nteractive map layer
+resp = iml.layer.get_feature(feature_id="demo_feature")
+print(geojson.dumps(resp.to_geojson(), indent=4, sort_keys=True))
+```
+
 
 # License
 

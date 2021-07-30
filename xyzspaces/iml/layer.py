@@ -187,24 +187,23 @@ class InteractiveMapLayer:
         :param limit: A maximum number of features to return in the result. Default is
             30000. Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not equal to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -212,8 +211,7 @@ class InteractiveMapLayer:
         :param force_2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: :class:`FeatureCollection` object.
-
-        """
+        """  # noqa E501
         result = self._data_interactive_api.search_features(
             layer_id=self.id,
             limit=limit,
@@ -284,24 +282,22 @@ class InteractiveMapLayer:
         :param limit: A maximum number of features to return in the result. Default is
             30000. Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
         :param selection: A list, only these properties will be present in  returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -311,8 +307,7 @@ class InteractiveMapLayer:
         :param force_2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: :class:`FeatureCollection` object.
-
-        """
+        """  # noqa E501
         clustering_params = {}
         if clustering:
             clustering_options = copy.deepcopy(vars(clustering))
@@ -364,24 +359,23 @@ class InteractiveMapLayer:
         :param limit: The maximum number of features in the response. Default is 30000.
             Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -389,8 +383,7 @@ class InteractiveMapLayer:
         :param force_2d: If set to ``True`` then features in the response will have only
             X and Y components, else all x,y,z coordinates will be returned.
         :return: :class:`FeatureCollection` object.
-
-        """
+        """  # noqa E501
         result = self._data_interactive_api.get_features_with_radius_search(
             layer_id=self.id,
             lng=lng,
@@ -426,24 +419,23 @@ class InteractiveMapLayer:
         :param limit: The maximum number of features in the response. Default is 30000.
             Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -451,8 +443,7 @@ class InteractiveMapLayer:
         :param force_2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: :class:`FeatureCollection` object.
-
-        """
+        """  # noqa E501
         if hasattr(geometry, GEO_INTERFACE_MARKER):
             geometry = getattr(geometry, GEO_INTERFACE_MARKER)
         if hasattr(geometry, "geometry"):
