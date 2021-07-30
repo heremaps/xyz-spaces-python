@@ -3,10 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+===========================
 Documentation for xyzspaces
 ===========================
 
-Manage your `XYZ Hub`_ or `HERE Data Hub`_ spaces from Python.
+Manage your `XYZ Hub`_ or `HERE Data Hub`_ spaces and `Interactive Map Layer`_ from Python.
+
+Data Hub
+========
 
 XYZ is an Open Source, real-time, cloud database system providing access to large geospatial data at scale.
 An XYZ "Hub" manages "spaces" that contain "features" (geodata "records") with tags and properties, with spaces and features having unique IDs.
@@ -21,8 +25,48 @@ Using this package you can:
 
 Based on the XYZ Hub the HERE Data Hub is a commercial service (with a free plan), that offers some additional features (in a pro plan), like clustering, virtual spaces, activity logs, schema validation, rule based tagging and likely more to come.
 
+Interactive Map Layer
+=====================
+
+The ``xyzspaces`` package also supports Interactive Map Layer(IML) which is Data Hub on `HERE Platform <https://platform.here.com/>`_.
+Using ``xyzspaces`` you can interact with your Interactive Map Layer using higher level pythonic interface that wraps the RESTful API.
+Using this package you can:
+
+* Create, read, update, Interactive Map Layer (also: get Interactive Map Layer info and stats).
+* Add, read, update, iterate, search, cluster (hex/quad bins), delete features.
+* Search features by ID, tag, property, bbox, tile, radius, geometry.
+
+Credentials
+-----------
+To interact with Interactive Map Layer you will need an account on the HERE Platform.
+To get more details on the HERE Platform account please check `this <https://developer.here.com/documentation/identity-access-management/dev_guide/topics/obtain-user-credentials.html>`_.
+Once you have the account follow the below steps to get credentials:
+
+*  Go to `HERE Platform Applications and Keys <https://platform.here.com/profile/apps-and-keys>`_ and register a new app.
+
+*  Create a key for the app and download the generated `credentials.properties` file.
+
+* Place the credentials file into:
+
+  For Linux/MacOS::
+
+   $HOME/.here/credentials.properties
+
+  For Windows::
+
+   %USERPROFILE%\.here\credentials.properties
+
+The HERE platform generated app credentials should look similar to the example below::
+
+   here.user.id = <example_here>
+   here.client.id = <example_here>
+   here.access.key.id = <example_here>
+   here.access.key.secret = <example_here>
+   here.token.endpoint.url = <example_here>
+
 .. _XYZ Hub: https://github.com/heremaps/xyz-hub
 .. _HERE Data Hub: https://developer.here.com/products/data-hub
+.. _Interactive Map Layer: https://developer.here.com/documentation/data-user-guide/user_guide/portal/layers/layers.html
 
 .. toctree::
   :maxdepth: 1
