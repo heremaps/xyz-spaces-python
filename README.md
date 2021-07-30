@@ -21,7 +21,7 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/xyzspaces/badges/license.svg)](https://anaconda.org/conda-forge/xyzspaces)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/heremaps/xyz-spaces-python/master?urlpath=lab/tree/docs/notebooks)
 
-Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) or [HERE Data Hub](https://developer.here.com/products/data-hub) spaces from Python.
+Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) or [HERE Data Hub](https://developer.here.com/products/data-hub) spaces  and [Interactive Map Layer](https://developer.here.com/documentation/data-user-guide/user_guide/portal/layers/layers.html) from Python.
 
 <b>FEATURED IN: [Online Python Machine Learning Conference &amp; GeoPython 2020](http://2020.geopython.net/), Sept 21, 2020, see [conference schedule](http://2020.geopython.net/schedule.html).</b>
 
@@ -137,7 +137,7 @@ bash scripts/build_docs.sh
 
 ### Hello World Example
 
-The following is a tiny "Hello World"-like example that you can run to have a successful first XYZ experience right after installation! Just make sure to use your own real XYZ token!
+The following are tiny "Hello World"-like examples that you can run to have a successful first XYZ experience right after installation!
 
 #### Data Hub
 ```python
@@ -176,7 +176,7 @@ feature_id = space.add_features(features=geojson.FeatureCollection([feature]))["
 feature = space.get_feature(feature_id=feature_id)
 print(geojson.dumps(feature, indent=4, sort_keys=True))
 ```
-### Interactive Map Layer
+#### Interactive Map Layer
 ```python
 import geojson
 from xyzspaces import IML
