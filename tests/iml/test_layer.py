@@ -20,7 +20,7 @@ import pytest
 from geojson import Feature, FeatureCollection, Point
 
 from tests.iml.conftest import env_setup_done
-from xyzspaces.iml.layer import HexbinClustering
+from xyzspaces.iml.layer import HexbinClustering, InteractiveMapApiResponse
 
 # Read operation on layer.
 
@@ -84,7 +84,7 @@ def test_iter_feature(read_layer):
 @pytest.mark.skipif(not env_setup_done(), reason="Credentials are not setup in env.")
 def test_get_features_in_bounding_box(read_layer):
     """Test features in bounding box."""
-    clustering = HexbinClustering()
+    clustering = HexbinClustering(absolute_resolution=1)
     int_resp = read_layer.get_features_in_bounding_box(
         bounds=(68.1766451354, 7.96553477623, 97.4025614766, 35.4940095078),
         clustering=clustering,
@@ -112,3 +112,10 @@ def test_spatial_search_geometry(read_layer):
     )
     fc = int_resp.to_geojson()
     assert fc["features"][0]["id"] == "IND"
+
+
+def test_inavlid_response():
+    """Test invalid response from interactive api."""
+    resp = InteractiveMapApiResponse({"type": "dummy"})
+    with pytest.raises(NotImplementedError):
+        resp.to_geojson()

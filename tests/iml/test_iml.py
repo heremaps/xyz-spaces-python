@@ -116,5 +116,10 @@ def test_catalog_lifecycle():
         countries_data = json.load(fh)
     iml.layer.write_features(features=countries_data)
     assert iml.layer.statistics["count"]["value"] == 179
+    resp = iml.layer.get_features(feature_ids=["IND", "USA", "DEU"])
+    features = resp.to_geojson()["features"]
     iml.layer.delete_features(feature_ids=["IND", "USA", "DEU"])
     assert iml.layer.statistics["count"]["value"] == 176
+    iml.layer.write_features(features=features)
+    sleep(0.5)
+    assert iml.layer.statistics["count"]["value"] == 179
