@@ -33,7 +33,8 @@ class IML:
         :return: Object of IML
         """
         obj = cls()
-        catalog = Catalog(hrn=catalog_hrn, credentials=credentials)
+        cred = credentials or Credentials.from_default()
+        catalog = Catalog(hrn=catalog_hrn, credentials=cred)
         obj.catalog = catalog
         obj.layer = InteractiveMapLayer(layer_id=layer_id, catalog=catalog)
         return obj
