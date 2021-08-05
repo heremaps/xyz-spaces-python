@@ -25,44 +25,32 @@ Using this package you can:
 
 Based on the XYZ Hub the HERE Data Hub is a commercial service (with a free plan), that offers some additional features (in a pro plan), like clustering, virtual spaces, activity logs, schema validation, rule based tagging and likely more to come.
 
-Interactive Map Layer
-=====================
+Interactive Map Layers
+======================
 
-The ``xyzspaces`` package also supports Interactive Map Layer(IML) which is Data Hub on `HERE Platform <https://platform.here.com/>`_.
-Using ``xyzspaces`` you can interact with your Interactive Map Layer using higher level pythonic interface that wraps the RESTful API.
-Using this package you can:
+The ``xyzspaces`` package supports Interactive Map Layers which is Data Hub on `HERE Platform <https://platform.here.com/>`_.
+Using ``xyzspaces`` you can interact with your Interactive Map Layers using higher level pythonic interface that wraps the RESTful API.
+With Interactive Map Layers, data is stored in GeoJSON and can be retrieved dynamically at any zoom level.
+Interactive map layer is optimized for the visualization, analysis, and modification of data on a map (i.e., GIS functions).
 
-* Create, read, update, Interactive Map Layer (also: get Interactive Map Layer info and stats).
-* Add, read, update, iterate, search, cluster (hex/quad bins), delete features.
-* Search features by ID, tag, property, bbox, tile, radius, geometry.
+Key features of Interactive Map Layers include:
 
-Credentials
------------
-To interact with Interactive Map Layer you will need an account on the HERE Platform.
-To get more details on the HERE Platform account please check `this <https://developer.here.com/documentation/identity-access-management/dev_guide/topics/obtain-user-credentials.html>`_.
-Once you have the account follow the below steps to get credentials:
+* Creating and modifying maps manually or programmatically; edits are published real-time and require no additional interaction.
 
-*  Go to `HERE Platform Applications and Keys <https://platform.here.com/profile/apps-and-keys>`_ and register a new app.
+* Modifying data a granular feature and feature property level.
 
-*  Create a key for the app and download the generated `credentials.properties` file.
+* Adding and removing points, lines, and polygons directly on a map.
 
-* Place the credentials file into:
+* Ability to retrieve data in different tiling schemes.
 
-  For Linux/MacOS::
+* Exploring and retrieving data by feature ID, bounding box, spatial search, property search, and features contained within a tile.
 
-   $HOME/.here/credentials.properties
+* Searching for data by values of feature properties (e.g., speed limits, type of place, address, name, etc.).
 
-  For Windows::
+* Data sampling, making it possible to efficiently render an excerpt of a very large data set for visual reference and analysis.
 
-   %USERPROFILE%\.here\credentials.properties
+* Clustering using hexbins or quadbins to produce rich, visual data representations.
 
-The HERE platform generated app credentials should look similar to the example below::
-
-   here.user.id = <example_here>
-   here.client.id = <example_here>
-   here.access.key.id = <example_here>
-   here.access.key.secret = <example_here>
-   here.token.endpoint.url = <example_here>
 
 .. _XYZ Hub: https://github.com/heremaps/xyz-hub
 .. _HERE Data Hub: https://developer.here.com/products/data-hub
