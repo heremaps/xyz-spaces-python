@@ -135,18 +135,11 @@ You can provide your credentials using any of the following methods:
 - Credentials file
 
 #### Default credentials
+Place the credentials file into
 
-- Place the credentials file into:
-For Linux/MacOS: $HOME/.here/credentials.properties
-For Windows: %USERPROFILE%\.here\credentials.properties
+For Linux/MacOS: `$HOME/.here/credentials.properties`
 
-##### code snippet to initantiate LS object:
-```
-# credentials will be picked up from credentials.properties file placed at default location.
-from here_location_services import LS
-
-ls = LS()
-```
+For Windows: `%USERPROFILE%\.here\credentials.properties`
 
 #### Environment Variables
 
@@ -158,31 +151,11 @@ HERE_ACCESS_KEY_ID
 HERE_ACCESS_KEY_SECRET
 HERE_TOKEN_ENDPOINT_URL
 ```
-##### code snippet to initantiate LS object:
-```
-from here_location_services import LS
-from here_location_services.platform.credentials import PlatformCredentials
-
-
-credentials = PlatformCredentials.from_env()
-
-ls = LS(platfrom_credentials=credentials)
-```
 
 #### Credentials File
 
 You can specify any credentials file as an alternative to that found in `~/.here/credentials.properties`. An error is generated if there is no file present at the path, or if the file is not properly formatted.
-##### code snippet to initantiate LS object:
 
-```
-from here_location_services import LS
-from here_location_services.platform.credentials import PlatformCredentials
-
-
-credentials = PlatformCredentials.from_credentials_file("<Path to file>")
-
-ls = LS(platfrom_credentials=credentials)
-```
   
 ## Documentation
 
@@ -241,7 +214,7 @@ import geojson
 from xyzspaces import IML
 from xyzspaces.iml.credentials import Credentials
 
-credentials = Credentials.from_credentials_file("~/.here/credentials.properties")
+credentials = Credentials.from_default() # credentials are in either credentials file at default location or in environment variables
 
 layer_details = {
     "id": "demo-interactive-layer",
