@@ -96,33 +96,92 @@ If you want to run the test suite or experiment with the example notebooks bundl
     cd xyzspaces
     ```
   
-## Interactive Map Layer
-The `xyzspaces` package also supports Interactive Map Layer(IML) which is Data Hub on [HERE Platform](https://platform.here.com/).
-Using `xyzspaces` you can interact with your Interactive Map Layer using higher level pythonic interface that wraps the RESTful API. Using this package you can:
+## Interactive Map Layers
+The `xyzspaces` package supports Interactive Map Layers which is Data Hub on [HERE Platform](https://platform.here.com/).
+Using `xyzspaces` you can interact with your Interactive Map Layers using higher level pythonic interface that wraps the RESTful API.
+With Interactive Map Layers, data is stored in GeoJSON and can be retrieved dynamically at any zoom level. 
+Interactive map layer is optimized for the visualization, analysis, and modification of data on a map (i.e., GIS functions).
 
-- Create, read, update, Interactive Map Layer (also: get Interactive Map Layer info and stats).
-- Add, read, update, iterate, search, cluster (hex/quad bins), delete features.
-- Search features by ID, tag, property, bbox, tile, radius, geometry.
+Key features of Interactive Map Layers include:
+- Creating and modifying maps manually or programmatically; edits are published real-time and require no additional interaction.
+- Modifying data a granular feature and feature property level.
+- Adding and removing points, lines, and polygons directly on a map.
+- Ability to retrieve data in different tiling schemes.
+- Exploring and retrieving data by feature ID, bounding box, spatial search, property search, and features contained within a tile.
+- Searching for data by values of feature properties (e.g., speed limits, type of place, address, name, etc.).
+- Data sampling, making it possible to efficiently render an excerpt of a very large data set for visual reference and analysis.
+- Clustering using hexbins or quadbins to produce rich, visual data representations.
 
 ### Credentials
 To interact with Interactive Map Layer you will need an account on the HERE Platform.
-To get more details on the HERE Platform account please check [this](https://developer.here.com/documentation/identity-access-management/dev_guide/topics/obtain-user-credentials.html).
+To get more details on the HERE Platform account please check our documentation [Get a HERE account](https://developer.here.com/documentation/identity-access-management/dev_guide/topics/obtain-user-credentials.html).
 Once you have the account follow the below steps to get credentials:
 - Go to [HERE Platform Applications and Keys](https://platform.here.com/profile/apps-and-keys) and register a new app.
 - Create a key for the app and download the generated `credentials.properties` file.
-- Place the credentials file into:
-  
-  For Linux/MacOS: $HOME/.here/credentials.properties
-
-  For Windows: %USERPROFILE%\.here\credentials.properties
 
 The HERE platform generated app credentials should look similar to the example below:
-```bash
-here.user.id = <example_here>
-here.client.id = <example_here>
-here.access.key.id = <example_here>
-here.access.key.secret = <example_here>
-here.token.endpoint.url = <example_here>
+```
+  here.user.id = <example_here>
+  here.client.id = <example_here>
+  here.access.key.id = <example_here>
+  here.access.key.secret = <example_here>
+  here.token.endpoint.url = <example_here>
+```
+
+You can provide your credentials using any of the following methods:
+
+- Default credentials
+- Environment variables
+- Credentials file
+
+#### Default credentials
+
+- Place the credentials file into:
+For Linux/MacOS: $HOME/.here/credentials.properties
+For Windows: %USERPROFILE%\.here\credentials.properties
+
+##### code snippet to initantiate LS object:
+```
+# credentials will be picked up from credentials.properties file placed at default location.
+from here_location_services import LS
+
+ls = LS()
+```
+
+#### Environment Variables
+
+You can override default credentials by assigning values to the following environment variables:
+```
+HERE_USER_ID
+HERE_CLIENT_ID
+HERE_ACCESS_KEY_ID
+HERE_ACCESS_KEY_SECRET
+HERE_TOKEN_ENDPOINT_URL
+```
+##### code snippet to initantiate LS object:
+```
+from here_location_services import LS
+from here_location_services.platform.credentials import PlatformCredentials
+
+
+credentials = PlatformCredentials.from_env()
+
+ls = LS(platfrom_credentials=credentials)
+```
+
+#### Credentials File
+
+You can specify any credentials file as an alternative to that found in `~/.here/credentials.properties`. An error is generated if there is no file present at the path, or if the file is not properly formatted.
+##### code snippet to initantiate LS object:
+
+```
+from here_location_services import LS
+from here_location_services.platform.credentials import PlatformCredentials
+
+
+credentials = PlatformCredentials.from_credentials_file("<Path to file>")
+
+ls = LS(platfrom_credentials=credentials)
 ```
   
 ## Documentation
