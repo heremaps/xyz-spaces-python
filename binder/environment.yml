@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - bqplot
+  - here-map-widget-for-jupyter>=1.1.1
   - ipyleaflet
   - sidecar
   - pip
