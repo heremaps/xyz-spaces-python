@@ -18,7 +18,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![commits since](https://img.shields.io/github/commits-since/heremaps/xyz-spaces-python/latest.svg)](https://github.com/heremaps/xyz-spaces-python/commits/master)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/xyzspaces/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/xyzspaces)
-[![Anaconda-Server Badge](https://anaconda.org/conda-forge/xyzspaces/badges/license.svg)](https://anaconda.org/conda-forge/xyzspaces)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/heremaps/xyz-spaces-python/master?urlpath=lab/tree/docs/notebooks)
 
 Manage your [XYZ Hub](https://github.com/heremaps/xyz-hub) or [HERE Data Hub](https://developer.here.com/products/data-hub) spaces  and [Interactive Map Layer](https://developer.here.com/documentation/data-user-guide/user_guide/portal/layers/layers.html) from Python.
