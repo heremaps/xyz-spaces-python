@@ -49,14 +49,6 @@ class DataInteractiveApi(Api):
         auth: Auth,
         proxies: Optional[dict] = None,
     ):
-        """
-        Instantiate DataInteractiveApi object.
-
-        :param base_url: a base url of the Interactive API.
-        :param auth: an Authentication instance.
-        :param proxies: an optional proxy configuration. Defaults to the environment proxy
-        configuration.
-        """
         super().__init__(
             access_token=auth.token,
             proxies=proxies,
@@ -70,7 +62,7 @@ class DataInteractiveApi(Api):
 
         This method is required as character encoding needs to be skipped for ``,``
         to support ``OR`` condition, and if property value has any special character then
-        character encoding is required. As python :module:`requests` by default does
+        character encoding is required. As python :mod:`requests` by default does
         encoding of all the characters hence, this needs to be handled separately.
         For more details please check: https://saeljira.it.here.com/browse/DH-1369.
 
@@ -150,7 +142,9 @@ class DataInteractiveApi(Api):
         else:
             self.raise_response_exception(resp)
 
-    def get_statistics(self, layer_id: str, skip_cache: bool = False) -> Dict:  # type: ignore[return]  # noqa E501
+    def get_statistics(  # type: ignore[return]  # noqa E501
+        self, layer_id: str, skip_cache: bool = False
+    ) -> Dict:
         """
         Return statistical information about this layer.
 
@@ -193,24 +187,23 @@ class DataInteractiveApi(Api):
         :param limit: A maximum number of features to return in the result. Default
             is 30000. Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in  returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -221,8 +214,7 @@ class DataInteractiveApi(Api):
         :param force2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: Response from the API.
-
-        """
+        """  # noqa E501
         path = f"/layers/{layer_id}/bbox"
         url = f"{self.base_url}{path}"
         if params:
@@ -280,24 +272,23 @@ class DataInteractiveApi(Api):
         :param clip: A Boolean indicating if the result should be clipped
             (default: False).
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in  returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -312,8 +303,7 @@ class DataInteractiveApi(Api):
         :param force2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: Response from the API.
-
-        """
+        """  # noqa E501
         path = f"/layers/{layer_id}/tile/{tile_type}/{tile_id}"
         url = f"{self.base_url}{path}"
         if params:
@@ -378,24 +368,23 @@ class DataInteractiveApi(Api):
         :param limit: The maximum number of features in the response. Default is 30000.
             Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -403,8 +392,7 @@ class DataInteractiveApi(Api):
         :param force2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: Response from the API.
-
-        """
+        """  # noqa E501
         path = f"/layers/{layer_id}/spatial"
         url = f"{self.base_url}{path}"
         if params:
@@ -457,24 +445,23 @@ class DataInteractiveApi(Api):
         :param limit: The maximum number of features in the response. Default is 30000.
             Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -482,8 +469,7 @@ class DataInteractiveApi(Api):
         :param force2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: Response from the API.
-
-        """
+        """  # noqa E501
         path = f"/layers/{layer_id}/spatial"
         url = f"{self.base_url}{path}"
         if params:
@@ -525,24 +511,23 @@ class DataInteractiveApi(Api):
         :param limit: The maximum number of features in the response. Default is 30000.
             Hard limit is 100000.
         :param params: A dict to represent additional filters on features to be searched.
+
             Examples:
-            - ``params={"name": "foo"}``
-              returns all features with a value of property ``name`` equal to ``foo``.
-            - ``params={"name!": "foo"}``
-              returns all features with a value of property ``name`` not qual to ``foo``.
-            - ``params={"count=gte": "10"}``
-              returns all features with a value of property ``count`` greater than or
-              equal to ``10``.
-            - ``params={"count=lte": "10"}``
-              returns all features with a value of property ``count`` less than or equal
-              to ``10``.
-            - ``params={"count=gt": "10"}``
-              returns all features with a value of property ``count`` greater than ``10``.
-            - ``params={"count=lt": "10"}``
-              returns all features with a value of property ``count`` less than ``10``.
-            - ``params={"name=cs": "bar"}``
-              returns all features with a value of property ``name`` which contains
-              ``bar``.
+
+            * ``params={"name": "foo"}`` returns all features with a value of property ``name`` equal to ``foo``.
+
+            * ``params={"name!": "foo"}`` returns all features with a value of property ``name`` not equal to ``foo``.
+
+            * ``params={"count=gte": "10"}`` returns all features with a value of property ``count`` greater than or equal to ``10``.
+
+            * ``params={"count=lte": "10"}`` returns all features with a value of property ``count`` less than or equal to ``10``.
+
+            * ``params={"count=gt": "10"}`` returns all features with a value of property ``count`` greater than ``10``.
+
+            * ``params={"count=lt": "10"}`` returns all features with a value of property ``count`` less than ``10``.
+
+            * ``params={"name=cs": "bar"}`` returns all features with a value of property ``name`` which contains``bar``.
+
         :param selection: A list, only these properties will be present in returned
             features.
         :param skip_cache: If set to ``True`` the response is not returned from cache.
@@ -550,8 +535,7 @@ class DataInteractiveApi(Api):
         :param force2d: If set to ``True`` then features in the response will have
             only X and Y components, else all x,y,z coordinates will be returned.
         :return: Response from the API.
-
-        """
+        """  # noqa E501
         path = f"/layers/{layer_id}/search"
         url = f"{self.base_url}{path}"
         if params:

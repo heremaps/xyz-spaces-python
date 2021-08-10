@@ -72,4 +72,6 @@ jobs:
 
     - name: Install xyzspaces
       shell: bash -l {0}
-      run: pip install .[dev]
+      run: |
+       pip install .[dev]
+       python -c "import xyzspaces; print(xyzspaces.__version__)"

@@ -53,13 +53,6 @@ class LookupApi(Api):
         auth: Auth,
         proxies: Optional[dict] = None,
     ):
-        """
-        Instantiate LookupApi object.
-
-        :param auth: an Authentication instance.
-        :param proxies: an optional proxy configuration. Defaults to the environment proxy
-        configuration.
-        """
         super().__init__(
             access_token=auth.token,
             proxies=proxies,

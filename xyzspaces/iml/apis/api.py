@@ -18,7 +18,7 @@
 This module implements base class for low level api client.
 """
 import urllib.request
-from typing import Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import requests
 
@@ -36,7 +36,7 @@ class Api:
     def __init__(self, access_token, proxies: Optional[dict] = None):
         self.access_token = access_token
         self._user_agent = "dhpy"
-        self.proxies = proxies or urllib.request.getproxies()
+        self.proxies: Optional[Dict[Any, Any]] = proxies or urllib.request.getproxies()
 
     @property
     def headers(self) -> dict:
@@ -54,7 +54,7 @@ class Api:
         params: Optional[dict] = None,
         headers: Optional[dict] = None,
         **kwargs,
-    ) -> Union[Dict, requests.Response]:
+    ) -> requests.Response:
         """
         Perform a get request of an API at a specified URL with backoff.
 
