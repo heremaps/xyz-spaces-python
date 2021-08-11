@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+xyzspaces 0.7.1 (2021-08-10)
+----------------------------
+* Fixed minor issues
+
+xyzspaces 0.7.0 (2021-08-10)
+----------------------------
+
+* **Features**
+
+  * Added support for Interactive Map Layers. (`#117 <https://github.com/heremaps/xyz-spaces-python/pull/117>`_)
+
+
 xyzspaces 0.6.0 (2021-06-17)
 ----------------------------
 
