@@ -33,9 +33,15 @@ dependency_links = [
     x.strip().replace("git+", "") for x in all_reqs if x.startswith("git+")
 ]
 
-# Get extra dependencies
+# Get dev dependencies
 with open(path.join(here, "requirements_dev.txt"), encoding="utf-8") as f:
     dev_reqs = f.read().strip().split("\n")
+
+# Extra dependencies
+
+geo = ["geopandas", "turfpy>=0.0.3"]
+
+extras_require = {"dev": dev_reqs, "geo": geo}
 
 packages = find_packages(exclude=["docs", "tests"])
 
@@ -59,7 +65,7 @@ setup(
     install_requires=install_requires,
     dependency_links=dependency_links,
     # scripts=["bin/xyzspaces"],
-    extras_require={"dev": dev_reqs},
+    extras_require=extras_require,
     long_description=long_description,
     long_description_content_type='text/markdown',
 )

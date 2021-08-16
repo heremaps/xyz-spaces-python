@@ -26,13 +26,23 @@ import math
 import os
 import warnings
 from itertools import zip_longest
-from typing import List, Optional
+from typing import TYPE_CHECKING, List, Optional
 
-import geopandas as gpd
 from geojson import Feature, FeatureCollection, Point, Polygon
-from shapely import geometry, wkt
-from turfpy.measurement import bbox, bbox_polygon, distance, length
-from turfpy.transformation import intersect
+
+from xyzspaces._compact import HAS_GEOPANDAS, HAS_TURFPY
+
+if TYPE_CHECKING:
+    import geopandas as gpd
+
+
+if HAS_TURFPY:
+    from turfpy.measurement import bbox, bbox_polygon, distance, length
+    from turfpy.transformation import intersect
+
+if HAS_GEOPANDAS:
+    import geopandas as gpd  # noqa
+    from shapely import geometry, wkt
 
 logger = logging.getLogger(__name__)
 
@@ -237,7 +247,7 @@ def divide_bbox(
     return final
 
 
-def flatten_geometry(data: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+def flatten_geometry(data: "gpd.GeoDataFrame") -> "gpd.GeoDataFrame":
     """
     Flatten the geometries in the given GeoPandas dataframe.
     Flatten geometry is formed by extracting individual geometries from

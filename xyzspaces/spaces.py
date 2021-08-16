@@ -36,18 +36,25 @@ import webbrowser
 from decimal import Decimal
 from functools import partial
 from multiprocessing import Manager
-from typing import Any, Dict, Generator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Union
 
-import fiona
 import geobuf
-import geopandas as gpd
 import ijson
 import pandas
 from geojson import Feature, GeoJSON
 
+from xyzspaces._compact import HAS_GEOPANDAS
+
 from .apis import HubApi
 from .config.default import XYZConfig
 from .utils import divide_bbox, flatten_geometry, grouper, wkt_to_geojson
+
+if TYPE_CHECKING:
+    import geopandas as gpd
+
+if HAS_GEOPANDAS:
+    import fiona
+    import geopandas as gpd  # noqa
 
 logger = logging.getLogger(__name__)
 
@@ -460,7 +467,7 @@ class Space:
         feature_ids: List[str],
         geo_dataframe: Optional[bool] = None,
         force_2d: Optional[bool] = None,
-    ) -> Union[GeoJSON, gpd.GeoDataFrame]:
+    ) -> Union[GeoJSON, "gpd.GeoDataFrame"]:
         """
         Retrieve one GeoJSON feature with given ID from this space.
 
@@ -1364,7 +1371,7 @@ class Space:
 
     def add_features_geopandas(
         self,
-        data: gpd.GeoDataFrame,
+        data: "gpd.GeoDataFrame",
         features_size: int = 2000,
         chunk_size: int = 1,
     ):
