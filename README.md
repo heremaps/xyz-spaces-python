@@ -75,6 +75,12 @@ This package can be installed with `pip` or `conda` from various sources:
     pip install xyzspaces
     ```
 
+- Install from the [Python Package Index](https://pypi.org/project/xyzspaces/) with optional dependencies:
+
+    ```bash
+    pip install "xyzspaces[geo]"
+    ```
+
 - Install from its source repository on GitHub:
 
     ```bash

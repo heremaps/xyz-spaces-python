@@ -1,7 +1,7 @@
 Installation
 ============
 
-xyzspaces depends for its spatial functionality on a large geospatial, open
+xyzspaces has optional dependencies for its spatial functionality on a large geospatial, open
 source stack of libraries (`Geopandas`_, `turfpy`_). See the
 :ref:`dependencies` section below for more details. The C depedencies of Geopandas such as (`GEOS`_, `GDAL`_, `PROJ`_)
 can sometimes be a challenge to install. Therefore, we advise you
@@ -52,9 +52,14 @@ xyzspaces in it::
 Installing with pip
 -------------------
 
-xyzspaces can also be installed with pip::
+Install ``xyzspaces`` without optional dependencies::
 
     pip install xyzspaces
+
+Install ``xyzspaces`` with optional dependencies::
+
+    pip install "xyzspaces[geo]"
+
 
 .. _install-deps:
 
@@ -106,6 +111,11 @@ Dependencies
 Required dependencies:
 
 - `requirements`_
+
+Optional depedencies:
+
+- `Geopandas`_
+- `turfpy`_
 
 Dev dependencies:
 

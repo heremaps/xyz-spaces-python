@@ -24,6 +24,7 @@ Submodules
    xyzspaces.__version__
    xyzspaces.apis
    xyzspaces.auth
+   xyzspaces._compact
    xyzspaces.curl
    xyzspaces.exceptions
    xyzspaces.logconf
