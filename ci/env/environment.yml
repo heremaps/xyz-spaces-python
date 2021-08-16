@@ -9,7 +9,9 @@ dependencies:
   - geopandas
   - turfpy>=0.0.3
   - geobuf
-  - ijson==3.1.1
+  - ijson>=3.1.1
+  - pyhocon
+  - requests-oauthlib
   - pip:
     - "-r ../../requirements.txt"
     - "-r ../../requirements_dev.txt"

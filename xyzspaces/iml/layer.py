@@ -23,16 +23,21 @@ import json
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Optional, Tuple, Union
 
-import geopandas as gpd
 from geojson import Feature, FeatureCollection
 from geojson.geometry import Geometry
 from geojson.mapping import GEO_INTERFACE_MARKER
 
+from xyzspaces._compact import HAS_GEOPANDAS
 from xyzspaces.iml.apis.data_interactive_api import DataInteractiveApi
 from xyzspaces.iml.catalog import Catalog
 from xyzspaces.utils import grouper
+
+if TYPE_CHECKING:
+    import geopandas as gpd
+if HAS_GEOPANDAS:
+    import geopandas as gpd  # noqa
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +95,7 @@ class InteractiveMapApiResponse:
                 "Response should be either Feature or FeatureCollection."
             )
 
-    def to_geopandas(self) -> gpd.GeoDataFrame:
+    def to_geopandas(self) -> "gpd.GeoDataFrame":
         """Return response from API as geopandas dataframe."""
         if self.response["type"] != "FeatureCollection":
             raise NotImplementedError("Response should be FeatureCollection.")
