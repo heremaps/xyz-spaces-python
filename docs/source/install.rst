@@ -2,7 +2,7 @@ Installation
 ============
 
 xyzspaces has optional dependencies for its spatial functionality on a large geospatial, open
-source stack of libraries (`Geopandas`_, `turfpy`_). See the
+source stack of libraries (`Geopandas`_, `turfpy`_, `geobuf`_). See the
 :ref:`dependencies` section below for more details. The C depedencies of Geopandas such as (`GEOS`_, `GDAL`_, `PROJ`_)
 can sometimes be a challenge to install. Therefore, we advise you
 to closely follow the recommendations below to avoid installation problems.
@@ -116,6 +116,7 @@ Optional depedencies:
 
 - `Geopandas`_
 - `turfpy`_
+- `geobuf`_
 
 Dev dependencies:
 
@@ -156,4 +157,6 @@ Dev dependencies:
 .. _GEOS: https://geos.osgeo.org
 
 .. _PROJ: https://proj.org/
+
+.. _geobuf: https://pypi.org/project/geobuf/
 

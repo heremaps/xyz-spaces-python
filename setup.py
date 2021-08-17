@@ -39,7 +39,7 @@ with open(path.join(here, "requirements_dev.txt"), encoding="utf-8") as f:
 
 # Extra dependencies
 
-geo = ["geopandas", "turfpy>=0.0.3"]
+geo = ["geopandas", "turfpy>=0.0.3", "geobuf"]
 
 extras_require = {"dev": dev_reqs, "geo": geo}
 
