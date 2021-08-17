@@ -12,6 +12,7 @@ pytest-rerunfailures
 Sphinx>=2.4.0
 sphinx-rtd-theme
 sphinx-thebe>=0.0.8
+sphinx-copybutton
 twine
 pytest-flake8
 isort

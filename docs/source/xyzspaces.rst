@@ -13,7 +13,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   xyzspaces.config
    xyzspaces.datasets
+   xyzspaces.iml
+   xyzspaces.iml.apis
 
 Submodules
 ----------
@@ -31,6 +34,3 @@ Submodules
    xyzspaces.spaces
    xyzspaces.tools
    xyzspaces.utils
-   xyzspaces.config
-   xyzspaces.iml
-   xyzspaces.iml.apis
