@@ -2,8 +2,6 @@
 backoff>=1.10.0
 geojson
 requests
-geobuf
 ijson>=3.1.1
 pyhocon
 requests-oauthlib
-pandas

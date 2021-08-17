@@ -27,6 +27,7 @@ dictionaries, like the "statistics" of some given XYZ space.
 
 import concurrent.futures
 import copy
+import csv
 import hashlib
 import io
 import json
@@ -38,10 +39,8 @@ from functools import partial
 from multiprocessing import Manager
 from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Union
 
-import geobuf
 import ijson
-import pandas
-from geojson import Feature, GeoJSON
+from geojson import Feature, FeatureCollection, GeoJSON, Point
 
 from xyzspaces._compact import HAS_GEOPANDAS
 
@@ -1123,9 +1122,9 @@ class Space:
         path: str,
         lon_col: str,
         lat_col: str,
-        id_col: Optional[str] = "",
-        alt_col: Optional[str] = "",
-        delimiter: Optional[str] = ",",
+        id_col: str = "",
+        alt_col: str = "",
+        delimiter: str = ",",
         add_tags: Optional[List[str]] = None,
         remove_tags: Optional[List[str]] = None,
         features_size: int = 2000,
@@ -1161,49 +1160,47 @@ class Space:
         :raises Exception: If values of params `lat_col`, `lon_col`, `id_col`
              do not match with column names in csv file.
         """
-        df = pandas.read_csv(path, sep=delimiter)
-        key_columns = [lat_col, lon_col]
-        if alt_col:
-            key_columns.append(alt_col)
-        if id_col:
-            key_columns.append(id_col)
-        if not all([col in df.columns for col in key_columns]):
-            raise Exception(
-                "The longitude, latitude coordinates and id column name "
-                "should match with `lon_col`, `lat_col`, "
-                "`id_col` and `alt_col` parameter value"
+        features = []
+        with open(path) as f:
+            input_file = csv.DictReader(f, delimiter=delimiter)
+            columns = input_file.fieldnames
+            if (
+                lon_col not in columns  # type: ignore
+                or lat_col not in columns  # type: ignore
+                or (id_col not in columns if id_col else False)  # type: ignore
+                or (alt_col not in columns if alt_col else False)  # type: ignore
+            ):
+                raise Exception(
+                    "The longitude, latitude coordinates and id column name "
+                    "should match with `lon_col`, `lat_col`, "
+                    "`id_col` and `alt_col` parameter value"
+                )
+            for row in input_file:
+                ft = Feature(
+                    geometry=Point(
+                        (
+                            float(row[lon_col]),
+                            float(row[lat_col]),
+                            float(row[alt_col]) if alt_col else 0.0,
+                        )
+                    )
+                )
+                row.pop(lon_col)
+                row.pop(lat_col)
+                row.pop(alt_col, "")
+                ft.properties = row
+                if id_col:
+                    ft["id"] = row[id_col]
+                features.append(ft)
+            feature_collection = FeatureCollection(features=features)
+            self.add_features(
+                features=feature_collection,
+                add_tags=add_tags,
+                remove_tags=remove_tags,
+                features_size=features_size,
+                chunk_size=chunk_size,
+                id_properties=id_properties,
             )
-        geo = df.to_json(orient="records", date_format="iso")
-        json_geo = json.loads(geo)
-        feature_collection: Dict[str, Any] = {
-            "type": "FeatureCollection",
-            "features": [],
-        }
-        for record in json_geo:
-            feature = {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        record[lon_col],
-                        record[lat_col],
-                        record[alt_col] if alt_col else 0.0,
-                    ],
-                },
-                "properties": {k: v for k, v in record.items() if k not in key_columns},
-            }
-            if id_col:
-                feature["id"] = record[id_col]
-            feature_collection["features"].append(feature)
-
-        self.add_features(
-            feature_collection,
-            add_tags=add_tags,
-            remove_tags=remove_tags,
-            features_size=features_size,
-            chunk_size=chunk_size,
-            id_properties=id_properties,
-        )
 
     def cluster(
         self,
@@ -1358,6 +1355,7 @@ class Space:
         :param chunk_size: Number of chunks for each process to handle. The default value
             is 1, for a large number of features please use `chunk_size` greater than 1.
         """
+        import geobuf
 
         with open(path, "rb") as f:
             geobuff_data = f.read()
