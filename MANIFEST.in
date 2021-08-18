@@ -7,7 +7,6 @@ include binder/*
 include xyzspaces/datasets/*
 include docs/notebooks/README.md docs/notebooks/*.ipynb
 include scripts/*
-include tests/hub/* tests/project/* tests/token/*
 include images/*
 exclude ort.yml
 include xyzspaces/config/logconfig.json

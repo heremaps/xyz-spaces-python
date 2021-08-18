@@ -43,7 +43,7 @@ geo = ["geopandas", "turfpy>=0.0.3", "geobuf"]
 
 extras_require = {"dev": dev_reqs, "geo": geo}
 
-packages = find_packages(exclude=["docs", "tests"])
+packages = find_packages(exclude=["docs", "tests*"])
 
 version = {}
 with open('{}/__version__.py'.format(packages[0])) as f:
