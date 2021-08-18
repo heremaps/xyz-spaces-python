@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+xyzspaces 0.7.2 (2021-08-18)
+----------------------------
+* Made geopandas, turfpy, geobuf as optional dependencies of the xyzspaces
+
 xyzspaces 0.7.1 (2021-08-10)
 ----------------------------
 * Fixed minor issues
