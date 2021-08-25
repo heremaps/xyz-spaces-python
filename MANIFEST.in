@@ -3,10 +3,8 @@ include README.md
 include LICENSE
 include Makefile
 include requirements*.txt
-include binder/*
 include xyzspaces/datasets/*
 include docs/notebooks/README.md docs/notebooks/*.ipynb
 include scripts/*
-include images/*
 exclude ort.yml
 include xyzspaces/config/logconfig.json
