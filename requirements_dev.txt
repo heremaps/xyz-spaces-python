@@ -1,5 +1,5 @@
 # Development dependencies, use pip install -e .[dev]
-black
+black[jupyter]>=21.8b0
 codecov
 coverage
 mypy

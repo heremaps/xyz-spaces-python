@@ -3,7 +3,7 @@
 all: black build install typing lint test
 
 black:
-	black -l 90 xyzspaces tests
+	black -l 90 xyzspaces tests docs/notebooks
 	isort --atomic .
 
 build:
@@ -46,7 +46,7 @@ typing:
 lint:
 	isort --check --diff xyzspaces tests
 	flake8 -v --statistics --count .
-	black -l 90 --diff --check xyzspaces tests
+	black -l 90 --diff --check xyzspaces tests docs/notebooks
 
 test:
 	pytest -v -s --durations=10 --cov=xyzspaces tests
